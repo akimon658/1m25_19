@@ -1,4 +1,9 @@
 {
+  "fmt": {
+    "options": {
+      "semiColons": false
+    }
+  },
   "nodeModulesDir": "auto",
   "workspace": [
     "packages/*"
