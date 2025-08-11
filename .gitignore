@@ -1,2 +1,4 @@
 .vite/
+gen/
 node_modules/
+target/

@@ -4,7 +4,13 @@
       "semiColons": false
     }
   },
+  "imports": {
+    "@tauri-apps/cli": "npm:@tauri-apps/cli@^2.7.1"
+  },
   "nodeModulesDir": "auto",
+  "tasks": {
+    "tauri": "tauri"
+  },
   "workspace": [
     "packages/*"
   ]

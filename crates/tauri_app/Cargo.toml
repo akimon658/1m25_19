@@ -1,0 +1,15 @@
+[package]
+name = "tauri_app"
+version = "0.1.0"
+edition.workspace = true
+
+[lib]
+name = "tauri_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { workspace = true }
+
+[dependencies]
+anyhow = { workspace = true }
+tauri = { workspace = true }

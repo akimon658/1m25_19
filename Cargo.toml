@@ -1,0 +1,13 @@
+[workspace]
+resolver = "3"
+members = [
+  "crates/*",
+]
+
+[workspace.package]
+edition = "2024"
+
+[workspace.dependencies]
+anyhow = "1.0.98"
+tauri = "2.7.0"
+tauri-build = "2.3.1"
