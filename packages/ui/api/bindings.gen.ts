@@ -21,8 +21,7 @@ async generateGraph() : Promise<Graph> {
 /** user-defined types **/
 
 export type Edge = { source: number; target: number }
-export type Graph = { id: number; nodes: Node[]; edges: Edge[] }
-export type Node = { id: number }
+export type Graph = { id: number; num_nodes: number; edges: Edge[] }
 
 /** tauri-specta globals **/
 

@@ -29,12 +29,6 @@ impl GraphService {
         // Randomize the answer
         hamiltonian_cycle.shuffle(&mut rng);
 
-        let mut nodes: Vec<model::graph::Node> = Vec::with_capacity(num_nodes as usize);
-
-        for id in 0..num_nodes {
-            nodes.push(model::graph::Node { id });
-        }
-
         let mut edges: Vec<model::graph::Edge> = Vec::with_capacity(num_edges as usize);
         let mut edge_set: std::collections::HashSet<(u8, u8)> = std::collections::HashSet::new();
 
@@ -70,7 +64,7 @@ impl GraphService {
 
         let mut graph = model::graph::Graph {
             id: 0, // ID will be returned by the repository
-            nodes,
+            num_nodes,
             edges,
         };
 
