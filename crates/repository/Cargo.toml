@@ -6,4 +6,5 @@ edition.workspace = true
 [dependencies]
 anyhow = { workspace = true }
 model = { path = "../model" }
+serde_json = { workspace = true }
 sqlx = { workspace = true, features = ["macros", "migrate", "runtime-tokio", "sqlite"] }

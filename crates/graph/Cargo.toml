@@ -8,4 +8,3 @@ anyhow = { workspace = true }
 model = { path = "../model" }
 rand = { workspace = true, features = ["small_rng", "thread_rng"] }
 repository = { path = "../repository" }
-sqlx = { workspace = true, features = ["json"] }

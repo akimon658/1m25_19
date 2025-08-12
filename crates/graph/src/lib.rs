@@ -1,6 +1,5 @@
 use rand::seq::SliceRandom;
 use rand::{Rng, SeedableRng};
-use sqlx::types::Json;
 
 pub struct GraphService {
     pub repository: repository::graph::GraphRepository,
@@ -71,8 +70,8 @@ impl GraphService {
 
         let mut graph = model::graph::Graph {
             id: 0, // ID will be returned by the repository
-            nodes: Json(nodes),
-            edges: Json(edges),
+            nodes,
+            edges,
         };
 
         graph.id = self.repository.save_graph(&graph).await?;
