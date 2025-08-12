@@ -1,5 +1,6 @@
 import { type Edge, type Node, ReactFlow } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
+import { playerWrapperStyle } from "./player.css.ts"
 
 type PlayerProps = {
   edges: Edge[]
@@ -8,7 +9,7 @@ type PlayerProps = {
 
 export const Player = ({ edges, nodes }: PlayerProps) => {
   return (
-    <div style={{ height: "100dvh", width: "100dvw" }}>
+    <div className={playerWrapperStyle}>
       <ReactFlow edges={edges} nodes={nodes} />
     </div>
   )
