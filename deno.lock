@@ -2,6 +2,7 @@
   "version": "5",
   "specifiers": {
     "npm:@deno/vite-plugin@*": "1.0.5_vite@7.1.1__picomatch@4.0.3",
+    "npm:@tanstack/react-query@^5.84.2": "5.84.2_react@19.1.1",
     "npm:@tauri-apps/api@^2.7.0": "2.7.0",
     "npm:@tauri-apps/cli@2.7.1": "2.7.1",
     "npm:@tauri-apps/cli@^2.7.1": "2.7.1",
@@ -420,6 +421,16 @@
       "os": ["win32"],
       "cpu": ["x64"]
     },
+    "@tanstack/query-core@5.83.1": {
+      "integrity": "sha512-OG69LQgT7jSp+5pPuCfzltq/+7l2xoweggjme9vlbCPa/d7D7zaqv5vN/S82SzSYZ4EDLTxNO1PWrv49RAS64Q=="
+    },
+    "@tanstack/react-query@5.84.2_react@19.1.1": {
+      "integrity": "sha512-cZadySzROlD2+o8zIfbD978p0IphuQzRWiiH3I2ugnTmz4jbjc0+TdibpwqxlzynEen8OulgAg+rzdNF37s7XQ==",
+      "dependencies": [
+        "@tanstack/query-core",
+        "react"
+      ]
+    },
     "@tauri-apps/api@2.7.0": {
       "integrity": "sha512-v7fVE8jqBl8xJFOcBafDzXFc8FnicoH3j8o8DNNs0tHuEBmXUDqrCOAzMRX0UkfpwqZLqvrvK0GNQ45DfnoVDg=="
     },
@@ -762,6 +773,7 @@
     "members": {
       "packages/ui": {
         "dependencies": [
+          "npm:@tanstack/react-query@^5.84.2",
           "npm:@tauri-apps/api@^2.7.0",
           "npm:@types/react@^19.1.9",
           "npm:@vitejs/plugin-react@5",
