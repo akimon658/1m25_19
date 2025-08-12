@@ -2,6 +2,7 @@
   "version": "5",
   "specifiers": {
     "npm:@deno/vite-plugin@*": "1.0.5_vite@7.1.1__picomatch@4.0.3",
+    "npm:@tauri-apps/api@^2.7.0": "2.7.0",
     "npm:@tauri-apps/cli@2.7.1": "2.7.1",
     "npm:@tauri-apps/cli@^2.7.1": "2.7.1",
     "npm:@types/react@^19.1.9": "19.1.9",
@@ -419,6 +420,9 @@
       "os": ["win32"],
       "cpu": ["x64"]
     },
+    "@tauri-apps/api@2.7.0": {
+      "integrity": "sha512-v7fVE8jqBl8xJFOcBafDzXFc8FnicoH3j8o8DNNs0tHuEBmXUDqrCOAzMRX0UkfpwqZLqvrvK0GNQ45DfnoVDg=="
+    },
     "@tauri-apps/cli-darwin-arm64@2.7.1": {
       "integrity": "sha512-j2NXQN6+08G03xYiyKDKqbCV2Txt+hUKg0a8hYr92AmoCU8fgCjHyva/p16lGFGUG3P2Yu0xiNe1hXL9ZuRMzA==",
       "os": ["darwin"],
@@ -758,6 +762,7 @@
     "members": {
       "packages/ui": {
         "dependencies": [
+          "npm:@tauri-apps/api@^2.7.0",
           "npm:@types/react@^19.1.9",
           "npm:@vitejs/plugin-react@5",
           "npm:react-dom@^19.1.1",

@@ -15,4 +15,7 @@ anyhow = { workspace = true }
 graph = { path = "../graph" }
 model = { path = "../model" }
 repository = { path = "../repository" }
+specta = { workspace = true, features = ["function"] }
+specta-typescript = { workspace = true }
 tauri = { workspace = true }
+tauri-specta = { workspace = true, features = ["typescript"] }

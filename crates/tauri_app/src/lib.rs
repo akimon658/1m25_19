@@ -8,6 +8,17 @@ struct AppState {
 }
 
 pub fn run() -> anyhow::Result<()> {
+    let specta_builder = tauri_specta::Builder::<tauri::Wry>::new()
+        .commands(tauri_specta::collect_commands![commands::generate_graph,])
+        .typ::<model::graph::Graph>()
+        .error_handling(tauri_specta::ErrorHandlingMode::Throw);
+
+    specta_builder.export(
+        specta_typescript::Typescript::default()
+            .bigint(specta_typescript::BigIntExportBehavior::Number),
+        "../../packages/ui/api/bindings.gen.ts",
+    )?;
+
     tauri::Builder::default()
         .setup(|app| {
             #[cfg(debug_assertions)]

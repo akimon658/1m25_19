@@ -1,4 +1,5 @@
 #[tauri::command]
+#[specta::specta]
 pub async fn generate_graph(
     state: tauri::State<'_, crate::AppState>,
 ) -> Result<model::graph::Graph, String> {
