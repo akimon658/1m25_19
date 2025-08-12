@@ -62,6 +62,9 @@ impl GraphService {
             edges.push(model::graph::Edge { source, target });
         }
 
+        // Shuffle the edges to ensure randomness
+        edges.shuffle(&mut rng);
+
         let mut graph = model::graph::Graph {
             id: 0, // ID will be returned by the repository
             num_nodes,
