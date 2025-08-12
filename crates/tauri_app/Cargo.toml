@@ -12,4 +12,7 @@ tauri-build = { workspace = true }
 
 [dependencies]
 anyhow = { workspace = true }
+graph = { path = "../graph" }
+model = { path = "../model" }
+repository = { path = "../repository" }
 tauri = { workspace = true }
