@@ -39,7 +39,7 @@ impl GraphService {
         let mut edge_set: std::collections::HashSet<(u8, u8)> = std::collections::HashSet::new();
 
         // Create a Hamiltonian cycle
-        for i in 0..num_edges {
+        for i in 0..num_nodes {
             let source = hamiltonian_cycle[i as usize];
             let target = hamiltonian_cycle[((i + 1) % num_nodes) as usize];
 
