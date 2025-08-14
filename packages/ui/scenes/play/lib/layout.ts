@@ -1,10 +1,10 @@
-import { Edge, Node } from "@xyflow/react"
+import type { Edge, Node } from "@xyflow/react"
 import {
   forceCenter,
   forceLink,
   forceManyBody,
   forceSimulation,
-  SimulationNodeDatum,
+  type SimulationNodeDatum,
 } from "d3-force"
 
 export const getLayoutedNodes = (nodes: Node[], edges: Edge[]): Node[] => {
