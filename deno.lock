@@ -1,22 +1,19 @@
 {
   "version": "5",
   "specifiers": {
-    "npm:@deno/vite-plugin@*": "1.0.5_vite@7.1.1__picomatch@4.0.3",
     "npm:@tanstack/react-query@^5.84.2": "5.84.2_react@19.1.1",
     "npm:@tauri-apps/api@^2.7.0": "2.7.0",
     "npm:@tauri-apps/cli@2.7.1": "2.7.1",
     "npm:@tauri-apps/cli@^2.7.1": "2.7.1",
+    "npm:@types/d3-force@^3.0.10": "3.0.10",
     "npm:@types/react@^19.1.9": "19.1.9",
     "npm:@vanilla-extract/css@^1.17.4": "1.17.4",
     "npm:@vanilla-extract/vite-plugin@^5.1.1": "5.1.1_vite@7.1.1__picomatch@4.0.3",
-    "npm:@vitejs/plugin-react@*": "5.0.0_vite@7.1.1__picomatch@4.0.3_@babel+core@7.28.0",
     "npm:@vitejs/plugin-react@5": "5.0.0_vite@7.1.1__picomatch@4.0.3_@babel+core@7.28.0",
     "npm:@xyflow/react@^12.8.2": "12.8.2_react@19.1.1_react-dom@19.1.1__react@19.1.1_@types+react@19.1.9",
-    "npm:react-dom@*": "19.1.1_react@19.1.1",
+    "npm:d3-force@3": "3.0.0",
     "npm:react-dom@^19.1.1": "19.1.1_react@19.1.1",
-    "npm:react@*": "19.1.1",
     "npm:react@^19.1.1": "19.1.1",
-    "npm:vite@*": "7.1.1_picomatch@4.0.3",
     "npm:vite@7.1.1": "7.1.1_picomatch@4.0.3",
     "npm:vite@^7.1.1": "7.1.1_picomatch@4.0.3"
   },
@@ -176,12 +173,6 @@
       "dependencies": [
         "@babel/helper-string-parser",
         "@babel/helper-validator-identifier"
-      ]
-    },
-    "@deno/vite-plugin@1.0.5_vite@7.1.1__picomatch@4.0.3": {
-      "integrity": "sha512-tLja5n4dyMhcze1NzvSs2iiriBymfBlDCZIrjMTxb9O2ru0gvmV6mn5oBD2teNw5Sd92cj3YJzKwsAs8tMJXlg==",
-      "dependencies": [
-        "vite"
       ]
     },
     "@emotion/hash@0.9.2": {
@@ -563,6 +554,9 @@
         "@types/d3-selection"
       ]
     },
+    "@types/d3-force@3.0.10": {
+      "integrity": "sha512-ZYeSaCF3p73RdOKcjj+swRlZfnYpK1EbaDiYICEEp5Q6sUiqFaFQ9qgoshp5CzIyyb/yD09kD9o2zEltCexlgw=="
+    },
     "@types/d3-interpolate@3.0.4": {
       "integrity": "sha512-mgLPETlrpVV1YRJIglr4Ez47g7Yxjl1lj7YKsiMCb27VJH9W8NVM6Bb9d8kkpG/uAQS5AmbA48q2IAolKKo1MA==",
       "dependencies": [
@@ -749,11 +743,22 @@
     "d3-ease@3.0.1": {
       "integrity": "sha512-wR/XK3D3XcLIZwpbvQwQ5fK+8Ykds1ip7A2Txe0yxncXSdq1L9skcG7blcedkOX+ZcgxGAmLX1FrRGbADwzi0w=="
     },
+    "d3-force@3.0.0": {
+      "integrity": "sha512-zxV/SsA+U4yte8051P4ECydjD/S+qeYtnaIyAs9tgHCqfguma/aAQDjo85A9Z6EKhBirHRJHXIgJUlffT4wdLg==",
+      "dependencies": [
+        "d3-dispatch",
+        "d3-quadtree",
+        "d3-timer"
+      ]
+    },
     "d3-interpolate@3.0.1": {
       "integrity": "sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==",
       "dependencies": [
         "d3-color"
       ]
+    },
+    "d3-quadtree@3.0.1": {
+      "integrity": "sha512-04xDrxQTDTCFwP5H6hRhsRcb9xxv2RzkcsygFzmkSIOJy3PeRJP7sNk3VRIbKXcog561P9oU0/rVH6vDROAgUw=="
     },
     "d3-selection@3.0.0": {
       "integrity": "sha512-fmTRWbNMmsmWq6xJV8D19U/gw/bwrHfNXxrIN+HfZgnzqTHp9jOmKMhsTUjXOJnZOdZY9Q28y4yebKzqDKlxlQ=="
@@ -1108,15 +1113,22 @@
         "dependencies": [
           "npm:@tanstack/react-query@^5.84.2",
           "npm:@tauri-apps/api@^2.7.0",
+          "npm:@types/d3-force@^3.0.10",
           "npm:@types/react@^19.1.9",
           "npm:@vanilla-extract/css@^1.17.4",
           "npm:@vanilla-extract/vite-plugin@^5.1.1",
           "npm:@vitejs/plugin-react@5",
           "npm:@xyflow/react@^12.8.2",
+          "npm:d3-force@3",
           "npm:react-dom@^19.1.1",
           "npm:react@^19.1.1",
           "npm:vite@^7.1.1"
-        ]
+        ],
+        "packageJson": {
+          "dependencies": [
+            "npm:@types/d3-force@^3.0.10"
+          ]
+        }
       }
     }
   }

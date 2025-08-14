@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
-import { keyGenerateGraph } from "../../api/mutation_keys.ts"
 import { commands } from "../../api/bindings.gen.ts"
+import { keyGenerateGraph } from "../../api/mutation_keys.ts"
 import { Player } from "./components/Player.tsx"
+import { getLayoutedNodes } from "./lib/layout.ts"
 
 export const Play = () => {
   const { data: graph } = useQuery({
@@ -13,19 +14,22 @@ export const Play = () => {
     return null
   }
 
+  const edges = graph.edges.map((edge, index) => ({
+    id: index.toString(),
+    source: edge.source.toString(),
+    target: edge.target.toString(),
+  }))
+  const nodes = [...Array(graph.num_nodes)].map((_, index) => ({
+    id: index.toString(),
+    data: { label: `Node ${index}` },
+    position: { x: 0, y: 0 }, // Initial position, will be updated by layout
+  }))
+
   return (
     <div>
       <Player
-        edges={graph.edges.map((edge, index) => ({
-          id: index.toString(),
-          source: edge.source.toString(),
-          target: edge.target.toString(),
-        }))}
-        nodes={[...Array(graph.num_nodes)].map((_, index) => ({
-          id: index.toString(),
-          data: { label: `Node ${index}` },
-          position: { x: 0, y: 0 }, // Placeholder position, adjust as needed
-        }))}
+        edges={edges}
+        nodes={getLayoutedNodes(nodes, edges)}
       />
     </div>
   )
