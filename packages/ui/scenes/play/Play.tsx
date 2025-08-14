@@ -21,7 +21,7 @@ export const Play = () => {
   }))
   const nodes = [...Array(graph.num_nodes)].map((_, index) => ({
     id: index.toString(),
-    data: { selected: false },
+    data: { clickable: true, selected: false },
     position: { x: 0, y: 0 }, // Initial position, will be updated by layout
   }))
 

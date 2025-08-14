@@ -1,6 +1,6 @@
 import { style, styleVariants } from "@vanilla-extract/css"
 
-const nodeStyleBase = style({
+const baseStyle = style({
   border: "1px solid black",
   borderRadius: "50%",
   height: "32px",
@@ -8,11 +8,22 @@ const nodeStyleBase = style({
   width: "32px",
 })
 
+const clickableStyle = style({
+  boxShadow: "0 0 12px 2px lightgreen",
+  transition: "box-shadow 0.2s ease",
+})
+
+const selectedStyle = style({
+  backgroundColor: "lightblue",
+})
+
+const unselectedStyle = style({
+  backgroundColor: "white",
+})
+
 export const customNodeStyle = styleVariants({
-  default: [nodeStyleBase, {
-    backgroundColor: "white",
-  }],
-  selected: [nodeStyleBase, {
-    backgroundColor: "lightblue",
-  }],
+  clickableSelected: [baseStyle, selectedStyle, clickableStyle],
+  clickableUnselected: [baseStyle, unselectedStyle, clickableStyle],
+  unclickableSelected: [baseStyle, selectedStyle],
+  unclickableUnselected: [baseStyle, unselectedStyle],
 })
