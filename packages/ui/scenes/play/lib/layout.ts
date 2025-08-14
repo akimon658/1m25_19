@@ -1,4 +1,4 @@
-import type { Edge, Node } from "@xyflow/react"
+import type { Edge } from "@xyflow/react"
 import {
   forceCenter,
   forceLink,
@@ -6,8 +6,12 @@ import {
   forceSimulation,
   type SimulationNodeDatum,
 } from "d3-force"
+import type { SelectableNode } from "./nodeData.ts"
 
-export const getLayoutedNodes = (nodes: Node[], edges: Edge[]): Node[] => {
+export const getLayoutedNodes = (
+  nodes: SelectableNode[],
+  edges: Edge[],
+): SelectableNode[] => {
   const simulationNodes: SimulationNodeDatum[] = nodes.map((node) => ({
     index: Number(node.id),
   }))

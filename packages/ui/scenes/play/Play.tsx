@@ -21,7 +21,7 @@ export const Play = () => {
   }))
   const nodes = [...Array(graph.num_nodes)].map((_, index) => ({
     id: index.toString(),
-    data: {}, // No data is used but required by React Flow
+    data: { selected: false },
     position: { x: 0, y: 0 }, // Initial position, will be updated by layout
   }))
 
