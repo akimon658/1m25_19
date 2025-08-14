@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "verbatimModuleSyntax": true
+  },
   "fmt": {
     "options": {
       "semiColons": false
@@ -9,9 +12,8 @@
   },
   "nodeModulesDir": "auto",
   "tasks": {
+    "migrate": "sqlx migrate run --source crates/repository/migrations",
     "tauri": "tauri"
   },
-  "workspace": [
-    "packages/*"
-  ]
+  "workspace": ["packages/*"]
 }
