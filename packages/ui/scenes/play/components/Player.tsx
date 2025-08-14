@@ -10,7 +10,11 @@ type PlayerProps = {
 export const Player = ({ edges, nodes }: PlayerProps) => {
   return (
     <div className={playerWrapperStyle}>
-      <ReactFlow edges={edges} nodes={nodes} />
+      <ReactFlow
+        defaultEdgeOptions={{ type: "straight" }}
+        edges={edges}
+        nodes={nodes}
+      />
     </div>
   )
 }
