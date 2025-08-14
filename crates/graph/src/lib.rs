@@ -1,5 +1,5 @@
-use rand::seq::SliceRandom;
-use rand::{Rng, SeedableRng};
+use rand::SeedableRng;
+use rand::seq::{IndexedRandom, SliceRandom};
 
 pub struct GraphService {
     pub repository: repository::graph::GraphRepository,
@@ -42,26 +42,27 @@ impl GraphService {
         }
 
         // Add additional edges
-        let num_additional_edges = num_edges - num_nodes;
+        let mut possible_edges = Vec::<model::graph::Edge>::with_capacity(
+            (num_nodes * (num_nodes - 1) / 2 - num_edges) as usize,
+        );
 
-        for _ in 0..num_additional_edges {
-            let mut source: u8;
-            let mut target: u8;
-
-            loop {
-                source = rng.random_range(0..num_nodes);
-                target = rng.random_range(0..num_nodes);
-
-                if source != target && !edge_set.contains(&(source.min(target), source.max(target)))
-                {
-                    edge_set.insert((source.min(target), source.max(target)));
-                    break;
+        for i in 0..num_nodes {
+            for j in (i + 1)..num_nodes {
+                if !edge_set.contains(&(i, j)) {
+                    possible_edges.push(model::graph::Edge {
+                        source: i,
+                        target: j,
+                    });
                 }
             }
-
-            edges.push(model::graph::Edge { source, target });
         }
 
+        let sampled_edges = possible_edges
+            .choose_multiple(&mut rng, (num_edges - num_nodes) as usize)
+            .cloned()
+            .collect::<Vec<model::graph::Edge>>();
+
+        edges.extend(sampled_edges);
         // Shuffle the edges to ensure randomness
         edges.shuffle(&mut rng);
 

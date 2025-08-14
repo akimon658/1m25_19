@@ -1,4 +1,4 @@
-#[derive(serde::Serialize, specta::Type)]
+#[derive(Clone, serde::Serialize, specta::Type)]
 pub struct Edge {
     pub source: u8,
     pub target: u8,
