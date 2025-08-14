@@ -14,6 +14,7 @@ export const Player = ({ edges, nodes }: PlayerProps) => {
         defaultEdgeOptions={{ type: "straight" }}
         edges={edges}
         nodes={nodes}
+        proOptions={{ hideAttribution: true }}
       />
     </div>
   )
