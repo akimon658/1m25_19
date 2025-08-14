@@ -8,19 +8,27 @@ import {
 } from "d3-force"
 import type { SelectableNode } from "./nodeData.ts"
 
+type SimulationNode = SelectableNode & SimulationNodeDatum
+
 export const getLayoutedNodes = (
   nodes: SelectableNode[],
   edges: Edge[],
 ): SelectableNode[] => {
-  const simulationNodes: SimulationNodeDatum[] = nodes.map((node) => ({
+  const simulationNodes: SimulationNode[] = nodes.map((
+    node,
+  ) => ({
+    ...node,
     index: Number(node.id),
   }))
   const simulation = forceSimulation(simulationNodes)
     .force(
       "link",
-      forceLink({ ...edges }),
+      // Use structuredClone to avoid mutating the original edges array
+      forceLink<SimulationNode, Edge>(structuredClone(edges)).id((node) =>
+        node.id
+      ).distance(150),
     )
-    .force("charge", forceManyBody().strength(-300))
+    .force("charge", forceManyBody().strength(-500))
     .force("center", forceCenter(400, 200))
     .stop()
 
