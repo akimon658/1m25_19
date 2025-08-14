@@ -19,7 +19,7 @@ export const Play = () => {
     source: edge.source.toString(),
     target: edge.target.toString(),
   }))
-  const nodes = [...Array(graph.num_nodes)].map((_, index) => ({
+  const nodes = Array.from({ length: graph.num_nodes }, (_, index) => ({
     id: index.toString(),
     data: { clickable: true, selected: false },
     position: { x: 0, y: 0 }, // Initial position, will be updated by layout
