@@ -40,7 +40,7 @@ impl GraphService {
 
         // Add additional edges
         let mut possible_edges =
-            Vec::<Edge>::with_capacity((num_nodes * (num_nodes - 1) / 2 - num_edges) as usize);
+            Vec::<Edge>::with_capacity((num_nodes * (num_nodes - 1) / 2 - num_nodes) as usize);
 
         for i in 0..num_nodes {
             for j in (i + 1)..num_nodes {
