@@ -39,10 +39,10 @@ export const getLayoutedNodes = (
       node,
     ) => {
       if (node.x === undefined || node.y === undefined) {
-        throw new Error(`Node position is undefined for node id: ${node.index}`)
+        throw new Error(`Node position is undefined for node id: ${node.id}`)
       }
 
-      return [node.index?.toString(), { x: node.x, y: node.y }]
+      return [node.id, { x: node.x, y: node.y }]
     }),
   )
 
