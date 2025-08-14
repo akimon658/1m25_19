@@ -28,7 +28,7 @@ export const getLayoutedNodes = (
         node.id
       ).distance(150),
     )
-    .force("charge", forceManyBody().strength(-500))
+    .force("charge", forceManyBody().strength(-1000))
     .force("center", forceCenter(400, 200))
     .stop()
 
