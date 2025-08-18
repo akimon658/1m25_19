@@ -2,6 +2,8 @@ import { style } from "@vanilla-extract/css"
 
 export const dialogContentStyle = style({
   backdropFilter: "blur(10px)",
+  backgroundColor: "rgba(255, 255, 255, 0.1)",
+  borderRadius: "12px",
   color: "white",
   left: "50%",
   padding: "24px",
