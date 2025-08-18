@@ -3,6 +3,7 @@ import { commands } from "../../api/bindings.gen.ts"
 import { keyGenerateGraph } from "../../api/mutation_keys.ts"
 import { Player } from "./components/Player.tsx"
 import { getLayoutedNodes } from "./lib/layout.ts"
+import { playPageStyle } from "./play.css.ts"
 
 export const Play = () => {
   const { data: graph } = useQuery({
@@ -26,7 +27,7 @@ export const Play = () => {
   }))
 
   return (
-    <div>
+    <div className={playPageStyle}>
       <Player
         edges={edges}
         nodes={getLayoutedNodes(nodes, edges)}

@@ -6,7 +6,7 @@ import {
   forceSimulation,
   type SimulationNodeDatum,
 } from "d3-force"
-import type { SelectableNode } from "./nodeData.ts"
+import type { SelectableNode } from "./graphType.ts"
 
 type SimulationNode = SelectableNode & SimulationNodeDatum
 

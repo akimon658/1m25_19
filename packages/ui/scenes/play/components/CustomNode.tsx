@@ -1,5 +1,5 @@
 import { type NodeProps } from "@xyflow/react"
-import type { SelectableNode } from "../lib/nodeData.ts"
+import type { SelectableNode } from "../lib/graphType.ts"
 import { CustomHandle } from "./CustomHandle.tsx"
 import { customNodeStyle } from "./customNode.css.ts"
 

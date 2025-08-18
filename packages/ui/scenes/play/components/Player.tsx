@@ -1,20 +1,28 @@
-import { type Edge, ReactFlow, useNodesState } from "@xyflow/react"
+import { ReactFlow, useEdgesState, useNodesState } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 import { useState } from "react"
-import type { SelectableNode } from "../lib/nodeData.ts"
+import type { SelectableEdge, SelectableNode } from "../lib/graphType.ts"
+import { CustomEdge } from "./CustomEdge.tsx"
 import { CustomNode } from "./CustomNode.tsx"
 import { playerWrapperStyle } from "./player.css.ts"
+
+const edgeTypes = {
+  custom: CustomEdge,
+}
 
 const nodeTypes = {
   custom: CustomNode,
 }
 
 type PlayerProps = {
-  edges: Edge[]
+  edges: SelectableEdge[]
   nodes: SelectableNode[]
 }
 
-export const Player = ({ edges, nodes: initialNodes }: PlayerProps) => {
+export const Player = (
+  { edges: initialEdges, nodes: initialNodes }: PlayerProps,
+) => {
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([])
   const onNodeClick = (_: unknown, node: SelectableNode) => {
@@ -63,6 +71,13 @@ export const Player = ({ edges, nodes: initialNodes }: PlayerProps) => {
         )
       }
 
+      setEdges((edges) =>
+        edges.map((edge) =>
+          (edge.source === lastNodeId || edge.target === lastNodeId)
+            ? { ...edge, data: { ...edge.data, selected: false } }
+            : edge
+        )
+      )
       setSelectedNodeIds((prev) => prev.filter((id) => id !== lastNodeId))
 
       return
@@ -87,6 +102,14 @@ export const Player = ({ edges, nodes: initialNodes }: PlayerProps) => {
         }
       }
 
+      setEdges((edges) =>
+        edges.map((edge) => (
+          (edge.source === lastNodeId && edge.target === node.id) ||
+            (edge.source === node.id && edge.target === lastNodeId)
+            ? { ...edge, data: { ...edge.data, selected: true } }
+            : edge
+        ))
+      )
       setNodes((nodes) =>
         nodes.map((n) => ({
           ...n,
@@ -103,10 +126,12 @@ export const Player = ({ edges, nodes: initialNodes }: PlayerProps) => {
   return (
     <div className={playerWrapperStyle}>
       <ReactFlow
-        defaultEdgeOptions={{ type: "straight" }}
+        defaultEdgeOptions={{ type: "custom" }}
         edges={edges}
+        edgeTypes={edgeTypes}
         nodes={nodes.map((node) => ({ ...node, type: "custom" }))}
         nodeTypes={nodeTypes}
+        onEdgesChange={onEdgesChange}
         onNodeClick={onNodeClick}
         onNodesChange={onNodesChange}
         proOptions={{ hideAttribution: true }}
