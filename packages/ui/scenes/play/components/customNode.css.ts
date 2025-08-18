@@ -1,29 +1,44 @@
 import { style, styleVariants } from "@vanilla-extract/css"
 
 const baseStyle = style({
-  border: "1px solid black",
   borderRadius: "50%",
   height: "32px",
   textAlign: "center",
   width: "32px",
 })
 
-const clickableStyle = style({
-  boxShadow: "0 0 12px 2px lightgreen",
+const clickableBaseStyle = style({
+  boxShadow: "0 0 16px 2px lightgreen",
   transition: "box-shadow 0.2s ease",
 })
 
-const selectedStyle = style({
-  backgroundColor: "lightblue",
+const clickableSelectedStyle = style({
+  background: "radial-gradient(circle, white, lightgreen)",
 })
 
-const unselectedStyle = style({
-  backgroundColor: "white",
+const clickableUnselectedStyle = style({
+  backgroundColor: "lightgreen",
+})
+
+const unclickableSelectedStyle = style({
+  background: "radial-gradient(circle, white, lightblue)",
+})
+
+const unclickableUnselectedStyle = style({
+  backgroundColor: "lightgray",
 })
 
 export const customNodeStyle = styleVariants({
-  clickableSelected: [baseStyle, selectedStyle, clickableStyle],
-  clickableUnselected: [baseStyle, unselectedStyle, clickableStyle],
-  unclickableSelected: [baseStyle, selectedStyle],
-  unclickableUnselected: [baseStyle, unselectedStyle],
+  clickableSelected: [
+    baseStyle,
+    clickableBaseStyle,
+    clickableSelectedStyle,
+  ],
+  clickableUnselected: [
+    baseStyle,
+    clickableBaseStyle,
+    clickableUnselectedStyle,
+  ],
+  unclickableSelected: [baseStyle, unclickableSelectedStyle],
+  unclickableUnselected: [baseStyle, unclickableUnselectedStyle],
 })
