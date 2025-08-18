@@ -4,7 +4,8 @@ import { useState } from "react"
 import type { SelectableEdge, SelectableNode } from "../lib/graphType.ts"
 import { CustomEdge } from "./CustomEdge.tsx"
 import { CustomNode } from "./CustomNode.tsx"
-import { playerWrapperStyle } from "./player.css.ts"
+import { playerWrapperStyle, reactFlowWrapperStyle } from "./player.css.ts"
+import { ResetDialog } from "./ResetDialog.tsx"
 
 const edgeTypes = {
   custom: CustomEdge,
@@ -125,16 +126,27 @@ export const Player = (
 
   return (
     <div className={playerWrapperStyle}>
-      <ReactFlow
-        defaultEdgeOptions={{ type: "custom" }}
-        edges={edges}
-        edgeTypes={edgeTypes}
-        nodes={nodes.map((node) => ({ ...node, type: "custom" }))}
-        nodeTypes={nodeTypes}
-        onEdgesChange={onEdgesChange}
-        onNodeClick={onNodeClick}
-        onNodesChange={onNodesChange}
-        proOptions={{ hideAttribution: true }}
+      <div className={reactFlowWrapperStyle}>
+        <ReactFlow
+          defaultEdgeOptions={{ type: "custom" }}
+          edges={edges}
+          edgeTypes={edgeTypes}
+          fitView
+          nodes={nodes.map((node) => ({ ...node, type: "custom" }))}
+          nodeTypes={nodeTypes}
+          onEdgesChange={onEdgesChange}
+          onNodeClick={onNodeClick}
+          onNodesChange={onNodesChange}
+          proOptions={{ hideAttribution: true }}
+        />
+      </div>
+
+      <ResetDialog
+        onAccept={() => {
+          setEdges(initialEdges)
+          setNodes(initialNodes)
+          setSelectedNodeIds([])
+        }}
       />
     </div>
   )
