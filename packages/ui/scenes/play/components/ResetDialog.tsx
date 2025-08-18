@@ -1,11 +1,12 @@
 import { Dialog, VisuallyHidden } from "radix-ui"
+import { Button } from "../../../components/Button.tsx"
 import { dialogContentStyle } from "./resetDialog.css.ts"
 
 export const ResetDialog = () => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <button type="button">やりなおす</button>
+        <Button>やりなおす</Button>
       </Dialog.Trigger>
 
       <Dialog.Portal>
@@ -21,10 +22,10 @@ export const ResetDialog = () => {
           </Dialog.Description>
 
           <Dialog.Close asChild>
-            <button type="button">いいえ</button>
+            <Button>いいえ</Button>
           </Dialog.Close>
           <Dialog.Close asChild>
-            <button type="button">はい</button>
+            <Button variant="accept">はい</Button>
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>
