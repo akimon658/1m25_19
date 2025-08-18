@@ -75,7 +75,7 @@ export const Player = (
         edges.map((edge) => ({
           ...edge,
           data: edge.source === lastNodeId || edge.target === lastNodeId
-            ? { selected: false }
+            ? { ...edge.data, selected: false }
             : edge.data,
         }))
       )
@@ -106,11 +106,10 @@ export const Player = (
       setEdges((edges) =>
         edges.map((edge) => ({
           ...edge,
-          data:
-            (edge.source === lastNodeId && edge.target === node.id) ||
+          data: (edge.source === lastNodeId && edge.target === node.id) ||
               (edge.source === node.id && edge.target === lastNodeId)
-              ? { selected: true }
-              : edge.data,
+            ? { ...edge.data, selected: true }
+            : edge.data,
         }))
       )
       setNodes((nodes) =>
