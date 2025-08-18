@@ -72,12 +72,11 @@ export const Player = (
       }
 
       setEdges((edges) =>
-        edges.map((edge) => ({
-          ...edge,
-          data: edge.source === lastNodeId || edge.target === lastNodeId
-            ? { ...edge.data, selected: false }
-            : edge.data,
-        }))
+        edges.map((edge) =>
+          (edge.source === lastNodeId || edge.target === lastNodeId)
+            ? { ...edge, data: { ...edge.data, selected: false } }
+            : edge
+        )
       )
       setSelectedNodeIds((prev) => prev.filter((id) => id !== lastNodeId))
 
@@ -104,13 +103,12 @@ export const Player = (
       }
 
       setEdges((edges) =>
-        edges.map((edge) => ({
-          ...edge,
-          data: (edge.source === lastNodeId && edge.target === node.id) ||
-              (edge.source === node.id && edge.target === lastNodeId)
-            ? { ...edge.data, selected: true }
-            : edge.data,
-        }))
+        edges.map((edge) => (
+          (edge.source === lastNodeId && edge.target === node.id) ||
+            (edge.source === node.id && edge.target === lastNodeId)
+            ? { ...edge, data: { ...edge.data, selected: true } }
+            : edge
+        ))
       )
       setNodes((nodes) =>
         nodes.map((n) => ({
