@@ -10,3 +10,8 @@ globalStyle("html, body", {
 globalStyle("button", {
   all: "unset",
 })
+
+globalStyle("p", {
+  all: "unset",
+  display: "block",
+})

@@ -10,3 +10,10 @@ export const dialogContentStyle = style({
   top: "50%",
   transform: "translate(-50%, -50%)",
 })
+
+export const dialogControlStyle = style({
+  display: "flex",
+  gap: "12px",
+  justifyContent: "flex-end",
+  paddingTop: "24px",
+})

@@ -1,6 +1,6 @@
 import { Dialog, VisuallyHidden } from "radix-ui"
 import { Button } from "../../../components/Button.tsx"
-import { dialogContentStyle } from "./resetDialog.css.ts"
+import { dialogContentStyle, dialogControlStyle } from "./resetDialog.css.ts"
 
 export const ResetDialog = () => {
   return (
@@ -21,12 +21,15 @@ export const ResetDialog = () => {
             最初からやりなおしますか？
           </Dialog.Description>
 
-          <Dialog.Close asChild>
-            <Button>いいえ</Button>
-          </Dialog.Close>
-          <Dialog.Close asChild>
-            <Button variant="accept">はい</Button>
-          </Dialog.Close>
+          <div className={dialogControlStyle}>
+            <Dialog.Close asChild>
+              <Button>いいえ</Button>
+            </Dialog.Close>
+
+            <Dialog.Close asChild>
+              <Button variant="accept">はい</Button>
+            </Dialog.Close>
+          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
