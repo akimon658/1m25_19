@@ -141,7 +141,13 @@ export const Player = (
         />
       </div>
 
-      <ResetDialog />
+      <ResetDialog
+        onAccept={() => {
+          setEdges(initialEdges)
+          setNodes(initialNodes)
+          setSelectedNodeIds([])
+        }}
+      />
     </div>
   )
 }

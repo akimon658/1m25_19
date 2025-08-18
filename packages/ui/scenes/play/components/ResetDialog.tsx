@@ -2,7 +2,11 @@ import { Dialog, VisuallyHidden } from "radix-ui"
 import { Button } from "../../../components/Button.tsx"
 import { dialogContentStyle, dialogControlStyle } from "./resetDialog.css.ts"
 
-export const ResetDialog = () => {
+type ResetDialogProps = {
+  onAccept: () => void
+}
+
+export const ResetDialog = ({ onAccept }: ResetDialogProps) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -27,7 +31,7 @@ export const ResetDialog = () => {
             </Dialog.Close>
 
             <Dialog.Close asChild>
-              <Button variant="accept">はい</Button>
+              <Button onClick={onAccept} variant="accept">はい</Button>
             </Dialog.Close>
           </div>
         </Dialog.Content>
