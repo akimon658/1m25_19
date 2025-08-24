@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { Play } from "./scenes/play/Play.tsx"
+import { Play } from "./pages/play/Play.tsx"
 
 const queryClient = new QueryClient()
 
