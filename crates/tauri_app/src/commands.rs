@@ -10,3 +10,13 @@ pub async fn generate_graph(
         .await
         .map_err(|e| e.to_string())
 }
+
+#[tauri::command]
+#[specta::specta]
+pub async fn get_graphs(
+    state: tauri::State<'_, crate::AppState>,
+) -> Result<Vec<model::graph::Graph>, String> {
+    let service = &state.graph_service;
+
+    service.get_graphs().await.map_err(|e| e.to_string())
+}
