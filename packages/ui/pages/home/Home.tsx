@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
+import { Link } from "react-router"
 import { commands } from "../../api/bindings.gen.ts"
 import { keyGetGraphs } from "../../api/query_keys.ts"
 
@@ -11,9 +12,9 @@ export const Home = () => {
   return (
     <>
       {data?.map((graph) => (
-        <div key={graph.id}>
-          {JSON.stringify(graph)}
-        </div>
+        <Link key={graph.id} to={`/play/${graph.id}`}>
+          {graph.id}
+        </Link>
       ))}
     </>
   )

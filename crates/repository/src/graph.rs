@@ -5,7 +5,36 @@ pub struct GraphRepository {
     pub pool: sqlx::SqlitePool,
 }
 
+struct DbGraph {
+    id: i64,
+    num_nodes: u8,
+    edges_json: String,
+    best_time_ms: Option<u32>,
+    cycle_found: bool,
+}
+
 impl GraphRepository {
+    pub async fn get_graph(&self, graph_id: i64) -> Result<Graph> {
+        let db_graph = sqlx::query_as!(
+            DbGraph,
+            r#"SELECT id, num_nodes as "num_nodes: u8", edges_json, best_time_ms as "best_time_ms: u32", cycle_found FROM graphs WHERE id = ?"#,
+            graph_id
+        )
+        .fetch_one(&self.pool)
+        .await?;
+
+        let edges: Vec<model::graph::Edge> = serde_json::from_str(&db_graph.edges_json)?;
+        let graph = Graph {
+            id: db_graph.id,
+            num_nodes: db_graph.num_nodes,
+            edges,
+            best_time_ms: db_graph.best_time_ms,
+            cycle_found: db_graph.cycle_found,
+        };
+
+        Ok(graph)
+    }
+
     pub async fn get_graphs(&self) -> Result<Vec<GraphMetadata>> {
         let graphs = sqlx::query_as!(
             GraphMetadata,

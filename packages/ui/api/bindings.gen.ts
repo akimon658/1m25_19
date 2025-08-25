@@ -8,6 +8,9 @@ export const commands = {
 async generateGraph() : Promise<Graph> {
     return await TAURI_INVOKE("generate_graph");
 },
+async getGraph(graphId: number) : Promise<Graph> {
+    return await TAURI_INVOKE("get_graph", { graphId });
+},
 async getGraphs() : Promise<GraphMetadata[]> {
     return await TAURI_INVOKE("get_graphs");
 }
