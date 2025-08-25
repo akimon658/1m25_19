@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { commands } from "../../api/bindings.gen.ts"
-import { keyGenerateGraph } from "../../api/mutation_keys.ts"
+import { keyGenerateGraph } from "../../api/query_keys.ts"
 import { Player } from "./components/Player.tsx"
 import { getLayoutedNodes } from "./lib/layout.ts"
 import { playPageStyle } from "./play.css.ts"
