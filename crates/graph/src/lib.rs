@@ -76,7 +76,7 @@ impl GraphService {
         Ok(graph)
     }
 
-    pub async fn get_graphs(&self) -> Result<Vec<Graph>> {
+    pub async fn get_graphs(&self) -> Result<Vec<model::graph::GraphMetadata>> {
         self.repository.get_graphs().await
     }
 }

@@ -15,7 +15,7 @@ pub async fn generate_graph(
 #[specta::specta]
 pub async fn get_graphs(
     state: tauri::State<'_, crate::AppState>,
-) -> Result<Vec<model::graph::Graph>, String> {
+) -> Result<Vec<model::graph::GraphMetadata>, String> {
     let service = &state.graph_service;
 
     service.get_graphs().await.map_err(|e| e.to_string())

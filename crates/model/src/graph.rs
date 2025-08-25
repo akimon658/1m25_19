@@ -12,3 +12,10 @@ pub struct Graph {
     pub best_time_ms: Option<u32>,
     pub cycle_found: bool,
 }
+
+#[derive(serde::Serialize, specta::Type)]
+pub struct GraphMetadata {
+    pub id: i64,
+    pub best_time_ms: Option<u32>,
+    pub cycle_found: bool,
+}

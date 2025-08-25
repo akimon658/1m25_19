@@ -1,44 +1,18 @@
 use anyhow::Result;
-use model::graph::Graph;
+use model::graph::{Graph, GraphMetadata};
 
 pub struct GraphRepository {
     pub pool: sqlx::SqlitePool,
 }
 
-struct DbGraph {
-    id: i64,
-    num_nodes: i64,
-    edges_json: String,
-    best_time_ms: Option<i64>,
-    cycle_found: bool,
-}
-
 impl GraphRepository {
-    pub async fn get_graphs(&self) -> Result<Vec<Graph>> {
-        let db_graphs = sqlx::query_as!(
-            DbGraph,
-            "SELECT id, num_nodes, edges_json, best_time_ms, cycle_found FROM graphs"
+    pub async fn get_graphs(&self) -> Result<Vec<GraphMetadata>> {
+        let graphs = sqlx::query_as!(
+            GraphMetadata,
+            r#"SELECT id, best_time_ms as "best_time_ms: u32", cycle_found FROM graphs"#
         )
         .fetch_all(&self.pool)
         .await?;
-
-        let graphs = db_graphs
-            .into_iter()
-            .map(|db_graph| -> Result<Graph> {
-                let graph = Graph {
-                    id: db_graph.id,
-                    num_nodes: db_graph.num_nodes as u8,
-                    edges: serde_json::from_str(&db_graph.edges_json)?,
-                    best_time_ms: match db_graph.best_time_ms {
-                        Some(ms) => Some(ms as u32),
-                        _ => None,
-                    },
-                    cycle_found: db_graph.cycle_found,
-                };
-
-                Ok(graph)
-            })
-            .collect::<Result<Vec<Graph>>>()?;
 
         Ok(graphs)
     }
