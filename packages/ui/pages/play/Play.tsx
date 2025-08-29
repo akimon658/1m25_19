@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { useParams } from "react-router"
+import { Link, useParams } from "react-router"
 import { commands } from "../../api/bindings.gen.ts"
 import { keyGetGraph } from "../../api/query_keys.ts"
 import { Player } from "./components/Player.tsx"
@@ -31,6 +31,7 @@ export const Play = () => {
 
   return (
     <div className={playPageStyle}>
+      <Link to="/">ホーム</Link>
       <Player
         edges={edges}
         nodes={getLayoutedNodes(nodes, edges)}
