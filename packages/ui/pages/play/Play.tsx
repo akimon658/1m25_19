@@ -12,23 +12,12 @@ export const Play = () => {
     return null
   }
 
-  const edges = graph.edges.map((edge, index) => ({
-    id: index.toString(),
-    source: edge.source.toString(),
-    target: edge.target.toString(),
-  }))
-  const nodes = Array.from({ length: graph.num_nodes }, (_, index) => ({
-    id: index.toString(),
-    data: { clickable: true, selected: false },
-    position: { x: 0, y: 0 }, // Initial position, will be updated by layout
-  }))
-
   return (
     <div className={playPageStyle}>
       <Link to="/">ホーム</Link>
       <Player
-        edges={edges}
-        nodes={getLayoutedNodes(nodes, edges)}
+        edges={graph.edges}
+        nodes={getLayoutedNodes(graph.nodes, graph.edges)}
       />
     </div>
   )
