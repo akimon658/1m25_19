@@ -1,8 +1,8 @@
 use anyhow::Result;
 use model::graph::{Edge, Graph};
+use rand::Rng;
 use rand::rngs::SmallRng;
 use rand::seq::{IndexedRandom, SliceRandom};
-use rand::{Rng, SeedableRng};
 use repository::{graph::GraphRepository, user::UserRepository};
 
 pub struct GraphService {
@@ -23,13 +23,12 @@ impl GraphService {
         Ok((node_count, edge_count))
     }
 
-    pub async fn generate_graph(&self) -> Result<Graph> {
-        let mut rng = SmallRng::from_rng(&mut rand::rng());
-        let (num_nodes, num_edges) = self.calculate_graph_size(&mut rng).await?;
+    pub async fn generate_graph(&self, rng: &mut SmallRng) -> Result<Graph> {
+        let (num_nodes, num_edges) = self.calculate_graph_size(rng).await?;
         let mut hamiltonian_cycle: Vec<u8> = (0..num_nodes).collect();
 
         // Randomize the answer
-        hamiltonian_cycle.shuffle(&mut rng);
+        hamiltonian_cycle.shuffle(rng);
 
         let mut edges = Vec::<Edge>::with_capacity(num_edges as usize);
         let mut edge_set: std::collections::HashSet<(u8, u8)> = std::collections::HashSet::new();
@@ -59,13 +58,13 @@ impl GraphService {
         }
 
         let sampled_edges = possible_edges
-            .choose_multiple(&mut rng, (num_edges - num_nodes) as usize)
+            .choose_multiple(rng, (num_edges - num_nodes) as usize)
             .cloned()
             .collect::<Vec<Edge>>();
 
         edges.extend(sampled_edges);
         // Shuffle the edges to ensure randomness
-        edges.shuffle(&mut rng);
+        edges.shuffle(rng);
 
         let mut graph = Graph {
             id: 0, // ID will be returned by the repository

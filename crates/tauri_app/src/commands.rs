@@ -1,11 +1,16 @@
 use model::graph::Graph;
+use rand::{SeedableRng, rngs::SmallRng};
 
 #[tauri::command]
 #[specta::specta]
 pub async fn generate_graph(state: tauri::State<'_, crate::AppState>) -> Result<Graph, String> {
     let service = &state.graph_service;
+    let mut rng = SmallRng::from_rng(&mut rand::rng());
 
-    service.generate_graph().await.map_err(|e| e.to_string())
+    service
+        .generate_graph(&mut rng)
+        .await
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
