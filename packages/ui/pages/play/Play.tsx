@@ -1,18 +1,12 @@
-import { useQuery } from "@tanstack/react-query"
 import { Link, useParams } from "react-router"
-import { commands } from "../../api/bindings.gen.ts"
-import { keyGetGraph } from "../../api/query_keys.ts"
 import { Player } from "./components/Player.tsx"
 import { getLayoutedNodes } from "./lib/layout.ts"
 import { playPageStyle } from "./play.css.ts"
+import { useGetGraph } from "./hooks/useGetGraph.ts"
 
 export const Play = () => {
   const { graphId } = useParams<{ graphId: string }>()
-  const { data: graph } = useQuery({
-    queryKey: keyGetGraph(Number(graphId)),
-    queryFn: () => commands.getGraph(Number(graphId)),
-    enabled: Boolean(graphId),
-  })
+  const { graph } = useGetGraph(Number(graphId))
 
   if (!graph) {
     return null
