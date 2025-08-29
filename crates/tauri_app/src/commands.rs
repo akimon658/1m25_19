@@ -5,10 +5,7 @@ use model::graph::Graph;
 pub async fn generate_graph(state: tauri::State<'_, crate::AppState>) -> Result<Graph, String> {
     let service = &state.graph_service;
 
-    service
-        .generate_graph(10, 15)
-        .await
-        .map_err(|e| e.to_string())
+    service.generate_graph().await.map_err(|e| e.to_string())
 }
 
 #[tauri::command]

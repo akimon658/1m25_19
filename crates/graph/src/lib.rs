@@ -1,7 +1,7 @@
-use anyhow::{Result, anyhow};
+use anyhow::Result;
 use model::graph::{Edge, Graph};
-use rand::SeedableRng;
 use rand::seq::{IndexedRandom, SliceRandom};
+use rand::{Rng, SeedableRng};
 use repository::{graph::GraphRepository, user::UserRepository};
 
 pub struct GraphService {
@@ -10,18 +10,21 @@ pub struct GraphService {
 }
 
 impl GraphService {
-    pub async fn generate_graph(&self, num_nodes: u8, num_edges: u8) -> Result<Graph> {
-        if num_edges < num_nodes {
-            return Err(anyhow!(
-                "the number of edges must be at least equal to the number of nodes."
-            ));
-        }
+    pub async fn calculate_graph_size(&self) -> Result<(u8, u8)> {
+        let user = self.user_repository.get_user().await?;
+        const BASE_NODE_COUNT: u8 = 4;
+        const RATING_PER_LEVEL: i64 = 50;
+        let node_count = BASE_NODE_COUNT + (user.rating / RATING_PER_LEVEL) as u8;
+        let min_edges = node_count; // At least a Hamiltonian cycle
+        let max_edges = node_count * (node_count - 1) / 2;
+        let mut rng = rand::rngs::SmallRng::from_rng(&mut rand::rng());
+        let edge_count = rng.random_range((min_edges + max_edges / 2)..=max_edges);
 
-        if num_edges > num_nodes * (num_nodes - 1) / 2 {
-            return Err(anyhow!(
-                "the number of edges must not exceed the maximum possible edges."
-            ));
-        }
+        Ok((node_count, edge_count))
+    }
+
+    pub async fn generate_graph(&self) -> Result<Graph> {
+        let (num_nodes, num_edges) = self.calculate_graph_size().await?;
 
         let mut hamiltonian_cycle: Vec<u8> = (0..num_nodes).collect();
         let mut rng = rand::rngs::SmallRng::from_rng(&mut rand::rng());
