@@ -1,7 +1,8 @@
+mod commands;
+
+use crate::commands::{generate_graph, get_graph, get_graphs};
 #[cfg(debug_assertions)]
 use tauri::Manager;
-
-mod commands;
 
 struct AppState {
     graph_service: graph::GraphService,
@@ -9,7 +10,11 @@ struct AppState {
 
 pub fn run() -> anyhow::Result<()> {
     let specta_builder = tauri_specta::Builder::<tauri::Wry>::new()
-        .commands(tauri_specta::collect_commands![commands::generate_graph,])
+        .commands(tauri_specta::collect_commands![
+            generate_graph,
+            get_graph,
+            get_graphs
+        ])
         .typ::<model::graph::Graph>()
         .error_handling(tauri_specta::ErrorHandlingMode::Throw);
 
@@ -51,7 +56,11 @@ pub fn run() -> anyhow::Result<()> {
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![commands::generate_graph])
+        .invoke_handler(tauri::generate_handler![
+            generate_graph,
+            get_graph,
+            get_graphs
+        ])
         .run(tauri::generate_context!())?;
 
     Ok(())

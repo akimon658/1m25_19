@@ -1,14 +1,17 @@
 import { useQuery } from "@tanstack/react-query"
+import { Link, useParams } from "react-router"
 import { commands } from "../../api/bindings.gen.ts"
-import { keyGenerateGraph } from "../../api/mutation_keys.ts"
+import { keyGetGraph } from "../../api/query_keys.ts"
 import { Player } from "./components/Player.tsx"
 import { getLayoutedNodes } from "./lib/layout.ts"
 import { playPageStyle } from "./play.css.ts"
 
 export const Play = () => {
+  const { graphId } = useParams<{ graphId: string }>()
   const { data: graph } = useQuery({
-    queryKey: keyGenerateGraph,
-    queryFn: commands.generateGraph,
+    queryKey: keyGetGraph(Number(graphId)),
+    queryFn: () => commands.getGraph(Number(graphId)),
+    enabled: Boolean(graphId),
   })
 
   if (!graph) {
@@ -28,6 +31,7 @@ export const Play = () => {
 
   return (
     <div className={playPageStyle}>
+      <Link to="/">ホーム</Link>
       <Player
         edges={edges}
         nodes={getLayoutedNodes(nodes, edges)}

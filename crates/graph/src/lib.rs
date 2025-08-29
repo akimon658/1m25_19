@@ -1,3 +1,4 @@
+use anyhow::{Result, anyhow};
 use model::graph::{Edge, Graph};
 use rand::SeedableRng;
 use rand::seq::{IndexedRandom, SliceRandom};
@@ -7,15 +8,15 @@ pub struct GraphService {
 }
 
 impl GraphService {
-    pub async fn generate_graph(&self, num_nodes: u8, num_edges: u8) -> anyhow::Result<Graph> {
+    pub async fn generate_graph(&self, num_nodes: u8, num_edges: u8) -> Result<Graph> {
         if num_edges < num_nodes {
-            return Err(anyhow::anyhow!(
+            return Err(anyhow!(
                 "the number of edges must be at least equal to the number of nodes."
             ));
         }
 
         if num_edges > num_nodes * (num_nodes - 1) / 2 {
-            return Err(anyhow::anyhow!(
+            return Err(anyhow!(
                 "the number of edges must not exceed the maximum possible edges."
             ));
         }
@@ -66,10 +67,20 @@ impl GraphService {
             id: 0, // ID will be returned by the repository
             num_nodes,
             edges,
+            best_time_ms: None,
+            cycle_found: false,
         };
 
         graph.id = self.repository.save_graph(&graph).await?;
 
         Ok(graph)
+    }
+
+    pub async fn get_graph(&self, graph_id: i64) -> Result<Graph> {
+        self.repository.get_graph(graph_id).await
+    }
+
+    pub async fn get_graphs(&self) -> Result<Vec<model::graph::GraphMetadata>> {
+        self.repository.get_graphs().await
     }
 }

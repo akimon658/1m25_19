@@ -7,6 +7,12 @@
 export const commands = {
 async generateGraph() : Promise<Graph> {
     return await TAURI_INVOKE("generate_graph");
+},
+async getGraph(graphId: number) : Promise<Graph> {
+    return await TAURI_INVOKE("get_graph", { graphId });
+},
+async getGraphs() : Promise<GraphMetadata[]> {
+    return await TAURI_INVOKE("get_graphs");
 }
 }
 
@@ -21,7 +27,8 @@ async generateGraph() : Promise<Graph> {
 /** user-defined types **/
 
 export type Edge = { source: number; target: number }
-export type Graph = { id: number; num_nodes: number; edges: Edge[] }
+export type Graph = { id: number; num_nodes: number; edges: Edge[]; best_time_ms: number | null; cycle_found: boolean }
+export type GraphMetadata = { id: number; best_time_ms: number | null; cycle_found: boolean }
 
 /** tauri-specta globals **/
 
