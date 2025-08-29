@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use anyhow::Result;
 use model::graph::{Edge, Graph};
 use rand::Rng;
@@ -85,5 +87,48 @@ impl GraphService {
 
     pub async fn get_graphs(&self) -> Result<Vec<model::graph::GraphMetadata>> {
         self.graph_repository.get_graphs().await
+    }
+
+    pub async fn verify_answer(&self, graph: &Graph, answer: &[u8]) -> Result<bool> {
+        let visited_nodes = answer.iter().cloned().collect::<HashSet<u8>>();
+
+        if answer.len() != graph.num_nodes as usize
+            || visited_nodes.len() != graph.num_nodes as usize
+        {
+            return Err(anyhow::anyhow!(
+                "Answer length does not match number of nodes"
+            ));
+        }
+
+        let edge_set = graph
+            .edges
+            .iter()
+            .map(|e| (e.source.min(e.target), e.source.max(e.target)))
+            .collect::<HashSet<(u8, u8)>>();
+
+        for i in 0..answer.len() - 1 {
+            let source = answer[i];
+            let target = answer[i + 1];
+
+            if !edge_set.contains(&(source.min(target), source.max(target))) {
+                return Err(anyhow::anyhow!(
+                    "Edge ({}, {}) does not exist",
+                    source,
+                    target
+                ));
+            }
+        }
+
+        let start_node = match answer.first() {
+            Some(&node) => node,
+            None => return Err(anyhow::anyhow!("Answer is empty")),
+        };
+        let end_node = match answer.last() {
+            Some(&node) => node,
+            None => return Err(anyhow::anyhow!("Answer is empty")),
+        };
+        let is_cycle = edge_set.contains(&(start_node.min(end_node), start_node.max(end_node)));
+
+        Ok(is_cycle)
     }
 }
