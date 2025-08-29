@@ -46,7 +46,8 @@ pub fn run() -> anyhow::Result<()> {
 
                 let repository = repository::Repository::new(&sqlite_file_path).await?;
                 let graph_service = graph::GraphService {
-                    repository: repository.graph,
+                    graph_repository: repository.graph,
+                    user_repository: repository.user,
                 };
 
                 app.manage(AppState { graph_service });

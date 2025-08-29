@@ -2,9 +2,11 @@ use anyhow::{Result, anyhow};
 use model::graph::{Edge, Graph};
 use rand::SeedableRng;
 use rand::seq::{IndexedRandom, SliceRandom};
+use repository::{graph::GraphRepository, user::UserRepository};
 
 pub struct GraphService {
-    pub repository: repository::graph::GraphRepository,
+    pub graph_repository: GraphRepository,
+    pub user_repository: UserRepository,
 }
 
 impl GraphService {
@@ -71,16 +73,16 @@ impl GraphService {
             cycle_found: false,
         };
 
-        graph.id = self.repository.save_graph(&graph).await?;
+        graph.id = self.graph_repository.save_graph(&graph).await?;
 
         Ok(graph)
     }
 
     pub async fn get_graph(&self, graph_id: i64) -> Result<Graph> {
-        self.repository.get_graph(graph_id).await
+        self.graph_repository.get_graph(graph_id).await
     }
 
     pub async fn get_graphs(&self) -> Result<Vec<model::graph::GraphMetadata>> {
-        self.repository.get_graphs().await
+        self.graph_repository.get_graphs().await
     }
 }
