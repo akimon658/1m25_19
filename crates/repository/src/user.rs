@@ -18,7 +18,8 @@ impl UserRepository {
         let diff_i64: i64 = diff.into();
 
         sqlx::query!(
-            "UPDATE users SET rating = rating + ? WHERE id = 1",
+            "UPDATE users SET rating = CASE WHEN rating + ? > 0 THEN rating + ? ELSE 0 END WHERE id = 1",
+            diff_i64,
             diff_i64
         )
         .execute(&self.pool)
