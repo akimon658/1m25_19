@@ -101,6 +101,10 @@ impl GraphService {
         let expected_time_ms = graph.num_nodes as i32 * 10 * 1000; // 10 seconds per node
         let mut score_diff = 250 * expected_time_ms / answer.time_ms.max(1) as i32;
 
+        if is_cycle {
+            score_diff = score_diff * 3 / 2;
+        }
+
         if answer.time_ms as i32 > expected_time_ms * 2 && !is_cycle {
             score_diff = -100;
         }
