@@ -99,7 +99,7 @@ impl GraphService {
         };
         graph.cycle_found = is_cycle || graph.cycle_found;
 
-        let score_increase = 250 * (graph.num_nodes as u32) / answer.time_ms.max(1);
+        let score_increase = 250000 * (graph.num_nodes as u32) / answer.time_ms.max(1);
 
         self.graph_repository.update_graph(&graph).await?;
         self.user_repository.update_rating(score_increase).await?;
