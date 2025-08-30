@@ -1,6 +1,7 @@
 import { ReactFlow, useEdgesState, useNodesState } from "@xyflow/react"
 import "@xyflow/react/dist/base.css"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import type { Answer } from "../../../api/bindings.gen.ts"
 import type { SelectableEdge, SelectableNode } from "../lib/graphType.ts"
 import { CustomEdge } from "./CustomEdge.tsx"
 import { CustomNode } from "./CustomNode.tsx"
@@ -18,14 +19,21 @@ const nodeTypes = {
 type PlayerProps = {
   edges: SelectableEdge[]
   nodes: SelectableNode[]
+  onAnswerSubmit: (answer: Answer) => void
 }
 
 export const Player = (
-  { edges: initialEdges, nodes: initialNodes }: PlayerProps,
+  { edges: initialEdges, nodes: initialNodes, onAnswerSubmit }: PlayerProps,
 ) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [selectedNodeIds, setSelectedNodeIds] = useState<string[]>([])
+  const startTimeRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    startTimeRef.current = Date.now()
+  }, [])
+
   const onNodeClick = (_: unknown, node: SelectableNode) => {
     if (node.data.clickable === false) {
       return
@@ -91,6 +99,18 @@ export const Player = (
     const isSelected = selectedNodeIds.includes(node.id)
 
     if (lastNodeId === undefined || (isNeighbor && !isSelected)) {
+      if (selectedNodeIds.length + 1 === initialNodes.length) {
+        const endTime = Date.now()
+        const timeMs = endTime - (startTimeRef.current ?? endTime)
+
+        onAnswerSubmit({
+          time_ms: timeMs,
+          path: [
+            ...selectedNodeIds.map((id) => Number(id)),
+            Number(node.id),
+          ],
+        })
+      }
       const clickableNodeIds = new Set([node.id])
 
       for (const edge of edges) {
