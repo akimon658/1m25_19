@@ -18,11 +18,10 @@ impl GraphService {
         const BASE_NODE_COUNT: u32 = 4;
         const RATING_PER_LEVEL: u32 = 50;
         let node_count = BASE_NODE_COUNT + (user.rating as u32 / RATING_PER_LEVEL);
-        let min_edges = node_count; // At least a Hamiltonian cycle
-        let max_edges = node_count * 3 / 2; // Up to 1.5 times the number of nodes
-        let edge_count = rng.random_range(((min_edges + max_edges) / 2)..=max_edges);
+        let edge_count = rng.random_range((node_count * 3 / 2)..=(node_count * 5 / 2));
+        let max_edges = node_count * (node_count - 1) / 2;
 
-        Ok((node_count, edge_count))
+        Ok((node_count, edge_count.min(max_edges)))
     }
 
     pub async fn generate_graph(&self, rng: &mut SmallRng) -> Result<Graph> {
