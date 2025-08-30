@@ -13,27 +13,27 @@ pub struct GraphService {
 }
 
 impl GraphService {
-    pub async fn calculate_graph_size(&self, rng: &mut SmallRng) -> Result<(u8, u8)> {
+    pub async fn calculate_graph_size(&self, rng: &mut SmallRng) -> Result<(u32, u32)> {
         let user = self.user_repository.get_user().await?;
-        const BASE_NODE_COUNT: u8 = 4;
-        const RATING_PER_LEVEL: i64 = 50;
-        let node_count = BASE_NODE_COUNT + (user.rating / RATING_PER_LEVEL) as u8;
+        const BASE_NODE_COUNT: u32 = 4;
+        const RATING_PER_LEVEL: u32 = 50;
+        let node_count = BASE_NODE_COUNT + (user.rating as u32 / RATING_PER_LEVEL);
         let min_edges = node_count; // At least a Hamiltonian cycle
-        let max_edges = node_count * (node_count - 1) / 2;
-        let edge_count = rng.random_range((min_edges + max_edges / 2)..=max_edges);
+        let max_edges = node_count * 3 / 2; // Up to 1.5 times the number of nodes
+        let edge_count = rng.random_range(((min_edges + max_edges) / 2)..=max_edges);
 
         Ok((node_count, edge_count))
     }
 
     pub async fn generate_graph(&self, rng: &mut SmallRng) -> Result<Graph> {
         let (num_nodes, num_edges) = self.calculate_graph_size(rng).await?;
-        let mut hamiltonian_cycle: Vec<u8> = (0..num_nodes).collect();
+        let mut hamiltonian_cycle: Vec<u32> = (0..num_nodes).collect();
 
         // Randomize the answer
         hamiltonian_cycle.shuffle(rng);
 
         let mut edges = Vec::<Edge>::with_capacity(num_edges as usize);
-        let mut edge_set: std::collections::HashSet<(u8, u8)> = std::collections::HashSet::new();
+        let mut edge_set: std::collections::HashSet<(u32, u32)> = std::collections::HashSet::new();
 
         // Create a Hamiltonian cycle
         for i in 0..num_nodes {
@@ -107,8 +107,8 @@ impl GraphService {
         Ok(graph)
     }
 
-    pub async fn verify_answer(&self, graph: &Graph, path: &[u8]) -> Result<bool> {
-        let visited_nodes = path.iter().cloned().collect::<HashSet<u8>>();
+    pub async fn verify_answer(&self, graph: &Graph, path: &[u32]) -> Result<bool> {
+        let visited_nodes = path.iter().cloned().collect::<HashSet<u32>>();
 
         if path.len() != graph.num_nodes as usize || visited_nodes.len() != graph.num_nodes as usize
         {
@@ -121,7 +121,7 @@ impl GraphService {
             .edges
             .iter()
             .map(|e| (e.source.min(e.target), e.source.max(e.target)))
-            .collect::<HashSet<(u8, u8)>>();
+            .collect::<HashSet<(u32, u32)>>();
 
         for i in 0..path.len() - 1 {
             let source = path[i];

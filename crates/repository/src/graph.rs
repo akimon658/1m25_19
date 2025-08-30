@@ -7,7 +7,7 @@ pub struct GraphRepository {
 
 struct DbGraph {
     id: i64,
-    num_nodes: u8,
+    num_nodes: u32,
     edges_json: String,
     best_time_ms: Option<u32>,
     cycle_found: bool,
@@ -17,7 +17,7 @@ impl GraphRepository {
     pub async fn get_graph(&self, graph_id: i64) -> Result<Graph> {
         let db_graph = sqlx::query_as!(
             DbGraph,
-            r#"SELECT id, num_nodes as "num_nodes: u8", edges_json, best_time_ms as "best_time_ms: u32", cycle_found FROM graphs WHERE id = ?"#,
+            r#"SELECT id, num_nodes as "num_nodes: u32", edges_json, best_time_ms as "best_time_ms: u32", cycle_found FROM graphs WHERE id = ?"#,
             graph_id
         )
         .fetch_one(&self.pool)
