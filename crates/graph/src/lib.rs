@@ -101,6 +101,7 @@ impl GraphService {
 
         let score_increase = 250 * (graph.num_nodes as u32) / answer.time_ms.max(1);
 
+        self.graph_repository.update_graph(&graph).await?;
         self.user_repository.update_rating(score_increase).await?;
 
         Ok(graph)
