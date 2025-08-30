@@ -1,6 +1,6 @@
 mod commands;
 
-use crate::commands::{generate_graph, get_graph, get_graphs};
+use crate::commands::{generate_graph, get_graph, get_graphs, submit_answer};
 #[cfg(debug_assertions)]
 use tauri::Manager;
 
@@ -13,7 +13,8 @@ pub fn run() -> anyhow::Result<()> {
         .commands(tauri_specta::collect_commands![
             generate_graph,
             get_graph,
-            get_graphs
+            get_graphs,
+            submit_answer,
         ])
         .typ::<model::graph::Graph>()
         .error_handling(tauri_specta::ErrorHandlingMode::Throw);
@@ -60,7 +61,8 @@ pub fn run() -> anyhow::Result<()> {
         .invoke_handler(tauri::generate_handler![
             generate_graph,
             get_graph,
-            get_graphs
+            get_graphs,
+            submit_answer,
         ])
         .run(tauri::generate_context!())?;
 

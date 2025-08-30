@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use anyhow::Result;
-use model::graph::{Edge, Graph};
+use model::graph::{Answer, Edge, Graph};
 use rand::Rng;
 use rand::rngs::SmallRng;
 use rand::seq::{IndexedRandom, SliceRandom};
@@ -76,7 +76,7 @@ impl GraphService {
             cycle_found: false,
         };
 
-        graph.id = self.graph_repository.save_graph(&graph).await?;
+        graph.id = self.graph_repository.create_graph(&graph).await?;
 
         Ok(graph)
     }
@@ -89,11 +89,27 @@ impl GraphService {
         self.graph_repository.get_graphs().await
     }
 
-    pub async fn verify_answer(&self, graph: &Graph, answer: &[u8]) -> Result<bool> {
-        let visited_nodes = answer.iter().cloned().collect::<HashSet<u8>>();
+    pub async fn handle_submission(&self, graph_id: i64, answer: &Answer) -> Result<Graph> {
+        let mut graph = self.get_graph(graph_id).await?;
+        let is_cycle = self.verify_answer(&graph, &answer.path).await?;
 
-        if answer.len() != graph.num_nodes as usize
-            || visited_nodes.len() != graph.num_nodes as usize
+        graph.best_time_ms = match graph.best_time_ms {
+            Some(best_time) => Some(best_time.min(answer.time_ms)),
+            None => Some(answer.time_ms),
+        };
+        graph.cycle_found = is_cycle || graph.cycle_found;
+
+        let score_increase = 250 * (graph.num_nodes as u32) / answer.time_ms.max(1);
+
+        self.user_repository.update_rating(score_increase).await?;
+
+        Ok(graph)
+    }
+
+    pub async fn verify_answer(&self, graph: &Graph, path: &[u8]) -> Result<bool> {
+        let visited_nodes = path.iter().cloned().collect::<HashSet<u8>>();
+
+        if path.len() != graph.num_nodes as usize || visited_nodes.len() != graph.num_nodes as usize
         {
             return Err(anyhow::anyhow!(
                 "Answer length does not match number of nodes"
@@ -106,9 +122,9 @@ impl GraphService {
             .map(|e| (e.source.min(e.target), e.source.max(e.target)))
             .collect::<HashSet<(u8, u8)>>();
 
-        for i in 0..answer.len() - 1 {
-            let source = answer[i];
-            let target = answer[i + 1];
+        for i in 0..path.len() - 1 {
+            let source = path[i];
+            let target = path[i + 1];
 
             if !edge_set.contains(&(source.min(target), source.max(target))) {
                 return Err(anyhow::anyhow!(
@@ -119,11 +135,11 @@ impl GraphService {
             }
         }
 
-        let start_node = match answer.first() {
+        let start_node = match path.first() {
             Some(&node) => node,
             None => return Err(anyhow::anyhow!("Answer is empty")),
         };
-        let end_node = match answer.last() {
+        let end_node = match path.last() {
             Some(&node) => node,
             None => return Err(anyhow::anyhow!("Answer is empty")),
         };

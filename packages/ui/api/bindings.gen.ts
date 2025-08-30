@@ -13,6 +13,9 @@ async getGraph(graphId: number) : Promise<Graph> {
 },
 async getGraphs() : Promise<GraphMetadata[]> {
     return await TAURI_INVOKE("get_graphs");
+},
+async submitAnswer(graphId: number, answer: Answer) : Promise<Graph> {
+    return await TAURI_INVOKE("submit_answer", { graphId, answer });
 }
 }
 
@@ -26,6 +29,7 @@ async getGraphs() : Promise<GraphMetadata[]> {
 
 /** user-defined types **/
 
+export type Answer = { path: number[]; time_ms: number }
 export type Edge = { source: number; target: number }
 export type Graph = { id: number; num_nodes: number; edges: Edge[]; best_time_ms: number | null; cycle_found: boolean }
 export type GraphMetadata = { id: number; best_time_ms: number | null; cycle_found: boolean }

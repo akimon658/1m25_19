@@ -13,4 +13,14 @@ impl UserRepository {
 
         Ok(user)
     }
+
+    pub async fn update_rating<T: Into<i64>>(&self, diff: T) -> Result<()> {
+        let diff = diff.into();
+
+        sqlx::query!("UPDATE users SET rating = rating + ? WHERE id = 1", diff)
+            .execute(&self.pool)
+            .await?;
+
+        Ok(())
+    }
 }

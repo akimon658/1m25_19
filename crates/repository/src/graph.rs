@@ -46,7 +46,7 @@ impl GraphRepository {
         Ok(graphs)
     }
 
-    pub async fn save_graph(&self, graph: &Graph) -> Result<i64> {
+    pub async fn create_graph(&self, graph: &Graph) -> Result<i64> {
         let edges_json = serde_json::to_string(&graph.edges)?;
         let result = sqlx::query!(
             "INSERT INTO graphs (num_nodes, edges_json) VALUES (?, ?)",
@@ -57,5 +57,18 @@ impl GraphRepository {
         .await?;
 
         Ok(result.last_insert_rowid())
+    }
+
+    pub async fn update_graph(&self, graph: &Graph) -> Result<()> {
+        sqlx::query!(
+            "UPDATE graphs SET best_time_ms = ?, cycle_found = ? WHERE id = ?",
+            graph.best_time_ms,
+            graph.cycle_found,
+            graph.id,
+        )
+        .execute(&self.pool)
+        .await?;
+
+        Ok(())
     }
 }
