@@ -101,7 +101,12 @@ export const Player = (
     if (lastNodeId === undefined || (isNeighbor && !isSelected)) {
       if (selectedNodeIds.length + 1 === initialNodes.length) {
         const endTime = Date.now()
-        const timeMs = endTime - (startTimeRef.current ?? endTime)
+
+        if (startTimeRef.current === null) {
+          throw new Error("startTimeRef is null")
+        }
+
+        const timeMs = endTime - startTimeRef.current
 
         onAnswerSubmit({
           time_ms: timeMs,
