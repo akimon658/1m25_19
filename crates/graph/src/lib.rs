@@ -98,8 +98,11 @@ impl GraphService {
         };
         graph.cycle_found = is_cycle || graph.cycle_found;
 
-        let expected_time_ms = graph.num_nodes as i32 * 10 * 1000; // 10 seconds per node
-        let mut score_diff = 250 * expected_time_ms / answer.time_ms.max(1) as i32;
+        const SECONDS_PER_NODE: i32 = 10;
+        const SECOND: i32 = 1000;
+        let expected_time_ms = graph.num_nodes as i32 * SECONDS_PER_NODE * SECOND;
+        const BASE_SCORE: i32 = 250;
+        let mut score_diff = BASE_SCORE * expected_time_ms / answer.time_ms.max(1) as i32;
 
         if is_cycle {
             score_diff = score_diff * 3 / 2;
