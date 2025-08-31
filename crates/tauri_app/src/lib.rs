@@ -1,6 +1,6 @@
 mod commands;
 
-use crate::commands::{generate_graph, get_graph, get_graphs};
+use crate::commands::{generate_graph, get_graph, get_graphs, submit_answer};
 #[cfg(debug_assertions)]
 use tauri::Manager;
 
@@ -13,7 +13,8 @@ pub fn run() -> anyhow::Result<()> {
         .commands(tauri_specta::collect_commands![
             generate_graph,
             get_graph,
-            get_graphs
+            get_graphs,
+            submit_answer,
         ])
         .typ::<model::graph::Graph>()
         .error_handling(tauri_specta::ErrorHandlingMode::Throw);
@@ -46,7 +47,8 @@ pub fn run() -> anyhow::Result<()> {
 
                 let repository = repository::Repository::new(&sqlite_file_path).await?;
                 let graph_service = graph::GraphService {
-                    repository: repository.graph,
+                    graph_repository: repository.graph,
+                    user_repository: repository.user,
                 };
 
                 app.manage(AppState { graph_service });
@@ -59,7 +61,8 @@ pub fn run() -> anyhow::Result<()> {
         .invoke_handler(tauri::generate_handler![
             generate_graph,
             get_graph,
-            get_graphs
+            get_graphs,
+            submit_answer,
         ])
         .run(tauri::generate_context!())?;
 

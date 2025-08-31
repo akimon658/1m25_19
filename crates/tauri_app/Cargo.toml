@@ -14,6 +14,7 @@ tauri-build = { workspace = true }
 anyhow = { workspace = true }
 graph = { path = "../graph" }
 model = { path = "../model" }
+rand = { workspace = true, features = ["small_rng"] }
 repository = { path = "../repository" }
 specta = { workspace = true, features = ["function"] }
 specta-typescript = { workspace = true }

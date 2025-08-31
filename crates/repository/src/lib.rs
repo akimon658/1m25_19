@@ -1,9 +1,11 @@
 use anyhow::Context;
 
 pub mod graph;
+pub mod user;
 
 pub struct Repository {
     pub graph: graph::GraphRepository,
+    pub user: user::UserRepository,
 }
 
 impl Repository {
@@ -19,7 +21,8 @@ impl Repository {
         sqlx::migrate!().run(&pool).await?;
 
         Ok(Self {
-            graph: graph::GraphRepository { pool },
+            graph: graph::GraphRepository { pool: pool.clone() },
+            user: user::UserRepository { pool },
         })
     }
 }

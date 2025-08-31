@@ -1,12 +1,14 @@
 import { Link, useParams } from "react-router"
 import { Player } from "./components/Player.tsx"
+import { useGetGraph } from "./hooks/useGetGraph.ts"
+import { useSubmitAnswer } from "./hooks/useSubmitAnswer.ts"
 import { getLayoutedNodes } from "./lib/layout.ts"
 import { playPageStyle } from "./play.css.ts"
-import { useGetGraph } from "./hooks/useGetGraph.ts"
 
 export const Play = () => {
   const { graphId } = useParams<{ graphId: string }>()
   const { graph } = useGetGraph(Number(graphId))
+  const { submitAnswer } = useSubmitAnswer(Number(graphId))
 
   if (!graph) {
     return null
@@ -18,6 +20,7 @@ export const Play = () => {
       <Player
         edges={graph.edges}
         nodes={getLayoutedNodes(graph.nodes, graph.edges)}
+        onAnswerSubmit={submitAnswer}
       />
     </div>
   )
