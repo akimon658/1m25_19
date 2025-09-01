@@ -3,7 +3,6 @@ import { style, styleVariants } from "@vanilla-extract/css"
 const baseStyle = style({
   borderRadius: "50%",
   height: "32px",
-  textAlign: "center",
   width: "32px",
 })
 
