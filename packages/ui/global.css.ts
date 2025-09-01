@@ -1,6 +1,7 @@
 import { globalStyle } from "@vanilla-extract/css"
 
 globalStyle("html, body", {
+  backgroundColor: "#19132F",
   color: "white",
   fontFamily: "Kiwi Maru, sans-serif",
   margin: 0,
