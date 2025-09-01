@@ -5,7 +5,9 @@ const baseStyle = style({
   border: "none",
   borderRadius: "0.5rem",
   cursor: "pointer",
+  color: "white",
   padding: "0.5rem 1rem",
+  textDecoration: "none",
   transition: "background-color 0.2s ease",
 
   ":hover": {

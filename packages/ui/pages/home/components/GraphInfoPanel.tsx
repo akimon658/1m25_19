@@ -1,4 +1,5 @@
 import { Link } from "react-router"
+import { Button } from "../../../components/Button.tsx"
 import { GraphRenderer } from "../../../components/GraphRenderer.tsx"
 import { useGetGraph } from "../../../hooks/useGetGraph.ts"
 import { formatDurationMs } from "../lib/duration.ts"
@@ -27,7 +28,10 @@ export const GraphInfoPanel = ({ graphId }: GraphInfoPanelProps) => {
           ベストタイム：{formatDurationMs(graph.best_time_ms)}
         </div>
       )}
-      <Link to={`/play/${graphId}`}>挑戦</Link>
+
+      <Button asChild variant="primary">
+        <Link to={`/play/${graphId}`}>挑戦</Link>
+      </Button>
     </div>
   )
 }
