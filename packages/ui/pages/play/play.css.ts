@@ -2,7 +2,6 @@ import { style } from "@vanilla-extract/css"
 
 export const playPageStyle = style({
   display: "flex",
-  flexDirection: "column",
   height: "100dvh",
   width: "100dvw",
 })

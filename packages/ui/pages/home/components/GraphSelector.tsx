@@ -1,5 +1,8 @@
 import type { GraphMetadata } from "../../../api/bindings.gen.ts"
-import { graphSelectorItemStyle } from "./graphSelector.css.ts"
+import {
+  graphSelectorContainerStyle,
+  graphSelectorItemStyle,
+} from "./graphSelector.css.ts"
 
 type GraphSelectorProps = {
   graphs: ReadonlyArray<GraphMetadata>
@@ -12,16 +15,18 @@ export const GraphSelector = (
 ) => {
   const graphIds = [undefined, ...graphs.map((graph) => graph.id).reverse()]
 
-  return graphIds.map((graphId) => (
-    <button
-      className={graphSelectorItemStyle[
-        graphId === selectedGraphId
-          ? "selected"
-          : "default"
-      ]}
-      key={graphId ?? "new"}
-      onClick={() => onGraphSelect(graphId)}
-      type="button"
-    />
-  ))
+  return (
+    <div className={graphSelectorContainerStyle}>
+      {graphIds.map((graphId) => (
+        <button
+          className={graphSelectorItemStyle[
+            graphId === selectedGraphId ? "selected" : "default"
+          ]}
+          key={graphId ?? "new"}
+          onClick={() => onGraphSelect(graphId)}
+          type="button"
+        />
+      ))}
+    </div>
+  )
 }
