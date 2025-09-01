@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
-import { commands } from "../../../api/bindings.gen.ts"
-import { keyGetGraph } from "../../../api/query_keys.ts"
+import { commands } from "../api/bindings.gen.ts"
+import { keyGetGraph } from "../api/queryKey.ts"
 
 export const useGetGraph = (graphId: number) => {
   const { data: graph, ...rest } = useQuery({

@@ -4,7 +4,7 @@ import {
   type Graph,
   type GraphMetadata,
 } from "../../../api/bindings.gen.ts"
-import { keyGetGraph, keyGetGraphs } from "../../../api/query_keys.ts"
+import { keyGetGraph, keyGetGraphs } from "../../../api/queryKey.ts"
 
 export const useGenerateGraph = () => {
   const queryClient = useQueryClient()
