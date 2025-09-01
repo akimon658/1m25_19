@@ -14,10 +14,10 @@ const baseStyle = style({
 })
 
 const acceptStyle = style({
-  backgroundColor: "rgba(173, 216, 230, 0.2)",
+  backgroundColor: "rgba(0, 191, 255, 0.8)",
 
   ":hover": {
-    backgroundColor: "rgba(173, 216, 230, 0.4)",
+    backgroundColor: "rgb(0, 191, 255)",
   },
 })
 
