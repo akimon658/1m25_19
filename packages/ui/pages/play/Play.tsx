@@ -21,7 +21,7 @@ export const Play = () => {
         <Player
           edges={graph.edges}
           nodes={graph.nodes}
-          onAnswerSubmit={submitAnswer}
+          onClear={submitAnswer}
         />
       </div>
     </div>

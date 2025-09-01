@@ -9,11 +9,11 @@ import { ResetDialog } from "./ResetDialog.tsx"
 type PlayerProps = {
   edges: SelectableEdge[]
   nodes: SelectableNode[]
-  onAnswerSubmit: (answer: Answer) => void
+  onClear: (answer: Answer) => void
 }
 
 export const Player = (
-  { edges: initialEdges, nodes: initialNodes, onAnswerSubmit }: PlayerProps,
+  { edges: initialEdges, nodes: initialNodes, onClear }: PlayerProps,
 ) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
@@ -98,7 +98,7 @@ export const Player = (
 
         const timeMs = endTime - startTimeRef.current
 
-        onAnswerSubmit({
+        onClear({
           time_ms: timeMs,
           path: [
             ...selectedNodeIds.map((id) => Number(id)),
