@@ -1,5 +1,5 @@
-import { Link } from "react-router"
 import type { GraphMetadata } from "../../../api/bindings.gen.ts"
+import { Button } from "../../../components/Button.tsx"
 
 type GraphSelectorProps = {
   graphs: ReadonlyArray<GraphMetadata>
@@ -13,8 +13,11 @@ export const GraphSelector = (
   const graphIds = [undefined, ...graphs.map((graph) => graph.id).reverse()]
 
   return graphIds.map((graphId) => (
-    <Link key={graphId ?? "new"} to={`/play/${graphId}`}>
+    <Button
+      key={graphId ?? "new"}
+      onClick={() => onGraphSelect(graphId)}
+    >
       {graphId}
-    </Link>
+    </Button>
   ))
 }
