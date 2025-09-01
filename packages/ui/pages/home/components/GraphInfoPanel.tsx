@@ -5,6 +5,7 @@ import { formatDurationMs } from "../lib/duration.ts"
 import {
   graphInfoPanelStyle,
   graphRendererWrapperStyle,
+  unknownGraphPreviewStyle,
 } from "./graphInfoPanel.css.ts"
 
 type GraphInfoPanelProps = {
@@ -16,11 +17,11 @@ export const GraphInfoPanel = ({ graphId }: GraphInfoPanelProps) => {
 
   return (
     <div className={graphInfoPanelStyle}>
-      {graph && (
-        <div className={graphRendererWrapperStyle}>
-          <GraphRenderer edges={graph.edges} nodes={graph.nodes} />
-        </div>
-      )}
+      <div className={graphRendererWrapperStyle}>
+        {graph
+          ? <GraphRenderer edges={graph.edges} nodes={graph.nodes} />
+          : <div className={unknownGraphPreviewStyle}>?</div>}
+      </div>
       {graph?.best_time_ms && (
         <div>
           ベストタイム：{formatDurationMs(graph.best_time_ms)}

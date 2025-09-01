@@ -7,3 +7,8 @@ export const graphInfoPanelStyle = style({
 export const graphRendererWrapperStyle = style({
   height: "80%",
 })
+
+export const unknownGraphPreviewStyle = style({
+  fontSize: "10rem",
+  textAlign: "center",
+})
