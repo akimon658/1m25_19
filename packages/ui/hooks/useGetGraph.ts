@@ -2,11 +2,11 @@ import { useQuery } from "@tanstack/react-query"
 import { commands } from "../api/bindings.gen.ts"
 import { keyGetGraph } from "../api/queryKey.ts"
 
-export const useGetGraph = (graphId: number) => {
+export const useGetGraph = (graphId?: number) => {
   const { data: graph, ...rest } = useQuery({
-    queryKey: keyGetGraph(graphId),
-    queryFn: () => commands.getGraph(graphId),
-    enabled: !Number.isNaN(graphId),
+    queryKey: keyGetGraph(graphId!),
+    queryFn: () => commands.getGraph(graphId!),
+    enabled: graphId !== undefined,
     select: (data) => ({
       ...data,
       edges: data.edges.map((edge, index) => ({
