@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css"
 
-export const playerWrapperStyle = style({
-  height: "100dvh",
-  width: "100dvw",
+export const reactFlowWrapperStyle = style({
+  height: "100%",
+  width: "100%",
 })

@@ -5,7 +5,7 @@ import type { Answer } from "../../../api/bindings.gen.ts"
 import type { SelectableEdge, SelectableNode } from "../lib/graphType.ts"
 import { CustomEdge } from "./CustomEdge.tsx"
 import { CustomNode } from "./CustomNode.tsx"
-import { playerWrapperStyle } from "./player.css.ts"
+import { reactFlowWrapperStyle } from "./player.css.ts"
 import { ResetDialog } from "./ResetDialog.tsx"
 
 const edgeTypes = {
@@ -150,7 +150,7 @@ export const Player = (
   }
 
   return (
-    <div className={playerWrapperStyle}>
+    <div className={reactFlowWrapperStyle}>
       <ReactFlow
         defaultEdgeOptions={{ type: "custom" }}
         edges={edges}

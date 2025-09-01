@@ -3,7 +3,7 @@ import { Player } from "./components/Player.tsx"
 import { useGetGraph } from "./hooks/useGetGraph.ts"
 import { useSubmitAnswer } from "./hooks/useSubmitAnswer.ts"
 import { getLayoutedNodes } from "./lib/layout.ts"
-import { playPageStyle } from "./play.css.ts"
+import { playerWrapperStyle, playPageStyle } from "./play.css.ts"
 
 export const Play = () => {
   const { graphId } = useParams<{ graphId: string }>()
@@ -17,11 +17,14 @@ export const Play = () => {
   return (
     <div className={playPageStyle}>
       <Link to="/">ホーム</Link>
-      <Player
-        edges={graph.edges}
-        nodes={getLayoutedNodes(graph.nodes, graph.edges)}
-        onAnswerSubmit={submitAnswer}
-      />
+
+      <div className={playerWrapperStyle}>
+        <Player
+          edges={graph.edges}
+          nodes={getLayoutedNodes(graph.nodes, graph.edges)}
+          onAnswerSubmit={submitAnswer}
+        />
+      </div>
     </div>
   )
 }
