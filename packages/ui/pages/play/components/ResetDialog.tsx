@@ -31,7 +31,7 @@ export const ResetDialog = ({ onAccept }: ResetDialogProps) => {
             </Dialog.Close>
 
             <Dialog.Close asChild>
-              <Button onClick={onAccept} variant="accept">はい</Button>
+              <Button onClick={onAccept} variant="primary">はい</Button>
             </Dialog.Close>
           </div>
         </Dialog.Content>

@@ -13,7 +13,7 @@ const baseStyle = style({
   },
 })
 
-const acceptStyle = style({
+const primaryStyle = style({
   backgroundColor: "rgba(0, 191, 255, 0.8)",
 
   ":hover": {
@@ -23,5 +23,5 @@ const acceptStyle = style({
 
 export const buttonStyle = styleVariants({
   default: [baseStyle],
-  accept: [baseStyle, acceptStyle],
+  primary: [baseStyle, primaryStyle],
 })
