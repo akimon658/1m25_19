@@ -1,20 +1,11 @@
-import { Panel, ReactFlow, useEdgesState, useNodesState } from "@xyflow/react"
+import { Panel, useEdgesState, useNodesState } from "@xyflow/react"
 import "@xyflow/react/dist/base.css"
 import { useEffect, useRef, useState } from "react"
 import type { Answer } from "../../../api/bindings.gen.ts"
-import type { SelectableEdge, SelectableNode } from "../lib/graphType.ts"
-import { CustomEdge } from "./CustomEdge.tsx"
-import { CustomNode } from "./CustomNode.tsx"
+import { GraphRenderer } from "../../../components/GraphRenderer.tsx"
+import type { SelectableEdge, SelectableNode } from "../../../model/graph.ts"
 import { reactFlowWrapperStyle } from "./player.css.ts"
 import { ResetDialog } from "./ResetDialog.tsx"
-
-const edgeTypes = {
-  custom: CustomEdge,
-}
-
-const nodeTypes = {
-  custom: CustomNode,
-}
 
 type PlayerProps = {
   edges: SelectableEdge[]
@@ -151,17 +142,12 @@ export const Player = (
 
   return (
     <div className={reactFlowWrapperStyle}>
-      <ReactFlow
-        defaultEdgeOptions={{ type: "custom" }}
+      <GraphRenderer
         edges={edges}
-        edgeTypes={edgeTypes}
-        fitView
         nodes={nodes.map((node) => ({ ...node, type: "custom" }))}
-        nodeTypes={nodeTypes}
         onEdgesChange={onEdgesChange}
         onNodeClick={onNodeClick}
         onNodesChange={onNodesChange}
-        proOptions={{ hideAttribution: true }}
       >
         <Panel position="bottom-right">
           <ResetDialog
@@ -172,7 +158,7 @@ export const Player = (
             }}
           />
         </Panel>
-      </ReactFlow>
+      </GraphRenderer>
     </div>
   )
 }

@@ -2,7 +2,6 @@ import { Link, useParams } from "react-router"
 import { useGetGraph } from "../../hooks/useGetGraph.ts"
 import { Player } from "./components/Player.tsx"
 import { useSubmitAnswer } from "./hooks/useSubmitAnswer.ts"
-import { getLayoutedNodes } from "./lib/layout.ts"
 import { playerWrapperStyle, playPageStyle } from "./play.css.ts"
 
 export const Play = () => {
@@ -21,7 +20,7 @@ export const Play = () => {
       <div className={playerWrapperStyle}>
         <Player
           edges={graph.edges}
-          nodes={getLayoutedNodes(graph.nodes, graph.edges)}
+          nodes={graph.nodes}
           onAnswerSubmit={submitAnswer}
         />
       </div>
