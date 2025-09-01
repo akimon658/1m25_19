@@ -1,5 +1,5 @@
-import { Link } from "react-router"
 import { Button } from "../../components/Button.tsx"
+import { GraphSelector } from "./components/GraphSelector.tsx"
 import { useGenerateGraph } from "./hooks/useGenerateGraph.ts"
 import { useGraphList } from "./hooks/useGraphList.ts"
 
@@ -7,13 +7,13 @@ export const Home = () => {
   const { graphs } = useGraphList()
   const { generate_graph } = useGenerateGraph()
 
+  if (!graphs) {
+    return null
+  }
+
   return (
     <>
-      {graphs?.map((graph) => (
-        <Link key={graph.id} to={`/play/${graph.id}`}>
-          {graph.id}
-        </Link>
-      ))}
+      <GraphSelector graphs={graphs} onGraphSelect={() => {}} />
       <Button onClick={() => generate_graph()}>生成</Button>
     </>
   )
