@@ -1,5 +1,4 @@
 import { Panel, useEdgesState, useNodesState } from "@xyflow/react"
-import "@xyflow/react/dist/base.css"
 import { useEffect, useRef, useState } from "react"
 import type { Answer } from "../../../api/bindings.gen.ts"
 import { GraphRenderer } from "../../../components/GraphRenderer.tsx"
