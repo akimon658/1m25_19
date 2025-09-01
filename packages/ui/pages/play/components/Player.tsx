@@ -143,7 +143,7 @@ export const Player = (
     <div className={reactFlowWrapperStyle}>
       <GraphRenderer
         edges={edges}
-        nodes={nodes.map((node) => ({ ...node, type: "custom" }))}
+        nodes={nodes}
         onEdgesChange={onEdgesChange}
         onNodeClick={onNodeClick}
         onNodesChange={onNodesChange}
