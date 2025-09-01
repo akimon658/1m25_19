@@ -8,7 +8,7 @@ import { keyGetGraph, keyGetGraphs } from "../../../api/queryKey.ts"
 
 export const useGenerateGraph = () => {
   const queryClient = useQueryClient()
-  const { mutate: generate_graph, ...rest } = useMutation({
+  const { mutateAsync: generate_graph, ...rest } = useMutation({
     mutationFn: commands.generateGraph,
     onSuccess: (data) => {
       queryClient.setQueryData<Graph>(keyGetGraph(data.id), data)
