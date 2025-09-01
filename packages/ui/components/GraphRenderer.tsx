@@ -63,7 +63,12 @@ const CustomNode = (
 
 type GraphRendererProps = Omit<
   ReactFlowProps<SelectableNode, SelectableEdge>,
-  "defaultEdgeOptions" | "edgeTypes" | "fitView" | "nodeTypes" | "proOptions"
+  | "defaultEdgeOptions"
+  | "edgeTypes"
+  | "elementsSelectable"
+  | "fitView"
+  | "nodeTypes"
+  | "proOptions"
 >
 
 /**
@@ -74,6 +79,7 @@ export const GraphRenderer = ({ nodes, ...props }: GraphRendererProps) => {
     <ReactFlow
       defaultEdgeOptions={{ type: "custom" }}
       edgeTypes={{ custom: CustomEdge }}
+      elementsSelectable={false} // Disable ReactFlow's default element selection
       fitView
       nodes={nodes && props.edges &&
         getLayoutedNodes(nodes, props.edges).map((node) => ({
