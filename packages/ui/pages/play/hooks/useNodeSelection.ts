@@ -94,13 +94,34 @@ export const useNodeSelection = (
         }
 
         const timeMs = endTime - startTimeRef.current
+        const path = [
+          ...selectedNodeIds.map((id) => Number(id)),
+          Number(node.id),
+        ]
+
+        // 閉路チェック: 始点と終点を結ぶ辺が存在するか
+        const startNodeId = path.at(0)?.toString()
+        const endNodeId = path.at(-1)?.toString()
+        const isCycle = edges.some((edge) =>
+          (edge.source === startNodeId && edge.target === endNodeId) ||
+          (edge.source === endNodeId && edge.target === startNodeId)
+        )
+
+        // 閉路の場合、該当辺をselectedにする
+        if (isCycle) {
+          setEdges((edges) =>
+            edges.map((edge) =>
+              (edge.source === startNodeId && edge.target === endNodeId) ||
+                (edge.source === endNodeId && edge.target === startNodeId)
+                ? { ...edge, data: { ...edge.data, selected: true } }
+                : edge
+            )
+          )
+        }
 
         onClear({
           time_ms: timeMs,
-          path: [
-            ...selectedNodeIds.map((id) => Number(id)),
-            Number(node.id),
-          ],
+          path,
         })
       }
       const clickableNodeIds = new Set([node.id])
