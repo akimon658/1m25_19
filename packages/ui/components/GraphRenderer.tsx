@@ -67,7 +67,9 @@ type GraphRendererProps = Omit<
   | "edgeTypes"
   | "elementsSelectable"
   | "fitView"
+  | "nodesDraggable"
   | "nodeTypes"
+  | "panOnDrag"
   | "proOptions"
 >
 
@@ -86,7 +88,9 @@ export const GraphRenderer = ({ nodes, ...props }: GraphRendererProps) => {
           ...node,
           type: "custom",
         }))}
+      nodesDraggable={false}
       nodeTypes={{ custom: CustomNode }}
+      panOnDrag={false}
       proOptions={{ hideAttribution: true }}
       {...props}
     />
