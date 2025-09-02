@@ -1,8 +1,7 @@
-import { Link, useNavigate } from "react-router"
+import { Link } from "react-router"
 import { Button } from "../../../components/Button.tsx"
 import { GraphRenderer } from "../../../components/GraphRenderer.tsx"
 import { useGetGraph } from "../../../hooks/useGetGraph.ts"
-import { useGenerateGraph } from "../hooks/useGenerateGraph.ts"
 import { formatDurationMs } from "../lib/duration.ts"
 import {
   graphInfoPanelStyle,
@@ -11,53 +10,34 @@ import {
 } from "./graphInfoPanel.css.ts"
 
 type GraphInfoPanelProps = {
-  graphId?: number
+  graphId: number
 }
 
 export const GraphInfoPanel = ({ graphId }: GraphInfoPanelProps) => {
   const { graph } = useGetGraph(graphId)
-  const { generateGraph } = useGenerateGraph()
-  const navigate = useNavigate()
 
   return (
     <div className={graphInfoPanelStyle}>
       <div className={graphRendererWrapperStyle}>
-        {graph
+        {graph?.best_time_ms
           ? (
-            <GraphRenderer
-              key={graph.id}
-              edges={graph.edges}
-              nodes={graph.nodes}
-            />
+            <>
+              <GraphRenderer
+                key={graph.id}
+                edges={graph.edges}
+                nodes={graph.nodes}
+              />
+              <div>
+                ベストタイム：{formatDurationMs(graph.best_time_ms)}
+              </div>
+            </>
           )
           : <div className={unknownGraphPreviewStyle}>?</div>}
       </div>
-      {graph?.best_time_ms && (
-        <div>
-          ベストタイム：{formatDurationMs(graph.best_time_ms)}
-        </div>
-      )}
 
-      {graphId === undefined
-        ? (
-          <>
-            <Button
-              onClick={async () => {
-                const graph = await generateGraph()
-
-                navigate(`/play/${graph.id}`)
-              }}
-              variant="primary"
-            >
-              挑戦
-            </Button>
-          </>
-        )
-        : (
-          <Button asChild variant="primary">
-            <Link to={`/play/${graphId}`}>挑戦</Link>
-          </Button>
-        )}
+      <Button asChild variant="primary">
+        <Link to={`/play/${graphId}`}>挑戦</Link>
+      </Button>
     </div>
   )
 }

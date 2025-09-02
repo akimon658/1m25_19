@@ -1,15 +1,16 @@
 import { Link, useNavigate } from "react-router"
 import { Button } from "../../../components/Button.tsx"
 import { Dialog } from "../../../components/Dialog.tsx"
-import { useGenerateGraph } from "../../home/hooks/useGenerateGraph.ts"
 
 type ClearDialogProps = {
+  nextGraphId: number
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export const ClearDialog = ({ open, onOpenChange }: ClearDialogProps) => {
-  const { generateGraph } = useGenerateGraph()
+export const ClearDialog = (
+  { open, onOpenChange, nextGraphId }: ClearDialogProps,
+) => {
   const navigate = useNavigate()
 
   return (
@@ -24,11 +25,7 @@ export const ClearDialog = ({ open, onOpenChange }: ClearDialogProps) => {
 
           <Dialog.Close asChild>
             <Button
-              onClick={async () => {
-                const graph = await generateGraph()
-
-                navigate(`/play/${graph.id}`)
-              }}
+              onClick={() => navigate(`/play/${nextGraphId}`)}
               variant="primary"
             >
               次のステージへ

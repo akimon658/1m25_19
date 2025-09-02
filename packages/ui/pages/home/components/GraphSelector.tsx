@@ -6,14 +6,14 @@ import {
 
 type GraphSelectorProps = {
   graphs: ReadonlyArray<GraphMetadata>
-  selectedGraphId?: number
-  onGraphSelect: (graphId?: number) => void
+  selectedGraphId: number
+  onGraphSelect: (graphId: number) => void
 }
 
 export const GraphSelector = (
   { graphs, selectedGraphId, onGraphSelect }: GraphSelectorProps,
 ) => {
-  const graphIds = [undefined, ...graphs.map((graph) => graph.id).reverse()]
+  const graphIds = graphs.map((graph) => graph.id).reverse()
 
   return (
     <div className={graphSelectorContainerStyle}>
