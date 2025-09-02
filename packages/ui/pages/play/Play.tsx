@@ -29,7 +29,10 @@ export const Play = () => {
             setIsClearDialogOpen(true)
           }}
         />
-        <ClearDialog open={isClearDialogOpen} />
+        <ClearDialog
+          open={isClearDialogOpen}
+          onOpenChange={setIsClearDialogOpen}
+        />
       </div>
     </div>
   )

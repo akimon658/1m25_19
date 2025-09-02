@@ -5,14 +5,15 @@ import { useGenerateGraph } from "../../home/hooks/useGenerateGraph.ts"
 
 type ClearDialogProps = {
   open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
-export const ClearDialog = ({ open }: ClearDialogProps) => {
+export const ClearDialog = ({ open, onOpenChange }: ClearDialogProps) => {
   const { generateGraph } = useGenerateGraph()
   const navigate = useNavigate()
 
   return (
-    <Dialog.Root open={open}>
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Content>
         <Dialog.Title>クリア</Dialog.Title>
 
@@ -21,16 +22,18 @@ export const ClearDialog = ({ open }: ClearDialogProps) => {
             <Link to="/">ホームに戻る</Link>
           </Button>
 
-          <Button
-            onClick={async () => {
-              const graph = await generateGraph()
+          <Dialog.Close asChild>
+            <Button
+              onClick={async () => {
+                const graph = await generateGraph()
 
-              navigate(`/play/${graph.id}`)
-            }}
-            variant="primary"
-          >
-            次のステージへ
-          </Button>
+                navigate(`/play/${graph.id}`)
+              }}
+              variant="primary"
+            >
+              次のステージへ
+            </Button>
+          </Dialog.Close>
         </Dialog.Control>
       </Dialog.Content>
     </Dialog.Root>
