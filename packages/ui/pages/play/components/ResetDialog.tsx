@@ -1,6 +1,6 @@
-import { Dialog, VisuallyHidden } from "radix-ui"
+import { VisuallyHidden } from "radix-ui"
 import { Button } from "../../../components/Button.tsx"
-import { dialogContentStyle, dialogControlStyle } from "./resetDialog.css.ts"
+import { Dialog } from "../../../components/Dialog.tsx"
 
 type ResetDialogProps = {
   onAccept: () => void
@@ -13,29 +13,25 @@ export const ResetDialog = ({ onAccept }: ResetDialogProps) => {
         <Button>やりなおす</Button>
       </Dialog.Trigger>
 
-      <Dialog.Portal>
-        <Dialog.Overlay />
+      <Dialog.Content>
+        <VisuallyHidden.Root>
+          <Dialog.Title>やりなおす</Dialog.Title>
+        </VisuallyHidden.Root>
 
-        <Dialog.Content className={dialogContentStyle}>
-          <VisuallyHidden.Root>
-            <Dialog.Title>やりなおす</Dialog.Title>
-          </VisuallyHidden.Root>
+        <Dialog.Description>
+          最初からやりなおしますか？
+        </Dialog.Description>
 
-          <Dialog.Description>
-            最初からやりなおしますか？
-          </Dialog.Description>
+        <Dialog.Control>
+          <Dialog.Close asChild>
+            <Button>いいえ</Button>
+          </Dialog.Close>
 
-          <div className={dialogControlStyle}>
-            <Dialog.Close asChild>
-              <Button>いいえ</Button>
-            </Dialog.Close>
-
-            <Dialog.Close asChild>
-              <Button onClick={onAccept} variant="primary">はい</Button>
-            </Dialog.Close>
-          </div>
-        </Dialog.Content>
-      </Dialog.Portal>
+          <Dialog.Close asChild>
+            <Button onClick={onAccept} variant="primary">はい</Button>
+          </Dialog.Close>
+        </Dialog.Control>
+      </Dialog.Content>
     </Dialog.Root>
   )
 }
