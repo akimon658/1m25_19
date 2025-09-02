@@ -16,7 +16,7 @@ type GraphInfoPanelProps = {
 
 export const GraphInfoPanel = ({ graphId }: GraphInfoPanelProps) => {
   const { graph } = useGetGraph(graphId)
-  const { generate_graph } = useGenerateGraph()
+  const { generateGraph } = useGenerateGraph()
   const navigate = useNavigate()
 
   return (
@@ -37,7 +37,7 @@ export const GraphInfoPanel = ({ graphId }: GraphInfoPanelProps) => {
           <>
             <Button
               onClick={async () => {
-                const graph = await generate_graph()
+                const graph = await generateGraph()
 
                 navigate(`/play/${graph.id}`)
               }}
