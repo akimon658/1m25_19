@@ -23,7 +23,13 @@ export const GraphInfoPanel = ({ graphId }: GraphInfoPanelProps) => {
     <div className={graphInfoPanelStyle}>
       <div className={graphRendererWrapperStyle}>
         {graph
-          ? <GraphRenderer edges={graph.edges} nodes={graph.nodes} />
+          ? (
+            <GraphRenderer
+              key={graph.id}
+              edges={graph.edges}
+              nodes={graph.nodes}
+            />
+          )
           : <div className={unknownGraphPreviewStyle}>?</div>}
       </div>
       {graph?.best_time_ms && (
