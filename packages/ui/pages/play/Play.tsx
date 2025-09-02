@@ -22,6 +22,7 @@ export const Play = () => {
 
       <div className={playerWrapperStyle}>
         <Player
+          key={graph.id}
           edges={graph.edges}
           nodes={graph.nodes}
           onClear={(answer) => {
