@@ -5,7 +5,9 @@ const baseStyle = style({
   border: "none",
   borderRadius: "0.5rem",
   cursor: "pointer",
+  color: "white",
   padding: "0.5rem 1rem",
+  textDecoration: "none",
   transition: "background-color 0.2s ease",
 
   ":hover": {
@@ -13,15 +15,15 @@ const baseStyle = style({
   },
 })
 
-const acceptStyle = style({
-  backgroundColor: "rgba(173, 216, 230, 0.2)",
+const primaryStyle = style({
+  backgroundColor: "rgba(0, 191, 255, 0.8)",
 
   ":hover": {
-    backgroundColor: "rgba(173, 216, 230, 0.4)",
+    backgroundColor: "rgb(0, 191, 255)",
   },
 })
 
 export const buttonStyle = styleVariants({
   default: [baseStyle],
-  accept: [baseStyle, acceptStyle],
+  primary: [baseStyle, primaryStyle],
 })

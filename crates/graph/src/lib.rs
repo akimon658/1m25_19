@@ -92,28 +92,34 @@ impl GraphService {
         let mut graph = self.get_graph(graph_id).await?;
         let is_cycle = self.verify_answer(&graph, &answer.path).await?;
 
+        if graph.best_time_ms.is_none() {
+            const SECONDS_PER_NODE: i32 = 5;
+            const SECOND: i32 = 1000;
+            let expected_time_ms = graph.num_nodes as i32 * SECONDS_PER_NODE * SECOND;
+            const BASE_SCORE: f32 = 100.0;
+            let time_bonus = expected_time_ms as f32 / answer.time_ms.max(1) as f32;
+            let mut score_diff = BASE_SCORE * time_bonus.min(2.0);
+
+            if is_cycle {
+                score_diff = score_diff * 1.25;
+            }
+
+            if answer.time_ms as i32 > expected_time_ms * 3 / 2 && !is_cycle {
+                score_diff = -100.0;
+            }
+
+            self.user_repository
+                .update_rating(score_diff as i32)
+                .await?;
+        }
+
         graph.best_time_ms = match graph.best_time_ms {
             Some(best_time) => Some(best_time.min(answer.time_ms)),
             None => Some(answer.time_ms),
         };
         graph.cycle_found = is_cycle || graph.cycle_found;
 
-        const SECONDS_PER_NODE: i32 = 10;
-        const SECOND: i32 = 1000;
-        let expected_time_ms = graph.num_nodes as i32 * SECONDS_PER_NODE * SECOND;
-        const BASE_SCORE: i32 = 250;
-        let mut score_diff = BASE_SCORE * expected_time_ms / answer.time_ms.max(1) as i32;
-
-        if is_cycle {
-            score_diff = score_diff * 3 / 2;
-        }
-
-        if answer.time_ms as i32 > expected_time_ms * 2 && !is_cycle {
-            score_diff = -100;
-        }
-
         self.graph_repository.update_graph(&graph).await?;
-        self.user_repository.update_rating(score_diff).await?;
 
         Ok(graph)
     }

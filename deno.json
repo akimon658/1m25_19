@@ -8,7 +8,7 @@
     }
   },
   "imports": {
-    "@tauri-apps/cli": "npm:@tauri-apps/cli@^2.7.1"
+    "@tauri-apps/cli": "npm:@tauri-apps/cli@^2.8.4"
   },
   "nodeModulesDir": "auto",
   "tasks": {
