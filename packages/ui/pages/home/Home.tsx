@@ -6,7 +6,9 @@ import { useGraphList } from "./hooks/useGraphList.ts"
 
 export const Home = () => {
   const { graphs } = useGraphList()
-  const [selectedGraphId, setSelectedGraphId] = useState<number>()
+  const [selectedGraphId, setSelectedGraphId] = useState<number>(
+    graphs?.at(-1)?.id ?? 0,
+  )
 
   if (!graphs) {
     return null
