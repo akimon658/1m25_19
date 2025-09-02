@@ -93,7 +93,7 @@ impl GraphService {
         let is_cycle = self.verify_answer(&graph, &answer.path).await?;
 
         if graph.best_time_ms.is_none() {
-            const SECONDS_PER_NODE: i32 = 10;
+            const SECONDS_PER_NODE: i32 = 5;
             const SECOND: i32 = 1000;
             let expected_time_ms = graph.num_nodes as i32 * SECONDS_PER_NODE * SECOND;
             const BASE_SCORE: f32 = 100.0;
@@ -104,7 +104,7 @@ impl GraphService {
                 score_diff = score_diff * 1.25;
             }
 
-            if answer.time_ms as i32 > expected_time_ms * 2 && !is_cycle {
+            if answer.time_ms as i32 > expected_time_ms * 3 / 2 && !is_cycle {
                 score_diff = -100.0;
             }
 
