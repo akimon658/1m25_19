@@ -3,7 +3,7 @@ import { commands } from "../../../api/bindings.gen.ts"
 
 // 合成フック（複数のテキストを合成）
 export const useAudioSynth = () => {
-  const { mutateAsync: synthMultiple } = useMutation({
+  const { mutateAsync: synth, ...rest } = useMutation({
     mutationFn: async (texts: string[]) => {
       const results: Record<string, string> = {}
       for (const text of texts) {
@@ -15,5 +15,6 @@ export const useAudioSynth = () => {
       return results
     },
   })
-  return { synthMultiple }
+
+  return { synth, ...rest }
 }

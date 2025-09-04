@@ -40,7 +40,7 @@ export const Tutorial = () => {
   const [inputValue, setInputValue] = useState("")
   const [inputReadingValue, setInputReadingValue] = useState("")
   const [scenario, setScenario] = useState(initialScenario) // scenarioをstate化
-  const { synthMultiple } = useAudioSynth()
+  const { synth, isPending } = useAudioSynth() // useMutationのインスタンスを取得
   const { playAudio } = useAudioPlayer()
 
   const currentScene = scenario[scenarioIndex]
@@ -65,7 +65,6 @@ export const Tutorial = () => {
     if (inputValue.trim() === "") return
     const readingName = inputReadingValue.trim() || inputValue
     setPlayerName(inputValue)
-    setIsNameInputMode(false)
 
     // playerNameを含むテキストを抽出・合成
     const textsToSynth = scenario
@@ -77,7 +76,7 @@ export const Tutorial = () => {
       })
 
     if (textsToSynth.length > 0) {
-      const results = await synthMultiple(textsToSynth)
+      const results = await synth(textsToSynth) // 生成終了を待つ
       // scenarioを更新してaudioUrlを追加
       setScenario((prev) =>
         prev.map((scene) => {
@@ -92,6 +91,7 @@ export const Tutorial = () => {
       )
     }
 
+    setIsNameInputMode(false)
     setScenarioIndex(scenarioIndex + 1)
   }
 
@@ -140,7 +140,9 @@ export const Tutorial = () => {
           onChange={(e) => setInputReadingValue(e.target.value)}
           placeholder="読み方（任意）"
         />
-        <button type="submit">決定</button>
+        <button type="submit" disabled={isPending}>
+          {isPending ? "生成中..." : "決定"}
+        </button>
       </form>
     )
   }
