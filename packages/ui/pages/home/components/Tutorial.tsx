@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import audio1 from "../../../assets/tutorial001.wav"
 import audio2 from "../../../assets/tutorial002.wav"
@@ -22,11 +22,12 @@ const initialScenario = [
     type: "text",
     text: "ゆめり「えっと……あなたのことはなんと呼べばいいですか？」",
     audioUrl: audio3,
+    action: "nameInput", // このセリフの後に名前入力ダイアログを表示
   },
-  { type: "nameInput" },
   {
-    type: "nameConfirm",
+    type: "text",
     text: "ゆめり「{playerName}さんで合ってますか？」",
+    action: "nameConfirm", // このセリフの後に確認ボタンを表示
   },
   {
     type: "text",
@@ -45,7 +46,7 @@ type FormValues = {
 export const Tutorial = () => {
   const [scenarioIndex, setScenarioIndex] = useState(0)
   const [playerName, setPlayerName] = useState("")
-  const [isNameInputMode, setIsNameInputMode] = useState(false)
+  const [isNameInputDialogOpen, setIsNameInputDialogOpen] = useState(false)
   const [scenario, setScenario] = useState(initialScenario)
   const {
     register,
@@ -54,7 +55,6 @@ export const Tutorial = () => {
   } = useForm<FormValues>()
   const { synth, isPending } = useAudioSynth({
     onSuccess: (audioData, { context }) => {
-      // contextから読み方を取得
       const readingName = context.readingName
 
       setScenario((prev) =>
@@ -69,7 +69,7 @@ export const Tutorial = () => {
           return scene
         })
       )
-      setIsNameInputMode(false)
+      setIsNameInputDialogOpen(false)
       setScenarioIndex((prev) => prev + 1)
     },
   })
@@ -77,16 +77,17 @@ export const Tutorial = () => {
 
   const currentScene = scenario[scenarioIndex]
 
-  // 次のシーンへ進む処理
+  useEffect(() => {
+    if (currentScene?.action === "nameInput") {
+      setIsNameInputDialogOpen(true)
+    }
+  }, [currentScene])
+
+  // 次のシーンへ進む処理を簡略化
   const handleNext = () => {
     const nextIndex = scenarioIndex + 1
-    if (nextIndex <= scenario.length) {
-      if (nextIndex < scenario.length) {
-        const nextScene = scenario[nextIndex]
-        if (nextScene.type === "nameInput") {
-          setIsNameInputMode(true)
-        }
-      }
+
+    if (nextIndex < scenario.length) {
       setScenarioIndex(nextIndex)
     }
   }
@@ -96,7 +97,6 @@ export const Tutorial = () => {
     setPlayerName(data.name)
 
     const readingName = data.reading.trim() || data.name
-    // playerNameを含むテキストを抽出・合成
     const textsToSynth = scenario
       .filter((scene) => scene.text && scene.text.includes("{playerName}"))
       .map((scene) => {
@@ -106,7 +106,6 @@ export const Tutorial = () => {
       })
 
     if (textsToSynth.length > 0) {
-      // synth呼び出し時にコンテキストを渡す
       synth({
         texts: textsToSynth,
         context: { readingName },
@@ -118,9 +117,8 @@ export const Tutorial = () => {
 
   // 名前を再入力する処理
   const handleRedoNameInput = () => {
-    setIsNameInputMode(true)
-    // nameInputシーンのインデックスを探して戻る
-    const nameInputIndex = scenario.findIndex((s) => s.type === "nameInput")
+    // action が 'nameInput' のシーンのインデックスを探して戻る
+    const nameInputIndex = scenario.findIndex((s) => s.action === "nameInput")
     if (nameInputIndex !== -1) {
       setScenarioIndex(nameInputIndex)
     }
@@ -154,40 +152,65 @@ export const Tutorial = () => {
     )
   }
 
-  if (isNameInputMode) {
-    return (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="text"
-          {...register("name", { required: true })}
-          placeholder="名前を入力"
-        />
-        <input
-          type="text"
-          {...register("reading")}
-          placeholder="読み方（任意）"
-        />
-        <button type="submit" disabled={isPending || !isValid}>
-          {isPending ? "生成中..." : "決定"}
-        </button>
-      </form>
-    )
-  }
-
-  if (currentScene?.type === "nameConfirm") {
-    return (
-      <div>
-        <p>{getDisplayText()}</p>
-        <button type="button" onClick={handleNext}>はい</button>
-        <button type="button" onClick={handleRedoNameInput}>いいえ</button>
-      </div>
-    )
-  }
-
   return (
     <div>
       <p>{getDisplayText()}</p>
-      <button type="button" onClick={handleNext}>次へ</button>
+
+      {currentScene?.action === "nameConfirm"
+        ? (
+          <div>
+            <button type="button" onClick={handleNext}>
+              はい
+            </button>
+            <button type="button" onClick={handleRedoNameInput}>
+              いいえ
+            </button>
+          </div>
+        ) // nameInput の際はダイアログで操作するためボタンは非表示
+        : currentScene?.action === "nameInput"
+        ? null
+        : (
+          <button type="button" onClick={handleNext}>
+            次へ
+          </button>
+        )}
+
+      {isNameInputDialogOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            padding: "2rem",
+            background: "white",
+            border: "1px solid black",
+            zIndex: 10,
+          }}
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <input
+                type="text"
+                {...register("name", { required: true })}
+                placeholder="名前を入力"
+              />
+            </div>
+            <div style={{ marginTop: "0.5rem" }}>
+              <input
+                type="text"
+                {...register("reading")}
+                placeholder="読み方（任意）"
+              />
+            </div>
+            <div style={{ marginTop: "1rem", textAlign: "center" }}>
+              <button type="submit" disabled={isPending || !isValid}>
+                {isPending ? "生成中..." : "決定"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   )
 }
