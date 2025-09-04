@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
+import { type SubmitHandler } from "react-hook-form"
 import audio1 from "../../../assets/tutorial001.wav"
 import audio2 from "../../../assets/tutorial002.wav"
 import audio3 from "../../../assets/tutorial003.wav"
 import { useAudioPlayer } from "../hooks/useAudioPlayer.ts"
 import { useAudioSynth } from "../hooks/useAudioSynth.ts"
+import { type FormValues, NameInputDialog } from "./NameInputDialog.tsx"
 
 type TextWithVoiceProps = {
   text: string
@@ -35,7 +36,7 @@ const initialScenario = [
   },
   {
     type: "text",
-    text: "ゆめり「えっと……あなたのことはなんと呼べばいいですか？」",
+    text: "ゆめり「えっと……あなたのことはなんて呼べばいいですか？」",
     audioUrl: audio3,
     action: "nameInput", // このセリフの後に名前入力ダイアログを表示
   },
@@ -53,22 +54,12 @@ const initialScenario = [
   },
 ]
 
-type FormValues = {
-  name: string
-  reading: string
-}
-
 export const Tutorial = () => {
   const [scenarioIndex, setScenarioIndex] = useState(0)
   const [playerName, setPlayerName] = useState("")
   const [isNameInputDialogOpen, setIsNameInputDialogOpen] = useState(false)
   const [scenario, setScenario] = useState(initialScenario)
-  const {
-    register,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm<FormValues>()
-  const { synth, isPending } = useAudioSynth({
+  const { synth } = useAudioSynth({
     onSuccess: (audioData, { context }) => {
       const readingName = context.readingName
 
@@ -196,44 +187,11 @@ export const Tutorial = () => {
         )
         : null}
 
-      {isNameInputDialogOpen && (
-        <div
-          onClick={(e) => e.stopPropagation()}
-          style={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            padding: "2rem",
-            background: "white",
-            border: "1px solid black",
-            zIndex: 10,
-            cursor: "default",
-          }}
-        >
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <input
-                type="text"
-                {...register("name", { required: true })}
-                placeholder="名前を入力"
-              />
-            </div>
-            <div style={{ marginTop: "0.5rem" }}>
-              <input
-                type="text"
-                {...register("reading")}
-                placeholder="読み方（任意）"
-              />
-            </div>
-            <div style={{ marginTop: "1rem", textAlign: "center" }}>
-              <button type="submit" disabled={isPending || !isValid}>
-                {isPending ? "生成中..." : "決定"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+      <NameInputDialog
+        open={isNameInputDialogOpen}
+        onOpenChange={setIsNameInputDialogOpen}
+        onSubmit={onSubmit}
+      />
     </div>
   )
 }
