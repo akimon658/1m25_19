@@ -1,10 +1,25 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import audio1 from "../../../assets/tutorial001.wav"
 import audio2 from "../../../assets/tutorial002.wav"
 import audio3 from "../../../assets/tutorial003.wav"
 import { useAudioPlayer } from "../hooks/useAudioPlayer.ts"
 import { useAudioSynth } from "../hooks/useAudioSynth.ts"
+
+type TextWithVoiceProps = {
+  text: string
+  audioUrl: string
+}
+
+const TextWithVoice = ({ text, audioUrl }: TextWithVoiceProps) => {
+  const { playAudio } = useAudioPlayer()
+
+  useEffect(() => {
+    playAudio(audioUrl)
+  }, [audioUrl])
+
+  return <p>{text}</p>
+}
 
 const initialScenario = [
   { type: "start" },
@@ -73,7 +88,6 @@ export const Tutorial = () => {
       setScenarioIndex((prev) => prev + 1)
     },
   })
-  const { playAudio } = useAudioPlayer()
 
   const currentScene = scenario[scenarioIndex]
 
@@ -141,10 +155,6 @@ export const Tutorial = () => {
       return ""
     }
 
-    if (currentScene.audioUrl) {
-      playAudio(currentScene.audioUrl)
-    }
-
     return currentScene.text.replace(/{playerName}/g, playerName)
   }
 
@@ -168,7 +178,10 @@ export const Tutorial = () => {
       onClick={handleScreenClick}
       style={{ cursor: "pointer", height: "100vh", userSelect: "none" }}
     >
-      <p>{getDisplayText()}</p>
+      <TextWithVoice
+        text={getDisplayText()}
+        audioUrl={currentScene?.audioUrl}
+      />
 
       {currentScene?.action === "nameConfirm"
         ? (
