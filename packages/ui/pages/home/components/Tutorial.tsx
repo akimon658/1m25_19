@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import audio1 from "../../../assets/tutorial001.wav"
 import audio2 from "../../../assets/tutorial002.wav"
@@ -77,11 +77,22 @@ export const Tutorial = () => {
 
   const currentScene = scenario[scenarioIndex]
 
-  useEffect(() => {
+  // 画面クリックで進行するためのハンドラ
+  const handleScreenClick = () => {
+    // ダイアログ表示中や確認ボタン表示中は画面クリックでの進行を無効化
+    if (isNameInputDialogOpen || currentScene?.action === "nameConfirm") {
+      return
+    }
+
+    // 名前入力シーンの場合、ダイアログを開く
     if (currentScene?.action === "nameInput") {
       setIsNameInputDialogOpen(true)
+      return // ここではシーンを進めない
     }
-  }, [currentScene])
+
+    // それ以外の場合は次のシーンへ
+    handleNext()
+  }
 
   // 次のシーンへ進む処理を簡略化
   const handleNext = () => {
@@ -153,12 +164,15 @@ export const Tutorial = () => {
   }
 
   return (
-    <div>
+    <div
+      onClick={handleScreenClick}
+      style={{ cursor: "pointer", height: "100vh", userSelect: "none" }}
+    >
       <p>{getDisplayText()}</p>
 
       {currentScene?.action === "nameConfirm"
         ? (
-          <div>
+          <div onClick={(e) => e.stopPropagation()}>
             <button type="button" onClick={handleNext}>
               はい
             </button>
@@ -166,17 +180,12 @@ export const Tutorial = () => {
               いいえ
             </button>
           </div>
-        ) // nameInput の際はダイアログで操作するためボタンは非表示
-        : currentScene?.action === "nameInput"
-        ? null
-        : (
-          <button type="button" onClick={handleNext}>
-            次へ
-          </button>
-        )}
+        )
+        : null}
 
       {isNameInputDialogOpen && (
         <div
+          onClick={(e) => e.stopPropagation()}
           style={{
             position: "fixed",
             top: "50%",
@@ -186,6 +195,7 @@ export const Tutorial = () => {
             background: "white",
             border: "1px solid black",
             zIndex: 10,
+            cursor: "default",
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
