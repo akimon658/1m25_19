@@ -3,6 +3,7 @@ import { type SubmitHandler } from "react-hook-form"
 import audio1 from "../../../assets/tutorial001.wav"
 import audio2 from "../../../assets/tutorial002.wav"
 import audio3 from "../../../assets/tutorial003.wav"
+import { Button } from "../../../components/Button.tsx"
 import { useAudioPlayer } from "../hooks/useAudioPlayer.ts"
 import { useAudioSynth } from "../hooks/useAudioSynth.ts"
 import { type FormValues, NameInputDialog } from "./NameInputDialog.tsx"
@@ -158,9 +159,7 @@ export const Tutorial = () => {
     return (
       <div>
         <p>音声が再生されます。音量にご注意ください。</p>
-        <button type="button" onClick={handleNext}>
-          始める
-        </button>
+        <Button onClick={handleNext} variant="primary">始める</Button>
       </div>
     )
   }
@@ -178,12 +177,12 @@ export const Tutorial = () => {
       {currentScene?.action === "nameConfirm"
         ? (
           <div onClick={(e) => e.stopPropagation()}>
-            <button type="button" onClick={handleNext}>
+            <Button type="button" onClick={handleNext} variant="primary">
               はい
-            </button>
-            <button type="button" onClick={handleRedoNameInput}>
+            </Button>
+            <Button type="button" onClick={handleRedoNameInput}>
               いいえ
-            </button>
+            </Button>
           </div>
         )
         : null}
