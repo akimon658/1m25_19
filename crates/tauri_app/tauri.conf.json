@@ -21,6 +21,7 @@
   },
   "bundle": {
     "active": true,
+    "resources": ["voicevox_core/**/*"],
     "targets": "all",
     "icon": []
   }

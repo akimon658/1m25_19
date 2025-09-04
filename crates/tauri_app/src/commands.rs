@@ -1,6 +1,6 @@
 use model::graph::{Answer, Graph};
 use rand::{SeedableRng, rngs::SmallRng};
-use tauri::State;
+use tauri::{AppHandle, Manager, State, path::BaseDirectory};
 
 use crate::AppState;
 
@@ -45,6 +45,19 @@ pub async fn submit_answer(
 
     service
         .handle_submission(graph_id, &answer)
+        .await
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn synth(handle: AppHandle, text: &str) -> Result<Vec<u8>, String> {
+    let vvcore_dir = handle
+        .path()
+        .resolve("voicevox_core", BaseDirectory::Resource)
+        .map_err(|e| e.to_string())?;
+
+    voice::synth(&vvcore_dir, text)
         .await
         .map_err(|e| e.to_string())
 }

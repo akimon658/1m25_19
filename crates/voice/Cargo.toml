@@ -1,0 +1,9 @@
+[package]
+name = "voice"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+const_format.workspace = true
+voicevox_core = { workspace = true, features = ["load-onnxruntime"] }

@@ -1,10 +1,13 @@
+import { useMutation } from "@tanstack/react-query"
 import { type FormEvent, useState } from "react"
+import { commands } from "../../../api/bindings.gen.ts"
 
 // シナリオデータ
 const scenario = [
+  { type: "text" },
   {
     type: "text",
-    text: "？？？「こんなところに人が来るなんてめずらしいですね」",
+    text: "？？？「こんな所に人が来るなんて珍しいですね」",
   },
   {
     type: "text",
@@ -17,7 +20,7 @@ const scenario = [
   { type: "nameInput" },
   {
     type: "nameConfirm",
-    text: "ゆめり「{playerName}さん、で合ってますか？」",
+    text: "ゆめり「{playerName}さんで合ってますか？」",
   },
   {
     type: "text",
@@ -30,6 +33,14 @@ export const Tutorial = () => {
   const [playerName, setPlayerName] = useState("")
   const [isNameInputMode, setIsNameInputMode] = useState(false)
   const [inputValue, setInputValue] = useState("")
+  const { mutate: synth } = useMutation({
+    mutationFn: async (text: string) => {
+      const audioData = await commands.synth(text)
+
+      new Audio(URL.createObjectURL(new Blob([new Uint8Array(audioData)])))
+        .play()
+    },
+  })
 
   const currentScene = scenario[scenarioIndex]
 
@@ -42,6 +53,11 @@ export const Tutorial = () => {
         if (nextScene.type === "nameInput") {
           setIsNameInputMode(true)
         }
+        if (nextScene.type === "text" && nextScene.text) {
+          const replaced = nextScene.text.replace(/{playerName}/g, playerName)
+          const match = replaced.match(/「([^」]*)」/)
+          synth(match ? match[1] : replaced)
+        }
       }
       setScenarioIndex(nextIndex)
     }
@@ -53,6 +69,12 @@ export const Tutorial = () => {
     if (inputValue.trim() === "") return
     setPlayerName(inputValue)
     setIsNameInputMode(false)
+    const nextScene = scenario[scenarioIndex + 1]
+    if (nextScene.text) {
+      const replaced = nextScene.text.replace(/{playerName}/g, inputValue)
+      const match = replaced.match(/「([^」]*)」/)
+      synth(match ? match[1] : replaced)
+    }
     setScenarioIndex(scenarioIndex + 1) // 確認シーンへ進む
   }
 
