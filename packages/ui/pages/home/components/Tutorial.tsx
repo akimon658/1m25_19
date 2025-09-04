@@ -7,7 +7,7 @@ const scenario = [
   { type: "text" },
   {
     type: "text",
-    text: "？？？「こんな所に人が来るなんて珍しいですね」",
+    text: "？？？「こんなところに人が来るなんてめずらしいですね」",
   },
   {
     type: "text",
@@ -31,8 +31,10 @@ const scenario = [
 export const Tutorial = () => {
   const [scenarioIndex, setScenarioIndex] = useState(0)
   const [playerName, setPlayerName] = useState("")
+  const [playerReadingName, setPlayerReadingName] = useState("")
   const [isNameInputMode, setIsNameInputMode] = useState(false)
   const [inputValue, setInputValue] = useState("")
+  const [inputReadingValue, setInputReadingValue] = useState("")
   const { mutate: synth } = useMutation({
     mutationFn: async (text: string) => {
       const audioData = await commands.synth(text)
@@ -54,7 +56,8 @@ export const Tutorial = () => {
           setIsNameInputMode(true)
         }
         if (nextScene.type === "text" && nextScene.text) {
-          const replaced = nextScene.text.replace(/{playerName}/g, playerName)
+          const readingName = playerReadingName || playerName
+          const replaced = nextScene.text.replace(/{playerName}/g, readingName)
           const match = replaced.match(/「([^」]*)」/)
           synth(match ? match[1] : replaced)
         }
@@ -68,10 +71,12 @@ export const Tutorial = () => {
     e.preventDefault()
     if (inputValue.trim() === "") return
     setPlayerName(inputValue)
+    setPlayerReadingName(inputReadingValue.trim())
     setIsNameInputMode(false)
     const nextScene = scenario[scenarioIndex + 1]
     if (nextScene.text) {
-      const replaced = nextScene.text.replace(/{playerName}/g, inputValue)
+      const readingName = inputReadingValue.trim() || inputValue
+      const replaced = nextScene.text.replace(/{playerName}/g, readingName)
       const match = replaced.match(/「([^」]*)」/)
       synth(match ? match[1] : replaced)
     }
@@ -111,6 +116,12 @@ export const Tutorial = () => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="名前を入力"
+        />
+        <input
+          type="text"
+          value={inputReadingValue}
+          onChange={(e) => setInputReadingValue(e.target.value)}
+          placeholder="読み方（任意）"
         />
         <button type="submit">決定</button>
       </form>
