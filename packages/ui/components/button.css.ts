@@ -15,6 +15,15 @@ const baseStyle = style({
   },
 })
 
+const primaryDisabledStyle = style({
+  backgroundColor: "rgba(0, 191, 255, 0.4)",
+  cursor: "not-allowed",
+
+  ":hover": {
+    backgroundColor: "rgba(0, 191, 255, 0.4)",
+  },
+})
+
 const primaryStyle = style({
   backgroundColor: "rgba(0, 191, 255, 0.8)",
 
@@ -26,4 +35,5 @@ const primaryStyle = style({
 export const buttonStyle = styleVariants({
   default: [baseStyle],
   primary: [baseStyle, primaryStyle],
+  primaryDisabled: [baseStyle, primaryDisabledStyle],
 })
