@@ -11,10 +11,11 @@ type NameInputDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   onSubmit: SubmitHandler<FormValues>
+  isPending: boolean
 }
 
 export const NameInputDialog = (
-  { open, onOpenChange, onSubmit }: NameInputDialogProps,
+  { open, onOpenChange, onSubmit, isPending }: NameInputDialogProps,
 ) => {
   const { formState: { isValid }, handleSubmit, register } = useForm<
     FormValues
@@ -38,7 +39,12 @@ export const NameInputDialog = (
           />
 
           <Dialog.Control>
-            <Button disabled={!isValid} type="submit" variant="primary">
+            <Button
+              disabled={!isValid || isPending}
+              loading={isPending}
+              type="submit"
+              variant="primary"
+            >
               OK
             </Button>
           </Dialog.Control>

@@ -59,7 +59,7 @@ export const Tutorial = () => {
   const [playerName, setPlayerName] = useState("")
   const [isNameInputDialogOpen, setIsNameInputDialogOpen] = useState(false)
   const [scenario, setScenario] = useState(initialScenario)
-  const { synth } = useAudioSynth({
+  const { synth, isPending } = useAudioSynth({
     onSuccess: (audioData, { context }) => {
       const readingName = context.readingName
 
@@ -191,6 +191,7 @@ export const Tutorial = () => {
         open={isNameInputDialogOpen}
         onOpenChange={setIsNameInputDialogOpen}
         onSubmit={onSubmit}
+        isPending={isPending}
       />
     </div>
   )

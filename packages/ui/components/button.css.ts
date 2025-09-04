@@ -1,4 +1,4 @@
-import { style, styleVariants } from "@vanilla-extract/css"
+import { keyframes, style, styleVariants } from "@vanilla-extract/css"
 
 const baseStyle = style({
   backgroundColor: "rgba(255, 255, 255, 0.2)",
@@ -36,4 +36,13 @@ export const buttonStyle = styleVariants({
   default: [baseStyle],
   primary: [baseStyle, primaryStyle],
   primaryDisabled: [baseStyle, primaryDisabledStyle],
+})
+
+const spinKeyframes = keyframes({
+  "0%": { transform: "rotate(0deg)" },
+  "100%": { transform: "rotate(360deg)" },
+})
+
+export const loadingIconStyle = style({
+  animation: `${spinKeyframes} 1s linear infinite`,
 })
