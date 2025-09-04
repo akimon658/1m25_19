@@ -19,6 +19,7 @@
     "radix-ui": "npm:radix-ui@^1.4.3",
     "react": "npm:react@^19.1.1",
     "react-dom": "npm:react-dom@^19.1.1",
+    "react-hook-form": "npm:react-hook-form@^7.62.0",
     "react-router": "npm:react-router@^7.8.2",
     "vite": "npm:vite@^7.1.4",
     "vite-plugin-webfont-dl": "npm:vite-plugin-webfont-dl@^3.11.1"

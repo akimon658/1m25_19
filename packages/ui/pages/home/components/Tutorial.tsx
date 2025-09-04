@@ -1,4 +1,5 @@
-import { type FormEvent, useState } from "react"
+import { useState } from "react"
+import { type SubmitHandler, useForm } from "react-hook-form"
 import audio1 from "../../../assets/tutorial001.wav"
 import audio2 from "../../../assets/tutorial002.wav"
 import audio3 from "../../../assets/tutorial003.wav"
@@ -33,31 +34,40 @@ const initialScenario = [
   },
 ]
 
+type FormValues = {
+  name: string
+  reading: string
+}
+
 export const Tutorial = () => {
   const [scenarioIndex, setScenarioIndex] = useState(0)
   const [playerName, setPlayerName] = useState("")
   const [isNameInputMode, setIsNameInputMode] = useState(false)
-  const [inputValue, setInputValue] = useState("")
-  const [inputReadingValue, setInputReadingValue] = useState("")
   const [scenario, setScenario] = useState(initialScenario) // scenarioをstate化
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<FormValues>()
   const { synth, isPending } = useAudioSynth({
-    onSuccess: (data) => {
+    onSuccess: (audioData, { context }) => {
+      // contextから読み方を取得
+      const readingName = context.readingName
+
       setScenario((prev) =>
         prev.map((scene) => {
           if (scene.text && scene.text.includes("{playerName}")) {
-            const replaced = scene.text.replace(
-              /{playerName}/g,
-              inputReadingValue || inputValue,
-            )
+            const replaced = scene.text.replace(/{playerName}/g, readingName)
             const match = replaced.match(/「([^」]*)」/)
             const synthText = match ? match[1] : replaced
-            return { ...scene, audioUrl: data[synthText] }
+
+            return { ...scene, audioUrl: audioData[synthText] }
           }
           return scene
         })
       )
       setIsNameInputMode(false)
-      setScenarioIndex(scenarioIndex + 1)
+      setScenarioIndex((prev) => prev + 1)
     },
   })
   const { playAudio } = useAudioPlayer()
@@ -78,13 +88,11 @@ export const Tutorial = () => {
     }
   }
 
-  // 名前入力の決定処理（ここで全てのplayerNameを含むテキストを合成）
-  const handleSubmitName = (e: FormEvent) => {
-    e.preventDefault()
-    if (inputValue.trim() === "") return
-    const readingName = inputReadingValue.trim() || inputValue
-    setPlayerName(inputValue)
+  // 名前入力の決定処理
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    setPlayerName(data.name)
 
+    const readingName = data.reading.trim() || data.name
     // playerNameを含むテキストを抽出・合成
     const textsToSynth = scenario
       .filter((scene) => scene.text && scene.text.includes("{playerName}"))
@@ -95,7 +103,13 @@ export const Tutorial = () => {
       })
 
     if (textsToSynth.length > 0) {
-      synth(textsToSynth)
+      // synth呼び出し時にコンテキストを渡す
+      synth({
+        texts: textsToSynth,
+        context: { readingName },
+      })
+    } else {
+      throw new Error("音声合成するテキストがありません")
     }
   }
 
@@ -131,20 +145,18 @@ export const Tutorial = () => {
 
   if (isNameInputMode) {
     return (
-      <form onSubmit={handleSubmitName}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <input
           type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          {...register("name", { required: true })}
           placeholder="名前を入力"
         />
         <input
           type="text"
-          value={inputReadingValue}
-          onChange={(e) => setInputReadingValue(e.target.value)}
+          {...register("reading")}
           placeholder="読み方（任意）"
         />
-        <button type="submit" disabled={isPending}>
+        <button type="submit" disabled={isPending || !isValid}>
           {isPending ? "生成中..." : "決定"}
         </button>
       </form>
