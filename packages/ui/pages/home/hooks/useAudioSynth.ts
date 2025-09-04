@@ -10,12 +10,15 @@ export const useAudioSynth = (opts: UseAudioSynthOptions) => {
   const { mutate: synth, ...rest } = useMutation({
     mutationFn: async (texts: string[]) => {
       const results: Record<string, string> = {}
-      for (const text of texts) {
+      const promises = texts.map(async (text) => {
         const audioData = await commands.synth(text)
         results[text] = URL.createObjectURL(
           new Blob([new Uint8Array(audioData)]),
         )
-      }
+      })
+
+      await Promise.all(promises)
+
       return results
     },
     ...opts,
