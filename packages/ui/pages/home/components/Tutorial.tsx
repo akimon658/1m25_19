@@ -6,6 +6,7 @@ import audio3 from "../../../assets/tutorial003.wav"
 import { useAudioPlayer } from "../hooks/useAudioPlayer.ts"
 import { useAudioSynth } from "../hooks/useAudioSynth.ts"
 import { type FormValues, NameInputDialog } from "./NameInputDialog.tsx"
+import { tutorialWrapperStyle } from "./tutorial.css.ts"
 
 type TextWithVoiceProps = {
   text: string
@@ -166,8 +167,8 @@ export const Tutorial = () => {
 
   return (
     <div
+      className={tutorialWrapperStyle}
       onClick={handleScreenClick}
-      style={{ cursor: "pointer", height: "100vh", userSelect: "none" }}
     >
       <TextWithVoice
         text={getDisplayText()}
