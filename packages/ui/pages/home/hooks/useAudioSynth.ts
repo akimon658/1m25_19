@@ -1,9 +1,13 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, type UseMutationOptions } from "@tanstack/react-query"
 import { commands } from "../../../api/bindings.gen.ts"
 
-// 合成フック（複数のテキストを合成）
-export const useAudioSynth = () => {
-  const { mutateAsync: synth, ...rest } = useMutation({
+type UseAudioSynthOptions = Omit<
+  UseMutationOptions<Record<string, string>, unknown, string[]>,
+  "mutationFn"
+>
+
+export const useAudioSynth = (opts: UseAudioSynthOptions) => {
+  const { mutate: synth, ...rest } = useMutation({
     mutationFn: async (texts: string[]) => {
       const results: Record<string, string> = {}
       for (const text of texts) {
@@ -14,6 +18,7 @@ export const useAudioSynth = () => {
       }
       return results
     },
+    ...opts,
   })
 
   return { synth, ...rest }

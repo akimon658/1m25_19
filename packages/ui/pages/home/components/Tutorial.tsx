@@ -40,7 +40,26 @@ export const Tutorial = () => {
   const [inputValue, setInputValue] = useState("")
   const [inputReadingValue, setInputReadingValue] = useState("")
   const [scenario, setScenario] = useState(initialScenario) // scenarioをstate化
-  const { synth, isPending } = useAudioSynth() // useMutationのインスタンスを取得
+  const { synth, isPending } = useAudioSynth({
+    onSuccess: (data) => {
+      setScenario((prev) =>
+        prev.map((scene) => {
+          if (scene.text && scene.text.includes("{playerName}")) {
+            const replaced = scene.text.replace(
+              /{playerName}/g,
+              inputReadingValue || inputValue,
+            )
+            const match = replaced.match(/「([^」]*)」/)
+            const synthText = match ? match[1] : replaced
+            return { ...scene, audioUrl: data[synthText] }
+          }
+          return scene
+        })
+      )
+      setIsNameInputMode(false)
+      setScenarioIndex(scenarioIndex + 1)
+    },
+  })
   const { playAudio } = useAudioPlayer()
 
   const currentScene = scenario[scenarioIndex]
@@ -60,7 +79,7 @@ export const Tutorial = () => {
   }
 
   // 名前入力の決定処理（ここで全てのplayerNameを含むテキストを合成）
-  const handleSubmitName = async (e: FormEvent) => {
+  const handleSubmitName = (e: FormEvent) => {
     e.preventDefault()
     if (inputValue.trim() === "") return
     const readingName = inputReadingValue.trim() || inputValue
@@ -76,23 +95,8 @@ export const Tutorial = () => {
       })
 
     if (textsToSynth.length > 0) {
-      const results = await synth(textsToSynth) // 生成終了を待つ
-      // scenarioを更新してaudioUrlを追加
-      setScenario((prev) =>
-        prev.map((scene) => {
-          if (scene.text && scene.text.includes("{playerName}")) {
-            const replaced = scene.text.replace(/{playerName}/g, readingName)
-            const match = replaced.match(/「([^」]*)」/)
-            const synthText = match ? match[1] : replaced
-            return { ...scene, audioUrl: results[synthText] }
-          }
-          return scene
-        })
-      )
+      synth(textsToSynth)
     }
-
-    setIsNameInputMode(false)
-    setScenarioIndex(scenarioIndex + 1)
   }
 
   // 名前を再入力する処理
