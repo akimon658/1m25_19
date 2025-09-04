@@ -6,8 +6,8 @@ import audio3 from "../../../assets/tutorial003.wav"
 import { useAudioPlayer } from "../hooks/useAudioPlayer.ts"
 import { useAudioSynth } from "../hooks/useAudioSynth.ts"
 
-// 初期シナリオデータ（audioUrlを追加）
 const initialScenario = [
+  { type: "start" },
   {
     type: "text",
     text: "？？？「こんなところに人が来るなんてめずらしいですね」",
@@ -32,6 +32,9 @@ const initialScenario = [
     type: "text",
     text: "ゆめり「{playerName}さん……変わった名前ですね」",
   },
+  {
+    type: "end",
+  },
 ]
 
 type FormValues = {
@@ -43,7 +46,7 @@ export const Tutorial = () => {
   const [scenarioIndex, setScenarioIndex] = useState(0)
   const [playerName, setPlayerName] = useState("")
   const [isNameInputMode, setIsNameInputMode] = useState(false)
-  const [scenario, setScenario] = useState(initialScenario) // scenarioをstate化
+  const [scenario, setScenario] = useState(initialScenario)
   const {
     register,
     handleSubmit,
@@ -136,11 +139,19 @@ export const Tutorial = () => {
     return currentScene.text.replace(/{playerName}/g, playerName)
   }
 
-  // シナリオが終了したか
-  const isScenarioEnded = scenarioIndex >= scenario.length
-
-  if (isScenarioEnded) {
+  if (currentScene.type === "end") {
     return <div>チュートリアル完了！</div>
+  }
+
+  if (currentScene?.type === "start") {
+    return (
+      <div>
+        <p>音声が再生されます。音量にご注意ください。</p>
+        <button type="button" onClick={handleNext}>
+          始める
+        </button>
+      </div>
+    )
   }
 
   if (isNameInputMode) {
