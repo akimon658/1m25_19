@@ -1,21 +1,26 @@
-import { useMutation } from "@tanstack/react-query"
 import { type FormEvent, useState } from "react"
-import { commands } from "../../../api/bindings.gen.ts"
+import audio1 from "../../../assets/tutorial001.wav"
+import audio2 from "../../../assets/tutorial002.wav"
+import audio3 from "../../../assets/tutorial003.wav"
+import { useAudioPlayer } from "../hooks/useAudioPlayer.ts"
+import { useAudioSynth } from "../hooks/useAudioSynth.ts"
 
-// シナリオデータ
-const scenario = [
-  { type: "text" },
+// 初期シナリオデータ（audioUrlを追加）
+const initialScenario = [
   {
     type: "text",
     text: "？？？「こんなところに人が来るなんてめずらしいですね」",
+    audioUrl: audio1,
   },
   {
     type: "text",
     text: "？？？「私は ゆめり。人々の記憶を紡ぐお手伝いをしています」",
+    audioUrl: audio2,
   },
   {
     type: "text",
     text: "ゆめり「えっと……あなたのことはなんと呼べばいいですか？」",
+    audioUrl: audio3,
   },
   { type: "nameInput" },
   {
@@ -31,18 +36,12 @@ const scenario = [
 export const Tutorial = () => {
   const [scenarioIndex, setScenarioIndex] = useState(0)
   const [playerName, setPlayerName] = useState("")
-  const [playerReadingName, setPlayerReadingName] = useState("")
   const [isNameInputMode, setIsNameInputMode] = useState(false)
   const [inputValue, setInputValue] = useState("")
   const [inputReadingValue, setInputReadingValue] = useState("")
-  const { mutate: synth } = useMutation({
-    mutationFn: async (text: string) => {
-      const audioData = await commands.synth(text)
-
-      new Audio(URL.createObjectURL(new Blob([new Uint8Array(audioData)])))
-        .play()
-    },
-  })
+  const [scenario, setScenario] = useState(initialScenario) // scenarioをstate化
+  const { synthMultiple } = useAudioSynth()
+  const { playAudio } = useAudioPlayer()
 
   const currentScene = scenario[scenarioIndex]
 
@@ -55,32 +54,45 @@ export const Tutorial = () => {
         if (nextScene.type === "nameInput") {
           setIsNameInputMode(true)
         }
-        if (nextScene.type === "text" && nextScene.text) {
-          const readingName = playerReadingName || playerName
-          const replaced = nextScene.text.replace(/{playerName}/g, readingName)
-          const match = replaced.match(/「([^」]*)」/)
-          synth(match ? match[1] : replaced)
-        }
       }
       setScenarioIndex(nextIndex)
     }
   }
 
-  // 名前入力の決定処理
-  const handleSubmitName = (e: FormEvent) => {
+  // 名前入力の決定処理（ここで全てのplayerNameを含むテキストを合成）
+  const handleSubmitName = async (e: FormEvent) => {
     e.preventDefault()
     if (inputValue.trim() === "") return
+    const readingName = inputReadingValue.trim() || inputValue
     setPlayerName(inputValue)
-    setPlayerReadingName(inputReadingValue.trim())
     setIsNameInputMode(false)
-    const nextScene = scenario[scenarioIndex + 1]
-    if (nextScene.text) {
-      const readingName = inputReadingValue.trim() || inputValue
-      const replaced = nextScene.text.replace(/{playerName}/g, readingName)
-      const match = replaced.match(/「([^」]*)」/)
-      synth(match ? match[1] : replaced)
+
+    // playerNameを含むテキストを抽出・合成
+    const textsToSynth = scenario
+      .filter((scene) => scene.text && scene.text.includes("{playerName}"))
+      .map((scene) => {
+        const replaced = scene.text!.replace(/{playerName}/g, readingName)
+        const match = replaced.match(/「([^」]*)」/)
+        return match ? match[1] : replaced
+      })
+
+    if (textsToSynth.length > 0) {
+      const results = await synthMultiple(textsToSynth)
+      // scenarioを更新してaudioUrlを追加
+      setScenario((prev) =>
+        prev.map((scene) => {
+          if (scene.text && scene.text.includes("{playerName}")) {
+            const replaced = scene.text.replace(/{playerName}/g, readingName)
+            const match = replaced.match(/「([^」]*)」/)
+            const synthText = match ? match[1] : replaced
+            return { ...scene, audioUrl: results[synthText] }
+          }
+          return scene
+        })
+      )
     }
-    setScenarioIndex(scenarioIndex + 1) // 確認シーンへ進む
+
+    setScenarioIndex(scenarioIndex + 1)
   }
 
   // 名前を再入力する処理
@@ -98,6 +110,11 @@ export const Tutorial = () => {
     if (!currentScene || !currentScene.text) {
       return ""
     }
+
+    if (currentScene.audioUrl) {
+      playAudio(currentScene.audioUrl)
+    }
+
     return currentScene.text.replace(/{playerName}/g, playerName)
   }
 
