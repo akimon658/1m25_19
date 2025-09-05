@@ -31,7 +31,7 @@ export const Play = (
 
   return (
     <div className={playPageStyle}>
-      <Link to="/">ホーム</Link>
+      {!isTutorial && <Link to="/">ホーム</Link>}
 
       <div className={playerWrapperStyle}>
         <Player
