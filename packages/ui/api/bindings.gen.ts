@@ -16,6 +16,9 @@ async getGraphs() : Promise<GraphMetadata[]> {
 },
 async submitAnswer(graphId: number, answer: Answer) : Promise<Graph> {
     return await TAURI_INVOKE("submit_answer", { graphId, answer });
+},
+async synth(text: string) : Promise<number[]> {
+    return await TAURI_INVOKE("synth", { text });
 }
 }
 

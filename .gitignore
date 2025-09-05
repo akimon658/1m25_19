@@ -3,3 +3,4 @@ data/
 gen/
 node_modules/
 target/
+voicevox_core/

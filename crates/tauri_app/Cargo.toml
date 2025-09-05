@@ -20,3 +20,4 @@ specta = { workspace = true, features = ["function"] }
 specta-typescript = { workspace = true }
 tauri = { workspace = true }
 tauri-specta = { workspace = true, features = ["typescript"] }
+voice = { path = "../voice" }

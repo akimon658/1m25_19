@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link, useParams } from "react-router"
+import type { Answer } from "../../api/bindings.gen.ts"
 import { useGetGraph } from "../../hooks/useGetGraph.ts"
 import { useGenerateGraph } from "../home/hooks/useGenerateGraph.ts"
 import { ClearDialog } from "./components/ClearDialog.tsx"
@@ -7,10 +8,19 @@ import { Player } from "./components/Player.tsx"
 import { useSubmitAnswer } from "./hooks/useSubmitAnswer.ts"
 import { playerWrapperStyle, playPageStyle } from "./play.css.ts"
 
-export const Play = () => {
-  const { graphId } = useParams<{ graphId: string }>()
-  const { graph } = useGetGraph(Number(graphId))
-  const { submitAnswer } = useSubmitAnswer(Number(graphId))
+type PlayProps = {
+  graphId?: number
+  isTutorial?: boolean
+  onClear?: (answer: Answer) => void
+}
+
+export const Play = (
+  { graphId: graphIdFromProps, isTutorial, onClear }: PlayProps = {},
+) => {
+  const { graphId: graphIdFromParams } = useParams<{ graphId: string }>()
+  const graphId = graphIdFromProps ?? Number(graphIdFromParams)
+  const { graph } = useGetGraph(graphId)
+  const { submitAnswer } = useSubmitAnswer(graphId)
   const [isClearDialogOpen, setIsClearDialogOpen] = useState(false)
   const { generateGraph } = useGenerateGraph()
   const [nextGraphId, setNextGraphId] = useState<number>()
@@ -31,13 +41,18 @@ export const Play = () => {
           onClear={async (answer) => {
             submitAnswer(answer)
 
+            if (isTutorial) {
+              onClear?.(answer)
+              return
+            }
+
             const newGraph = await generateGraph()
 
             setNextGraphId(newGraph.id)
             setIsClearDialogOpen(true)
           }}
         />
-        {nextGraphId && (
+        {!isTutorial && nextGraphId && (
           <ClearDialog
             open={isClearDialogOpen}
             onOpenChange={setIsClearDialogOpen}
