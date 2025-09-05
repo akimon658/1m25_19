@@ -100,7 +100,6 @@ const initialScenario = [
           "ゆめり「それじゃあ、これからよろしくお願いしますね。{playerName}さん！」",
       },
     ],
-    await: { type: "clear" },
   },
   {
     type: "end",
@@ -172,7 +171,7 @@ export const Tutorial = () => {
   }, [scenarioIndex, currentScene.type])
 
   const handleClear = (_answer: Answer) => {
-    if (currentScene.type === "play" && currentScene.await?.type === "clear") {
+    if (currentScene.type === "play") {
       setPlaySceneState("post")
       setSubScenarioIndex(0)
     }
