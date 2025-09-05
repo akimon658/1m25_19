@@ -14,6 +14,7 @@ import { Button } from "../../../components/Button.tsx"
 import { Play } from "../../play/Play.tsx"
 import { useAudioPlayer } from "../hooks/useAudioPlayer.ts"
 import { useAudioSynth } from "../hooks/useAudioSynth.ts"
+import { useGenerateGraph } from "../hooks/useGenerateGraph.ts"
 import { type FormValues, NameInputDialog } from "./NameInputDialog.tsx"
 import { tutorialWrapperStyle } from "./tutorial.css.ts"
 
@@ -101,9 +102,6 @@ const initialScenario = [
       },
     ],
   },
-  {
-    type: "end",
-  },
 ]
 
 type PlaySceneState = "pre" | "playing" | "post"
@@ -130,7 +128,9 @@ export const Tutorial = () => {
           }
 
           if (scene.type === "play") {
-            const updateSubScenario = (subScenes: typeof scene.preScenario) => {
+            const updateSubScenario = (
+              subScenes: typeof scene.postScenario,
+            ) => {
               if (!subScenes) return undefined
               return subScenes.map((subScene) => {
                 if (subScene.text && subScene.text.includes("{playerName}")) {
@@ -159,6 +159,8 @@ export const Tutorial = () => {
       setScenarioIndex((prev) => prev + 1)
     },
   })
+
+  const { generateGraph } = useGenerateGraph()
 
   const currentScene = scenario[scenarioIndex]
 
@@ -204,6 +206,8 @@ export const Tutorial = () => {
 
     if (nextIndex < scenario.length) {
       setScenarioIndex(nextIndex)
+    } else {
+      generateGraph()
     }
   }
 
@@ -260,10 +264,6 @@ export const Tutorial = () => {
     }
 
     return text.replace(/{playerName}/g, playerName)
-  }
-
-  if (currentScene.type === "end") {
-    return <div>チュートリアル完了！</div>
   }
 
   if (currentScene?.type === "start") {
