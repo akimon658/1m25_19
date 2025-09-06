@@ -344,7 +344,6 @@ export const Tutorial = () => {
               display: "flex",
               alignItems: "flex-end",
               justifyContent: "center",
-              paddingBottom: "20px",
               backgroundColor: "rgba(0, 0, 0, 0.3)",
               cursor: "pointer",
             }}
