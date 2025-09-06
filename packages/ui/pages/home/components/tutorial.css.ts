@@ -18,7 +18,8 @@ export const characterImageStyle = style({
   bottom: 0,
   left: "50%",
   transform: "translateX(-50%)",
-  height: "90dvh",
+  height: "100%",
+  width: "100%",
   objectFit: "contain",
   pointerEvents: "none", // 画像がクリックイベントを妨げないようにする
 })
