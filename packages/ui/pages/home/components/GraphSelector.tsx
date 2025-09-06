@@ -22,7 +22,7 @@ export const GraphSelector = (
           className={graphSelectorItemStyle[
             graphId === selectedGraphId ? "selected" : "default"
           ]}
-          key={graphId ?? "new"}
+          key={graphId}
           onClick={() => onGraphSelect(graphId)}
           type="button"
         />
