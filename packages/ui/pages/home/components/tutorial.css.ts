@@ -24,6 +24,15 @@ export const characterImageStyle = style({
   pointerEvents: "none", // 画像がクリックイベントを妨げないようにする
 })
 
+export const characterImageStyleForPlay = style({
+  position: "absolute",
+  bottom: 0,
+  right: "5%", // 右から5%の位置に配置
+  height: "85dvh", // 少し小さくする
+  objectFit: "contain",
+  pointerEvents: "none",
+})
+
 export const textBoxStyle = style({
   position: "relative",
   zIndex: 1,

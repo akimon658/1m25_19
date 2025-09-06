@@ -19,6 +19,7 @@ import { useGenerateGraph } from "../hooks/useGenerateGraph.ts"
 import { type FormValues, NameInputDialog } from "./NameInputDialog.tsx"
 import {
   characterImageStyle,
+  characterImageStyleForPlay,
   textBoxStyle,
   tutorialWrapperStyle,
 } from "./tutorial.css.ts"
@@ -354,7 +355,7 @@ export const Tutorial = () => {
               <img
                 src={currentSubScene.image as string}
                 alt=""
-                className={characterImageStyle}
+                className={characterImageStyleForPlay}
               />
             )}
             <div className={textBoxStyle}>
