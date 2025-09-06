@@ -3,7 +3,6 @@ import { style } from "@vanilla-extract/css"
 export const homeLayout = style({
   display: "flex",
   height: "100dvh",
-  gap: "16px",
   boxSizing: "border-box",
 })
 
