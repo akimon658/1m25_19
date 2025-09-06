@@ -3,10 +3,14 @@ import { useEffect, useRef, useState } from "react"
 import type { Answer } from "../../../api/bindings.gen.ts"
 import type { SelectableEdge, SelectableNode } from "../../../model/graph.ts"
 
+type ClearResult = Answer & {
+  isCycle: boolean
+}
+
 type UseNodeSelectionParams = {
   initialEdges: SelectableEdge[]
   initialNodes: SelectableNode[]
-  onClear: (answer: Answer) => void
+  onClear: (result: ClearResult) => void
 }
 
 export const useNodeSelection = (
@@ -122,6 +126,7 @@ export const useNodeSelection = (
         onClear({
           time_ms: timeMs,
           path,
+          isCycle,
         })
       }
       const clickableNodeIds = new Set([node.id])
