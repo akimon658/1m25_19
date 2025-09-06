@@ -49,3 +49,12 @@ export const textBoxStyle = style({
   alignItems: "center",
   gap: "1rem",
 })
+
+export const nameConfirmButtons = style({
+  display: "flex",
+  gap: "0.75rem",
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: "0.5rem",
+  width: "100%",
+})

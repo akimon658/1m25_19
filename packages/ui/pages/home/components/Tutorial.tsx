@@ -19,6 +19,7 @@ import { type FormValues, NameInputDialog } from "./NameInputDialog.tsx"
 import {
   characterImageStyle,
   characterImageStyleForPlay,
+  nameConfirmButtons,
   textBoxStyle,
   tutorialWrapperStyle,
 } from "./tutorial.css.ts"
@@ -390,7 +391,10 @@ export const Tutorial = () => {
 
         {currentScene?.action === "nameConfirm"
           ? (
-            <div onClick={(e) => e.stopPropagation()}>
+            <div
+              className={nameConfirmButtons}
+              onClick={(e) => e.stopPropagation()}
+            >
               <Button type="button" onClick={handleNext} variant="primary">
                 はい
               </Button>
