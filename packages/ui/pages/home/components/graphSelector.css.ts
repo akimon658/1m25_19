@@ -22,13 +22,13 @@ const selectedStyle = style({
 
 const unlockedStyle = style({
   backgroundColor: "lightgray",
-  boxShadow: "0 0 12px 2px rgba(211, 211, 211, 0.8)",
+  boxShadow: "0 0 8px 1px rgba(211, 211, 211, 0.7)",
 })
 
 const clearedStyle = style({
   backgroundColor: "lightgreen",
   background: "radial-gradient(circle, rgba(255, 255, 255, 0.3), lightgreen)",
-  boxShadow: "0 0 16px 3px rgba(144, 238, 144, 0.9)",
+  boxShadow: "0 0 12px 2px rgba(144, 238, 144, 0.8)",
 })
 
 const perfectStyle = style({
