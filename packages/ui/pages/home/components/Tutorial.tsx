@@ -9,7 +9,6 @@ import audio5 from "../../../assets/tutorial005.wav"
 import audio6 from "../../../assets/tutorial006.wav"
 import audio7 from "../../../assets/tutorial007.wav"
 import audio8 from "../../../assets/tutorial008.wav"
-import audio9 from "../../../assets/tutorial009.wav"
 import image from "../../../assets/yumeri.jpg"
 import { Button } from "../../../components/Button.tsx"
 import { Play } from "../../play/Play.tsx"
@@ -91,8 +90,15 @@ const initialScenario = [
     preScenario: [
       {
         type: "text",
-        text: "ゆめり「光っている点はどこかの誰かの記憶の断片です」",
+        text:
+          "ゆめり「こういう記憶の断片を繋げるのが私の使命なんですけど、難しくて困ってるんです」",
         audioUrl: audio6,
+        image,
+      },
+      {
+        type: "text",
+        text:
+          "ゆめり「あ、{playerName}さんには簡単なものからやってもらうので安心してくださいね」",
         image,
       },
       {
@@ -107,13 +113,6 @@ const initialScenario = [
         type: "text",
         text: "ゆめり「ばっちりです！」",
         audioUrl: audio8,
-        image,
-      },
-      {
-        type: "text",
-        text:
-          "ゆめり「ただ繋げるだけでもいいんですけど、今みたいに1周して戻ってくる経路を見つけられると完璧です！」",
-        audioUrl: audio9,
         image,
       },
       {
