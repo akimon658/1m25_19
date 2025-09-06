@@ -13,17 +13,28 @@ type GraphSelectorProps = {
 export const GraphSelector = (
   { graphs, selectedGraphId, onGraphSelect }: GraphSelectorProps,
 ) => {
-  const graphIds = graphs.map((graph) => graph.id).reverse()
+  const sortedGraphs = [...graphs].sort((a, b) => b.id - a.id)
+
+  const getStyleVariant = (graph: GraphMetadata) => {
+    const isSelected = graph.id === selectedGraphId
+    const selectionSuffix = isSelected ? "Selected" : "Unselected"
+
+    if (graph.cycle_found) {
+      return `perfect${selectionSuffix}` as keyof typeof graphSelectorItemStyle
+    }
+    if (graph.best_time_ms !== null) {
+      return `cleared${selectionSuffix}` as keyof typeof graphSelectorItemStyle
+    }
+    return `unlocked${selectionSuffix}` as keyof typeof graphSelectorItemStyle
+  }
 
   return (
     <div className={graphSelectorContainerStyle}>
-      {graphIds.map((graphId) => (
+      {sortedGraphs.map((graph) => (
         <button
-          className={graphSelectorItemStyle[
-            graphId === selectedGraphId ? "selected" : "default"
-          ]}
-          key={graphId}
-          onClick={() => onGraphSelect(graphId)}
+          className={graphSelectorItemStyle[getStyleVariant(graph)]}
+          key={graph.id}
+          onClick={() => onGraphSelect(graph.id)}
           type="button"
         />
       ))}
