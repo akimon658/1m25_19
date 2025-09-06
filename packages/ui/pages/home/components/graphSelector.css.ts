@@ -27,13 +27,13 @@ const unlockedStyle = style({
 
 const clearedStyle = style({
   backgroundColor: "lightgreen",
-  background: "radial-gradient(circle, rgba(255, 255, 255, 0.3), lightgreen)",
+  background: "radial-gradient(circle, #e0ffe0, lightgreen)",
   boxShadow: "0 0 12px 2px rgba(144, 238, 144, 0.8)",
 })
 
 const perfectStyle = style({
   backgroundColor: "gold",
-  background: "radial-gradient(circle, rgba(255, 255, 255, 0.4), gold)",
+  background: "radial-gradient(circle, lightyellow, gold)",
   boxShadow: "0 0 20px 4px rgba(255, 215, 0, 1)",
 })
 
