@@ -4,6 +4,7 @@ import { GraphRenderer } from "../../../components/GraphRenderer.tsx"
 import { useGetGraph } from "../../../hooks/useGetGraph.ts"
 import { formatDurationMs } from "../lib/duration.ts"
 import {
+  buttonStyle,
   graphInfoPanelStyle,
   graphRendererWrapperStyle,
   grayTextStyle,
@@ -58,7 +59,7 @@ export const GraphInfoPanel = ({ graphId }: GraphInfoPanelProps) => {
         </div>
       </div>
 
-      <Button asChild variant="primary">
+      <Button asChild variant="primary" className={buttonStyle}>
         <Link to={`/play/${graphId}`}>挑戦</Link>
       </Button>
     </div>

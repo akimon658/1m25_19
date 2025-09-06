@@ -6,6 +6,8 @@ export const graphInfoPanelStyle = style({
   height: "100%",
   gap: "16px",
   textAlign: "center",
+  padding: "16px",
+  boxSizing: "border-box",
 })
 
 export const graphRendererWrapperStyle = style({
@@ -49,4 +51,8 @@ export const statValueStyle = style({
 
 export const grayTextStyle = style({
   color: "#ccc",
+})
+
+export const buttonStyle = style({
+  margin: "0 auto",
 })
