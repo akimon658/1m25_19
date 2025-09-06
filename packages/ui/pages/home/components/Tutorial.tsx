@@ -16,6 +16,7 @@ import { useAudioPlayer } from "../hooks/useAudioPlayer.ts"
 import { useAudioSynth } from "../hooks/useAudioSynth.ts"
 import { useGenerateGraph } from "../hooks/useGenerateGraph.ts"
 import { type FormValues, NameInputDialog } from "./NameInputDialog.tsx"
+import { VolumeWarningDialog } from "./VolumeWarningDialog.tsx"
 import {
   characterImageStyle,
   characterImageStyleForPlay,
@@ -135,6 +136,9 @@ export const Tutorial = () => {
   const [scenario, setScenario] = useState(initialScenario)
   const [playSceneState, setPlaySceneState] = useState<PlaySceneState>("pre")
   const [subScenarioIndex, setSubScenarioIndex] = useState(0)
+  const [isVolumeWarningDialogOpen, setIsVolumeWarningDialogOpen] = useState(
+    true,
+  ) // start時に開く
   const { synth, isPending } = useAudioSynth({
     onSuccess: (audioData, { context }) => {
       const readingName = context.readingName
@@ -279,6 +283,12 @@ export const Tutorial = () => {
     }
   }
 
+  // 追加: ダイアログの確認ハンドラ
+  const handleVolumeWarningConfirm = () => {
+    setIsVolumeWarningDialogOpen(false)
+    handleNext()
+  }
+
   // 表示するテキストを生成
   const getDisplayText = (text?: string) => {
     if (!text) {
@@ -290,10 +300,11 @@ export const Tutorial = () => {
 
   if (currentScene?.type === "start") {
     return (
-      <div>
-        <p>音声が再生されます。音量にご注意ください。</p>
-        <Button onClick={handleNext} variant="primary">始める</Button>
-      </div>
+      <VolumeWarningDialog
+        open={isVolumeWarningDialogOpen}
+        onOpenChange={setIsVolumeWarningDialogOpen}
+        onConfirm={handleVolumeWarningConfirm}
+      />
     )
   }
 
