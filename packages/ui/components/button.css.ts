@@ -16,11 +16,12 @@ const baseStyle = style({
 })
 
 const primaryDisabledStyle = style({
-  backgroundColor: "rgba(0, 191, 255, 0.4)",
+  backgroundColor: "rgba(120, 170, 200, 0.5)", // グレー寄りの青
+  color: "#e0eaf3b6", // 文字色も淡い青
   cursor: "not-allowed",
 
   ":hover": {
-    backgroundColor: "rgba(0, 191, 255, 0.4)",
+    backgroundColor: "rgba(120, 170, 200, 0.5)", // hoverでも色を変えない
   },
 })
 
