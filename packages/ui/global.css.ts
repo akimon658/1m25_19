@@ -19,3 +19,16 @@ globalStyle("p", {
   all: "unset",
   display: "block",
 })
+
+globalStyle("::-webkit-scrollbar", {
+  width: "8px",
+})
+
+globalStyle("::-webkit-scrollbar-track", {
+  background: "transparent",
+})
+
+globalStyle("::-webkit-scrollbar-thumb", {
+  backgroundColor: "rgba(255, 255, 255, 0.2)",
+  borderRadius: "4px",
+})

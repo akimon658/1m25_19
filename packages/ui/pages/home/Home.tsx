@@ -2,7 +2,11 @@ import { useState } from "react"
 import { GraphInfoPanel } from "./components/GraphInfoPanel.tsx"
 import { GraphSelector } from "./components/GraphSelector.tsx"
 import { Tutorial } from "./components/Tutorial.tsx"
-import { homeLayout } from "./home.css.ts"
+import {
+  graphInfoPanelWrapper,
+  graphSelectorWrapper,
+  homeLayout,
+} from "./home.css.ts"
 import { useGraphList } from "./hooks/useGraphList.ts"
 
 export const Home = () => {
@@ -17,12 +21,16 @@ export const Home = () => {
 
   return (graphs.length === 1 ? <Tutorial /> : (
     <div className={homeLayout}>
-      <GraphSelector
-        graphs={graphs}
-        selectedGraphId={selectedGraphId}
-        onGraphSelect={setSelectedGraphId}
-      />
-      <GraphInfoPanel graphId={selectedGraphId} />
+      <div className={graphSelectorWrapper}>
+        <GraphSelector
+          graphs={graphs}
+          selectedGraphId={selectedGraphId}
+          onGraphSelect={setSelectedGraphId}
+        />
+      </div>
+      <div className={graphInfoPanelWrapper}>
+        <GraphInfoPanel graphId={selectedGraphId} />
+      </div>
     </div>
   ))
 }
