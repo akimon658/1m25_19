@@ -28,7 +28,7 @@ export const Play = (
   const { submitAnswer } = useSubmitAnswer(graphId)
   const [isClearDialogOpen, setIsClearDialogOpen] = useState(false)
   const { generateGraph } = useGenerateGraph()
-  const [nextGraphId, setNextGraphId] = useState<number>()
+  const [nextGraphId, setNextGraphId] = useState<number | undefined>()
   const [clearResult, setClearResult] = useState<ClearResult | null>(null)
 
   if (!graph) {
@@ -42,6 +42,7 @@ export const Play = (
           key={graph.id}
           edges={graph.edges}
           nodes={graph.nodes}
+          isTutorial={isTutorial}
           onClear={async (result) => {
             const answer: Answer = {
               time_ms: result.time_ms,
@@ -58,13 +59,15 @@ export const Play = (
               timeMs: result.time_ms,
               isCycle: result.isCycle,
             })
-            const newGraph = await generateGraph()
-
-            setNextGraphId(newGraph.id)
+            // 未クリアのグラフの場合のみ、新しいグラフを生成する
+            if (graph.best_time_ms === null) {
+              const newGraph = await generateGraph()
+              setNextGraphId(newGraph.id)
+            }
             setIsClearDialogOpen(true)
           }}
         />
-        {!isTutorial && nextGraphId && clearResult && (
+        {!isTutorial && clearResult && (
           <ClearDialog
             open={isClearDialogOpen}
             onOpenChange={setIsClearDialogOpen}

@@ -16,7 +16,7 @@ type ClearResult = {
 }
 
 type ClearDialogProps = {
-  nextGraphId: number
+  nextGraphId?: number
   open: boolean
   onOpenChange: (open: boolean) => void
   result: ClearResult
@@ -60,14 +60,16 @@ export const ClearDialog = (
             <Link to="/">ホームに戻る</Link>
           </Button>
 
-          <Dialog.Close asChild>
-            <Button
-              onClick={() => navigate(`/play/${nextGraphId}`)}
-              variant="primary"
-            >
-              次のステージへ
-            </Button>
-          </Dialog.Close>
+          {nextGraphId && (
+            <Dialog.Close asChild>
+              <Button
+                onClick={() => navigate(`/play/${nextGraphId}`)}
+                variant="primary"
+              >
+                次のステージへ
+              </Button>
+            </Dialog.Close>
+          )}
         </Dialog.Control>
       </Dialog.Content>
     </Dialog.Root>
