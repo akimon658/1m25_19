@@ -9,6 +9,7 @@ const itemBaseStyle = style({
   border: "2px solid transparent",
   transition: "all 0.3s ease-in-out",
   position: "relative",
+  flexShrink: 0,
   margin: "12px",
   ":hover": {
     transform: "scale(1.1)",
