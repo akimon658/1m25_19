@@ -54,7 +54,7 @@ export const GraphInfoPanel = ({ graphId }: GraphInfoPanelProps) => {
               graph?.cycle_found ? "" : grayTextStyle
             }`}
           >
-            {graph?.cycle_found ? "達成" : "未達成"}
+            {graph?.cycle_found ? "達成済み" : "未達成"}
           </span>
         </div>
       </div>
