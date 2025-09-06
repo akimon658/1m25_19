@@ -1,4 +1,4 @@
-import { style, styleVariants } from "@vanilla-extract/css"
+import { keyframes, style, styleVariants } from "@vanilla-extract/css"
 
 const itemBaseStyle = style({
   borderRadius: "50%",
@@ -15,9 +15,21 @@ const itemBaseStyle = style({
   },
 })
 
+const selectedPulseAnimation = keyframes({
+  "0%": {
+    boxShadow: "0 0 20px 4px rgba(255, 255, 255, 0.6)",
+  },
+  "50%": {
+    boxShadow: "0 0 28px 8px rgba(255, 255, 255, 0.9)",
+  },
+  "100%": {
+    boxShadow: "0 0 20px 4px rgba(255, 255, 255, 0.6)",
+  },
+})
+
 const selectedStyle = style({
   borderColor: "white",
-  boxShadow: "0 0 20px 4px rgba(255, 255, 255, 0.6)",
+  animation: `${selectedPulseAnimation} 1.5s infinite ease-in-out`,
 })
 
 const unlockedStyle = style({
