@@ -32,7 +32,11 @@ export const ClearDialog = (
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Content className={clearDialogStyle}>
+      <Dialog.Content
+        className={clearDialogStyle}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        onPointerDownOutside={(e) => e.preventDefault()}
+      >
         <Dialog.Title>{title}</Dialog.Title>
 
         <div className={statsContainerStyle}>
