@@ -5,6 +5,7 @@ import {
 } from "../../home/components/tutorial.css.ts"
 import { useAudioPlayer } from "../../home/hooks/useAudioPlayer.ts"
 import type { Dialog } from "../lib/dialogs.ts"
+import { characterDisplayStyle } from "./characterDisplay.css.ts"
 
 type CharacterDisplayProps = {
   dialog: Dialog
@@ -21,7 +22,7 @@ export const CharacterDisplay = ({ dialog }: CharacterDisplayProps) => {
 
   return (
     // ダイアログ操作を妨げないように pointerEvents を none に設定
-    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+    <div className={characterDisplayStyle}>
       <img src={dialog.image} alt="" className={characterImageStyleForPlay} />
       <div className={textBoxStyle}>
         <p>{dialog.text}</p>
