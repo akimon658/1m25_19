@@ -1,11 +1,14 @@
 import { style } from "@vanilla-extract/css"
 
 export const graphInfoPanelStyle = style({
-  flexGrow: 1,
+  display: "flex",
+  flexDirection: "column",
+  height: "100%",
+  gap: "16px",
 })
 
 export const graphRendererWrapperStyle = style({
-  height: "80%",
+  flex: "1 1 auto",
 })
 
 export const unknownGraphPreviewStyle = style({
