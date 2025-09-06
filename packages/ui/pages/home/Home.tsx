@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { GraphInfoPanel } from "./components/GraphInfoPanel.tsx"
 import { GraphSelector } from "./components/GraphSelector.tsx"
 import { Tutorial } from "./components/Tutorial.tsx"
@@ -12,8 +12,12 @@ import { useGraphList } from "./hooks/useGraphList.ts"
 export const Home = () => {
   const { graphs } = useGraphList()
   const [selectedGraphId, setSelectedGraphId] = useState<number>(
-    graphs?.at(-1)?.id ?? 0,
+    graphs?.at(-1)?.id ?? 1,
   )
+
+  useEffect(() => {
+    setSelectedGraphId(graphs?.at(-1)?.id ?? 1)
+  }, [graphs])
 
   if (!graphs) {
     return null
