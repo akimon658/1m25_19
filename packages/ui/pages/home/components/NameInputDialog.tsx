@@ -31,11 +31,13 @@ export const NameInputDialog = (
         <form className={formStyle} onSubmit={handleSubmit(onSubmit)}>
           <Input
             type="text"
+            spellCheck={false}
             placeholder="名前"
             {...register("name", { required: true })}
           />
           <Input
             type="text"
+            spellCheck={false}
             placeholder="読み方（任意）"
             {...register("reading")}
           />
