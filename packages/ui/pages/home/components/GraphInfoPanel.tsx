@@ -6,8 +6,7 @@ import { formatDurationMs } from "../lib/duration.ts"
 import {
   graphInfoPanelStyle,
   graphRendererWrapperStyle,
-  imperfectTextStyle,
-  perfectTextStyle,
+  grayTextStyle,
   statItemStyle,
   statLabelStyle,
   statsContainerStyle,
@@ -41,7 +40,9 @@ export const GraphInfoPanel = ({ graphId }: GraphInfoPanelProps) => {
       <div className={statsContainerStyle}>
         <div className={statItemStyle}>
           <span className={statLabelStyle}>ベストタイム</span>
-          <span className={statValueStyle}>
+          <span
+            className={`${statValueStyle} ${!isCleared ? grayTextStyle : ""}`}
+          >
             {isCleared ? formatDurationMs(graph.best_time_ms!) : "--秒"}
           </span>
         </div>
@@ -49,7 +50,7 @@ export const GraphInfoPanel = ({ graphId }: GraphInfoPanelProps) => {
           <span className={statLabelStyle}>パーフェクト</span>
           <span
             className={`${statValueStyle} ${
-              graph?.cycle_found ? perfectTextStyle : imperfectTextStyle
+              graph?.cycle_found ? "" : grayTextStyle
             }`}
           >
             {graph?.cycle_found ? "達成" : "未達成"}

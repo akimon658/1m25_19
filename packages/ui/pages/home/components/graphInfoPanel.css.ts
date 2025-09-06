@@ -47,11 +47,6 @@ export const statValueStyle = style({
   fontWeight: "bold",
 })
 
-export const perfectTextStyle = style({
-  color: "gold",
-  textShadow: "0 0 4px rgba(255, 215, 0, 0.7)",
-})
-
-export const imperfectTextStyle = style({
+export const grayTextStyle = style({
   color: "#ccc",
 })
