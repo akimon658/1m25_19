@@ -8,11 +8,15 @@ import { useNodeSelection } from "../hooks/useNodeSelection.ts"
 import { reactFlowWrapperStyle } from "./player.css.ts"
 import { ResetDialog } from "./ResetDialog.tsx"
 
+type ClearResult = Answer & {
+  isCycle: boolean
+}
+
 type PlayerProps = {
   edges: SelectableEdge[]
   isTutorial?: boolean
   nodes: SelectableNode[]
-  onClear: (answer: Answer) => void
+  onClear: (result: ClearResult) => void
 }
 
 export const Player = (

@@ -8,6 +8,11 @@ import { Player } from "./components/Player.tsx"
 import { useSubmitAnswer } from "./hooks/useSubmitAnswer.ts"
 import { playerWrapperStyle, playPageStyle } from "./play.css.ts"
 
+type ClearResult = {
+  timeMs: number
+  isCycle: boolean
+}
+
 type PlayProps = {
   graphId?: number
   isTutorial?: boolean
@@ -24,6 +29,7 @@ export const Play = (
   const [isClearDialogOpen, setIsClearDialogOpen] = useState(false)
   const { generateGraph } = useGenerateGraph()
   const [nextGraphId, setNextGraphId] = useState<number>()
+  const [clearResult, setClearResult] = useState<ClearResult | null>(null)
 
   if (!graph) {
     return null
@@ -36,7 +42,11 @@ export const Play = (
           key={graph.id}
           edges={graph.edges}
           nodes={graph.nodes}
-          onClear={async (answer) => {
+          onClear={async (result) => {
+            const answer: Answer = {
+              time_ms: result.time_ms,
+              path: result.path,
+            }
             submitAnswer(answer)
 
             if (isTutorial) {
@@ -44,17 +54,23 @@ export const Play = (
               return
             }
 
+            setClearResult({
+              timeMs: result.time_ms,
+              isCycle: result.isCycle,
+            })
             const newGraph = await generateGraph()
 
             setNextGraphId(newGraph.id)
             setIsClearDialogOpen(true)
           }}
         />
-        {!isTutorial && nextGraphId && (
+        {!isTutorial && nextGraphId && clearResult && (
           <ClearDialog
             open={isClearDialogOpen}
             onOpenChange={setIsClearDialogOpen}
             nextGraphId={nextGraphId}
+            result={clearResult}
+            isPerfected={graph.cycle_found}
           />
         )}
       </div>
