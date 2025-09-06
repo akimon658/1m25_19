@@ -38,7 +38,10 @@ const baseNodeStyle = style({
 const clickableBaseStyle = style({
   boxShadow: "0 0 16px 2px lightgreen",
   cursor: "pointer",
-  transition: "box-shadow 0.2s ease",
+  transition: "box-shadow 0.2s ease, transform 0.2s ease",
+  ":hover": {
+    transform: "scale(1.1)",
+  },
 })
 
 const clickableSelectedStyle = style({
