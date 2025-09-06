@@ -45,4 +45,5 @@ const spinKeyframes = keyframes({
 
 export const loadingIconStyle = style({
   animation: `${spinKeyframes} 1s linear infinite`,
+  height: "1rem",
 })
