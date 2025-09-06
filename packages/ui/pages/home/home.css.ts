@@ -9,6 +9,16 @@ export const homeLayout = style({
 export const graphSelectorWrapper = style({
   flex: "0 0 320px",
   overflowY: "auto",
+  position: "relative",
+  "::after": {
+    content: '""',
+    position: "absolute",
+    top: "20px",
+    bottom: "20px",
+    right: 0,
+    width: "1px",
+    background: "rgba(255, 255, 255, 0.1)",
+  },
 })
 
 export const graphInfoPanelWrapper = style({
