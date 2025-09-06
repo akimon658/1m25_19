@@ -25,7 +25,10 @@ export const NameInputDialog = (
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Content>
+      <Dialog.Content
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        onPointerDownOutside={(e) => e.preventDefault()}
+      >
         <Dialog.Title>あなたの名前は？</Dialog.Title>
 
         <form className={formStyle} onSubmit={handleSubmit(onSubmit)}>
