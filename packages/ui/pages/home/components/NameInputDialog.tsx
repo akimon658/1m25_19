@@ -1,6 +1,8 @@
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { Button } from "../../../components/Button.tsx"
 import { Dialog } from "../../../components/Dialog.tsx"
+import { Input } from "../../../components/Input.tsx"
+import { formStyle } from "./nameInputDialog.css.ts"
 
 export type FormValues = {
   name: string
@@ -23,17 +25,22 @@ export const NameInputDialog = (
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Content>
+      <Dialog.Content
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        onPointerDownOutside={(e) => e.preventDefault()}
+      >
         <Dialog.Title>あなたの名前は？</Dialog.Title>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input
+        <form className={formStyle} onSubmit={handleSubmit(onSubmit)}>
+          <Input
             type="text"
+            spellCheck={false}
             placeholder="名前"
             {...register("name", { required: true })}
           />
-          <input
+          <Input
             type="text"
+            spellCheck={false}
             placeholder="読み方（任意）"
             {...register("reading")}
           />

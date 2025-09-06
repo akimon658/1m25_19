@@ -1,9 +1,11 @@
 import { style } from "@vanilla-extract/css"
 
 export const dialogContentStyle = style({
-  backdropFilter: "blur(10px)",
-  backgroundColor: "rgba(255, 255, 255, 0.1)",
+  backdropFilter: "blur(12px)",
+  backgroundColor: "rgba(30, 30, 30, 0.7)",
   borderRadius: "12px",
+  border: "1px solid rgba(255, 255, 255, 0.18)",
+  boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
   left: "50%",
   padding: "24px",
   position: "fixed",

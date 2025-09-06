@@ -9,14 +9,21 @@ import audio5 from "../../../assets/tutorial005.wav"
 import audio6 from "../../../assets/tutorial006.wav"
 import audio7 from "../../../assets/tutorial007.wav"
 import audio8 from "../../../assets/tutorial008.wav"
-import audio9 from "../../../assets/tutorial009.wav"
+import image from "../../../assets/yumeri.jpg"
 import { Button } from "../../../components/Button.tsx"
 import { Play } from "../../play/Play.tsx"
 import { useAudioPlayer } from "../hooks/useAudioPlayer.ts"
 import { useAudioSynth } from "../hooks/useAudioSynth.ts"
 import { useGenerateGraph } from "../hooks/useGenerateGraph.ts"
 import { type FormValues, NameInputDialog } from "./NameInputDialog.tsx"
-import { tutorialWrapperStyle } from "./tutorial.css.ts"
+import { VolumeWarningDialog } from "./VolumeWarningDialog.tsx"
+import {
+  characterImageStyle,
+  characterImageStyleForPlay,
+  nameConfirmButtons,
+  textBoxStyle,
+  tutorialWrapperStyle,
+} from "./tutorial.css.ts"
 
 type TextWithVoiceProps = {
   text: string
@@ -41,64 +48,80 @@ const initialScenario = [
     type: "text",
     text: "？？？「こんなところに人が来るなんてめずらしいですね」",
     audioUrl: audio1,
+    image,
   },
   {
     type: "text",
     text: "？？？「私は ゆめり。人々の記憶を紡ぐお手伝いをしています」",
     audioUrl: audio2,
+    image,
   },
   {
     type: "text",
     text: "ゆめり「えっと……あなたのことはなんて呼べばいいですか？」",
     audioUrl: audio3,
     action: "nameInput", // このセリフの後に名前入力ダイアログを表示
+    image,
   },
   {
     type: "text",
     text: "ゆめり「{playerName}さんで合ってますか？」",
     action: "nameConfirm", // このセリフの後に確認ボタンを表示
+    image,
   },
   {
     type: "text",
     text: "ゆめり「{playerName}さん……変わった名前ですね」",
+    image,
   },
   {
     type: "text",
     text:
       "ゆめり「ここで会ったのも何かの縁なので、よかったら私の仕事を手伝ってくれませんか？」",
     audioUrl: audio4,
+    image,
   },
   {
     type: "text",
     text: "ゆめり「というか手伝ってください！」",
     audioUrl: audio5,
+    image,
   },
   {
     type: "play",
     preScenario: [
       {
         type: "text",
-        text: "ゆめり「光っている点はどこかの誰かの記憶の断片です」",
+        text:
+          "ゆめり「こういう記憶の断片を繋げるのが私の使命なんですけど、難しくて困ってるんです」",
         audioUrl: audio6,
+        image,
+      },
+      {
+        type: "text",
+        text:
+          "ゆめり「あ、{playerName}さんには簡単なものからやってもらうので安心してくださいね」",
+        image,
       },
       {
         type: "text",
         text: "ゆめり「すべての点を1回だけ通るように繋げてみてください」",
         audioUrl: audio7,
+        image,
       },
     ],
     postScenario: [
-      { type: "text", text: "ゆめり「ばっちりです！」", audioUrl: audio8 },
       {
         type: "text",
-        text:
-          "ゆめり「ただ繋げるだけでもいいんですけど、今みたいに1周して戻ってくる経路を見つけられると完璧です！」",
-        audioUrl: audio9,
+        text: "ゆめり「ばっちりです！」",
+        audioUrl: audio8,
+        image,
       },
       {
         type: "text",
         text:
           "ゆめり「それじゃあ、これからよろしくお願いしますね。{playerName}さん！」",
+        image,
       },
     ],
   },
@@ -113,6 +136,9 @@ export const Tutorial = () => {
   const [scenario, setScenario] = useState(initialScenario)
   const [playSceneState, setPlaySceneState] = useState<PlaySceneState>("pre")
   const [subScenarioIndex, setSubScenarioIndex] = useState(0)
+  const [isVolumeWarningDialogOpen, setIsVolumeWarningDialogOpen] = useState(
+    true,
+  ) // start時に開く
   const { synth, isPending } = useAudioSynth({
     onSuccess: (audioData, { context }) => {
       const readingName = context.readingName
@@ -257,6 +283,12 @@ export const Tutorial = () => {
     }
   }
 
+  // 追加: ダイアログの確認ハンドラ
+  const handleVolumeWarningConfirm = () => {
+    setIsVolumeWarningDialogOpen(false)
+    handleNext()
+  }
+
   // 表示するテキストを生成
   const getDisplayText = (text?: string) => {
     if (!text) {
@@ -268,10 +300,11 @@ export const Tutorial = () => {
 
   if (currentScene?.type === "start") {
     return (
-      <div>
-        <p>音声が再生されます。音量にご注意ください。</p>
-        <Button onClick={handleNext} variant="primary">始める</Button>
-      </div>
+      <VolumeWarningDialog
+        open={isVolumeWarningDialogOpen}
+        onOpenChange={setIsVolumeWarningDialogOpen}
+        onConfirm={handleVolumeWarningConfirm}
+      />
     )
   }
 
@@ -323,22 +356,19 @@ export const Tutorial = () => {
               display: "flex",
               alignItems: "flex-end",
               justifyContent: "center",
-              paddingBottom: "20px",
               backgroundColor: "rgba(0, 0, 0, 0.3)",
               cursor: "pointer",
             }}
             onClick={handleOverlayClick}
           >
-            <div
-              style={{
-                backgroundColor: "rgba(0, 0, 0, 0.7)",
-                color: "white",
-                padding: "1rem",
-                borderRadius: "0.5rem",
-                maxWidth: "80%",
-                textAlign: "center",
-              }}
-            >
+            {currentSubScene.image && (
+              <img
+                src={currentSubScene.image as string}
+                alt=""
+                className={characterImageStyleForPlay}
+              />
+            )}
+            <div className={textBoxStyle}>
               <TextWithVoice
                 text={getDisplayText(currentSubScene.text)}
                 audioUrl={"audioUrl" in currentSubScene
@@ -357,23 +387,35 @@ export const Tutorial = () => {
       className={tutorialWrapperStyle}
       onClick={handleScreenClick}
     >
-      <TextWithVoice
-        text={getDisplayText(currentScene?.text)}
-        audioUrl={currentScene?.audioUrl}
-      />
+      {currentScene?.image && (
+        <img
+          src={currentScene.image as string}
+          alt=""
+          className={characterImageStyle}
+        />
+      )}
+      <div className={textBoxStyle}>
+        <TextWithVoice
+          text={getDisplayText(currentScene?.text)}
+          audioUrl={currentScene?.audioUrl}
+        />
 
-      {currentScene?.action === "nameConfirm"
-        ? (
-          <div onClick={(e) => e.stopPropagation()}>
-            <Button type="button" onClick={handleNext} variant="primary">
-              はい
-            </Button>
-            <Button type="button" onClick={handleRedoNameInput}>
-              いいえ
-            </Button>
-          </div>
-        )
-        : null}
+        {currentScene?.action === "nameConfirm"
+          ? (
+            <div
+              className={nameConfirmButtons}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Button type="button" onClick={handleNext} variant="primary">
+                はい
+              </Button>
+              <Button type="button" onClick={handleRedoNameInput}>
+                いいえ
+              </Button>
+            </div>
+          )
+          : null}
+      </div>
 
       <NameInputDialog
         open={isNameInputDialogOpen}
