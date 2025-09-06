@@ -9,6 +9,7 @@ import {
   statValueStyle,
 } from "../../home/components/graphInfoPanel.css.ts"
 import { formatDurationMs } from "../../home/lib/duration.ts"
+import { clearDialogStyle } from "./clearDialog.css.ts"
 
 type ClearResult = {
   timeMs: number
@@ -31,7 +32,7 @@ export const ClearDialog = (
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Content>
+      <Dialog.Content className={clearDialogStyle}>
         <Dialog.Title>{title}</Dialog.Title>
 
         <div className={statsContainerStyle}>
