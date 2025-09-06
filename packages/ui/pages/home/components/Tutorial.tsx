@@ -9,6 +9,7 @@ import audio5 from "../../../assets/tutorial005.wav"
 import audio6 from "../../../assets/tutorial006.wav"
 import audio7 from "../../../assets/tutorial007.wav"
 import audio8 from "../../../assets/tutorial008.wav"
+import audio9 from "../../../assets/tutorial009.wav"
 import image from "../../../assets/yumeri.jpg"
 import { Button } from "../../../components/Button.tsx"
 import { Play } from "../../play/Play.tsx"
@@ -92,9 +93,15 @@ const initialScenario = [
     preScenario: [
       {
         type: "text",
-        text:
-          "ゆめり「こういう記憶の断片を繋げるのが私の使命なんですけど、難しくて困ってるんです」",
+        text: "ゆめり「これは人々の記憶の断片です」",
         audioUrl: audio6,
+        image,
+      },
+      {
+        type: "text",
+        text:
+          "ゆめり「これを繋げるのが私の使命なんですけど、難しくて困ってるんです」",
+        audioUrl: audio7,
         image,
       },
       {
@@ -105,22 +112,23 @@ const initialScenario = [
       },
       {
         type: "text",
-        text: "ゆめり「すべての点を1回だけ通るように繋げてみてください」",
-        audioUrl: audio7,
+        text:
+          "ゆめり「それじゃあ、すべての点を1回だけ通るように繋げてみてください」",
+        audioUrl: audio8,
         image,
       },
     ],
     postScenario: [
       {
         type: "text",
-        text: "ゆめり「ばっちりです！」",
-        audioUrl: audio8,
+        text: "ゆめり「ばっちりです！ちょっと簡単すぎましたかね？」",
+        audioUrl: audio9,
         image,
       },
       {
         type: "text",
         text:
-          "ゆめり「それじゃあ、これからよろしくお願いしますね。{playerName}さん！」",
+          "ゆめり「これからはもっと難しいのが出てくるのでがんばってくださいね。{playerName}さん！」",
         image,
       },
     ],
