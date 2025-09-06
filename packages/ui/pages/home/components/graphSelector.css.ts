@@ -9,7 +9,7 @@ const itemBaseStyle = style({
   border: "2px solid transparent",
   transition: "all 0.3s ease-in-out",
   position: "relative",
-  marginBottom: "12px",
+  margin: "12px",
   ":hover": {
     transform: "scale(1.1)",
   },
@@ -62,7 +62,6 @@ export const graphSelectorContainerStyle = style({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  padding: "16px",
   overflowY: "scroll",
   height: "100%",
   gap: "8px",
