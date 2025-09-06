@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link, useParams } from "react-router"
+import { useParams } from "react-router"
 import type { Answer } from "../../api/bindings.gen.ts"
 import { useGetGraph } from "../../hooks/useGetGraph.ts"
 import { useGenerateGraph } from "../home/hooks/useGenerateGraph.ts"
@@ -31,8 +31,6 @@ export const Play = (
 
   return (
     <div className={playPageStyle}>
-      {!isTutorial && <Link to="/">ホーム</Link>}
-
       <div className={playerWrapperStyle}>
         <Player
           key={graph.id}
