@@ -65,14 +65,10 @@ jobs:
           fi
 
           echo "Downloading ${DOWNLOADER_NAME}..."
-          LATEST_RELEASE_URL=$(curl -s https://api.github.com/repos/VOICEVOX/voicevox_core/releases/latest | jq -r ".assets[] | select(.name == \"${DOWNLOADER_NAME}\") | .browser_download_url")
-
-          if [ -z "$LATEST_RELEASE_URL" ] || [ "$LATEST_RELEASE_URL" == "null" ]; then
-            echo "Could not find downloader URL for ${DOWNLOADER_NAME}"
-            exit 1
-          fi
-
-          curl -L -o download "$LATEST_RELEASE_URL"
+          gh release download \
+            --repo VOICEVOX/voicevox_core \
+            --pattern "${DOWNLOADER_NAME}" \
+            --output download
           if [[ "${{ runner.os }}" != "Windows" ]]; then
             chmod +x download
           fi
@@ -83,9 +79,6 @@ jobs:
 
           # Move files to the correct location
           mv voicevox_core crates/tauri_app/
-
-      - name: Install frontend dependencies
-        run: npm install --prefix packages/ui
 
       - name: Build with Tauri
         uses: tauri-apps/tauri-action@v0
