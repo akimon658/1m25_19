@@ -90,6 +90,7 @@ jobs:
 
       - name: setup db
         run: |
+          cargo install sqlx-cli
           mkdir data
           touch data/db.sqlite
           deno task migrate
