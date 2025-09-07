@@ -84,9 +84,6 @@ jobs:
           # Move files to the correct location
           mv voicevox_core crates/tauri_app/
 
-      - name: Install frontend dependencies
-        run: npm install --prefix packages/ui
-
       - name: Build with Tauri
         uses: tauri-apps/tauri-action@v0
         env:
