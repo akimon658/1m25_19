@@ -80,6 +80,7 @@ jobs:
           fi
 
           # Run downloader
+          # NOTE: Using 'yes' to bypass prompts because the downloader does not support a '--yes' or '--force' flag. This is necessary for non-interactive CI.
           yes | ./download --exclude c-api
 
           # Move files to the correct location
