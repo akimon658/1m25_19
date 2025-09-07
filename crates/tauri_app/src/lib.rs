@@ -46,7 +46,7 @@ pub fn run() -> anyhow::Result<()> {
                 let data_dir = if cfg!(debug_assertions) {
                     std::env::current_dir()?.join("../../data")
                 } else {
-                    app.path().data_dir()?.join("pathfinder")
+                    app.path().data_dir()?.join("dev.akimo.pathfinder")
                 };
 
                 log::info!("Data directory: {:?}", data_dir);
@@ -57,6 +57,15 @@ pub fn run() -> anyhow::Result<()> {
                 })?;
 
                 let sqlite_file_path = data_dir.join("db.sqlite");
+
+                // SQLiteファイルが存在しない場合は空のファイルを作成する
+
+                if !sqlite_file_path.exists() {
+                    fs::File::create(&sqlite_file_path).with_context(|| {
+                        log::error!("Failed to create SQLite file: {:?}", sqlite_file_path);
+                        format!("Failed to create SQLite file: {:?}", sqlite_file_path)
+                    })?;
+                }
 
                 let repository = match repository::Repository::new(&sqlite_file_path).await {
                     Ok(repo) => repo,
