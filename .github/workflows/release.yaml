@@ -47,7 +47,7 @@ jobs:
           if [[ "${{ runner.os }}" == "Linux" ]]; then
             OS="linux"
           elif [[ "${{ runner.os }}" == "macOS" ]]; then
-            OS="macos"
+            OS="osx"
           elif [[ "${{ runner.os }}" == "Windows" ]]; then
             OS="windows"
           fi
