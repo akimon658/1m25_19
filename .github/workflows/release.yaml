@@ -88,6 +88,12 @@ jobs:
           # Move files to the correct location
           mv voicevox_core crates/tauri_app/
 
+      - name: setup db
+        run: |
+          mkdir data
+          touch data/db.sqlite
+          deno task migrate
+
       - name: Build with Tauri
         uses: tauri-apps/tauri-action@v0
         env:
