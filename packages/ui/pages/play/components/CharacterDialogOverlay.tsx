@@ -18,7 +18,7 @@ const TextWithVoice = ({ text, audioUrl }: TextWithVoiceProps) => {
     if (audioUrl) {
       playAudio(audioUrl)
     }
-  }, [audioUrl])
+  }, [audioUrl, playAudio])
 
   return <p>{text}</p>
 }
