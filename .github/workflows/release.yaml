@@ -80,7 +80,7 @@ jobs:
           fi
 
           # Run downloader
-          ./download --exclude c-api
+          yes | ./download --exclude c-api
 
           # Move files to the correct location
           mv voicevox_core crates/tauri_app/
