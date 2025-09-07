@@ -20,6 +20,7 @@ pub fn run() -> anyhow::Result<()> {
         .typ::<model::graph::Graph>()
         .error_handling(tauri_specta::ErrorHandlingMode::Throw);
 
+    #[cfg(debug_assertions)]
     specta_builder.export(
         specta_typescript::Typescript::default()
             .bigint(specta_typescript::BigIntExportBehavior::Number),
