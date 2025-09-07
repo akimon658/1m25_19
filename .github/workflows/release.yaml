@@ -11,13 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          [
-            macos-latest,
-            ubuntu-22.04,
-            windows-latest,
-            "ubuntu-22.04-arm",
-            "windows-11-arm",
-          ]
+          [macos-latest, ubuntu-22.04, windows-latest, "ubuntu-22.04-arm"]
 
     runs-on: ${{ matrix.platform }}
     steps:
