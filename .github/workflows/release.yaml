@@ -11,13 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          [
-            macos-latest,
-            ubuntu-22.04,
-            windows-latest,
-            "ubuntu-22.04-arm",
-            "windows-11-arm",
-          ]
+          [macos-latest, ubuntu-22.04, windows-latest, "ubuntu-22.04-arm"]
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -42,12 +36,16 @@ jobs:
 
       - name: Download and set up voicevox_core
         shell: bash
+        env:
+          LC_ALL: C.UTF-8
+          LANG: C.UTF-8
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Determine OS and Arch for downloader
           if [[ "${{ runner.os }}" == "Linux" ]]; then
             OS="linux"
           elif [[ "${{ runner.os }}" == "macOS" ]]; then
-            OS="macos"
+            OS="osx"
           elif [[ "${{ runner.os }}" == "Windows" ]]; then
             OS="windows"
           fi
@@ -80,8 +78,8 @@ jobs:
           fi
 
           # Run downloader
-          # NOTE: Using 'yes' to bypass prompts because the downloader does not support a '--yes' or '--force' flag. This is necessary for non-interactive CI.
-          yes | ./download --exclude c-api
+          # NOTE: Using 'echo' to bypass prompts because the downloader does not support a '--yes' or '--force' flag. This is necessary for non-interactive CI.
+          echo 'y' | ./download --exclude c-api
 
           # Move files to the correct location
           mv voicevox_core crates/tauri_app/
