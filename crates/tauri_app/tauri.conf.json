@@ -4,8 +4,10 @@
   "version": "0.1.0",
   "identifier": "dev.akimo.pathfinder",
   "build": {
+    "beforeBuildCommand": "deno task --filter ui build",
     "beforeDevCommand": "deno task --filter ui dev",
-    "devUrl": "http://localhost:5173"
+    "devUrl": "http://localhost:5173",
+    "frontendDist": "../../packages/ui/dist"
   },
   "app": {
     "windows": [
