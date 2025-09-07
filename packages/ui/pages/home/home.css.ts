@@ -25,3 +25,17 @@ export const graphInfoPanelWrapper = style({
   flex: "1 1 auto",
   overflowY: "auto",
 })
+
+export const creditIconStyle = style({
+  position: "fixed",
+  bottom: "1rem",
+  left: "1rem",
+  color: "rgba(255, 255, 255, 0.7)",
+  cursor: "pointer",
+  zIndex: 1000,
+  transition: "color 0.2s ease",
+
+  ":hover": {
+    color: "white",
+  },
+})
