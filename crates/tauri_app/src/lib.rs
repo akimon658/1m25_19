@@ -1,7 +1,6 @@
 mod commands;
 
 use crate::commands::{generate_graph, get_graph, get_graphs, submit_answer, synth};
-#[cfg(debug_assertions)]
 use tauri::Manager;
 
 struct AppState {
@@ -42,7 +41,7 @@ pub fn run() -> anyhow::Result<()> {
                 let sqlite_file_path = if cfg!(debug_assertions) {
                     std::env::current_dir()?.join("../../data")
                 } else {
-                    app.path().data_dir()?
+                    app.path().data_dir()?.join("pathfinder")
                 }
                 .join("db.sqlite");
 
