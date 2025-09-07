@@ -103,8 +103,8 @@ jobs:
           TAURI_CLI_NO_UPDATE_NOTIFIER: 1
         with:
           tagName: ${{ github.ref_name }}
+          tauriScript: deno task tauri
           releaseName: "v__VERSION__"
           releaseBody: "See the assets to download this version and install."
           releaseDraft: true
           prerelease: false
-          projectPath: "crates/tauri_app"
