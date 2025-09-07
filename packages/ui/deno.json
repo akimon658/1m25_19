@@ -26,6 +26,7 @@
     "vite-plugin-webfont-dl": "npm:vite-plugin-webfont-dl@^3.11.1"
   },
   "tasks": {
+    "build": "vite build",
     "dev": "vite"
   }
 }
