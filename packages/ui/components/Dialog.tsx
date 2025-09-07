@@ -10,11 +10,14 @@ const Trigger = RadixDialog.Trigger
 
 type ContentProps = ComponentProps<typeof RadixDialog.DialogContent>
 
-const Content = (props: ContentProps) => {
+const Content = ({ className, ...props }: ContentProps) => {
   return (
     <RadixDialog.Portal>
       <RadixDialog.Overlay />
-      <RadixDialog.Content {...props} className={dialogContentStyle} />
+      <RadixDialog.Content
+        {...props}
+        className={`${dialogContentStyle} ${className}`}
+      />
     </RadixDialog.Portal>
   )
 }

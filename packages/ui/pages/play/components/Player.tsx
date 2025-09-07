@@ -17,16 +17,18 @@ type PlayerProps = {
   isTutorial?: boolean
   nodes: SelectableNode[]
   onClear: (result: ClearResult) => void
+  onStuck?: () => void
 }
 
 export const Player = (
-  { edges: initialEdges, isTutorial, nodes: initialNodes, onClear }:
+  { edges: initialEdges, isTutorial, nodes: initialNodes, onClear, onStuck }:
     PlayerProps,
 ) => {
   const { resetSelection, ...graphRendererProps } = useNodeSelection({
     initialEdges,
     initialNodes,
     onClear,
+    onStuck,
   })
 
   return (

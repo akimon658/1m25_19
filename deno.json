@@ -13,6 +13,7 @@
   "nodeModulesDir": "auto",
   "tasks": {
     "migrate": "sqlx migrate run --source crates/repository/migrations",
+    "reset": "rm data/db.sqlite && touch data/db.sqlite && deno task migrate",
     "tauri": "tauri"
   },
   "workspace": ["packages/*"]

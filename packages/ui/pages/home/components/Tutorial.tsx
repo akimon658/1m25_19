@@ -10,7 +10,14 @@ import audio6 from "../../../assets/tutorial006.wav"
 import audio7 from "../../../assets/tutorial007.wav"
 import audio8 from "../../../assets/tutorial008.wav"
 import audio9 from "../../../assets/tutorial009.wav"
-import image from "../../../assets/yumeri.jpg"
+import image1 from "../../../assets/yumeri1.png"
+import image2 from "../../../assets/yumeri2.png"
+import image3 from "../../../assets/yumeri3.png"
+import image4 from "../../../assets/yumeri4.png"
+import image5 from "../../../assets/yumeri5.png"
+import image6 from "../../../assets/yumeri6.png"
+import image7 from "../../../assets/yumeri7.png"
+import imageTasukete from "../../../assets/yumeri_tasukete.png"
 import { Button } from "../../../components/Button.tsx"
 import { Play } from "../../play/Play.tsx"
 import { useAudioPlayer } from "../hooks/useAudioPlayer.ts"
@@ -49,44 +56,44 @@ const initialScenario = [
     type: "text",
     text: "？？？「こんなところに人が来るなんてめずらしいですね」",
     audioUrl: audio1,
-    image,
+    image: image1,
   },
   {
     type: "text",
     text: "？？？「私は ゆめり。人々の記憶を紡ぐお手伝いをしています」",
     audioUrl: audio2,
-    image,
+    image: image2,
   },
   {
     type: "text",
     text: "ゆめり「えっと……あなたのことはなんて呼べばいいですか？」",
     audioUrl: audio3,
     action: "nameInput", // このセリフの後に名前入力ダイアログを表示
-    image,
+    image: image3,
   },
   {
     type: "text",
     text: "ゆめり「{playerName}さんで合ってますか？」",
     action: "nameConfirm", // このセリフの後に確認ボタンを表示
-    image,
+    image: image3,
   },
   {
     type: "text",
     text: "ゆめり「{playerName}さん……変わった名前ですね」",
-    image,
+    image: image4,
   },
   {
     type: "text",
     text:
       "ゆめり「ここで会ったのも何かの縁なので、よかったら私の仕事を手伝ってくれませんか？」",
     audioUrl: audio4,
-    image,
+    image: image5,
   },
   {
     type: "text",
     text: "ゆめり「というか手伝ってください！」",
     audioUrl: audio5,
-    image,
+    image: imageTasukete,
   },
   {
     type: "play",
@@ -95,27 +102,27 @@ const initialScenario = [
         type: "text",
         text: "ゆめり「これは人々の記憶の断片です」",
         audioUrl: audio6,
-        image,
+        image: image4,
       },
       {
         type: "text",
         text:
           "ゆめり「これを繋げるのが私の使命なんですけど、難しくて困ってるんです」",
         audioUrl: audio7,
-        image,
+        image: image6,
       },
       {
         type: "text",
         text:
           "ゆめり「あ、{playerName}さんには簡単なものからやってもらうので安心してくださいね」",
-        image,
+        image: image4,
       },
       {
         type: "text",
         text:
           "ゆめり「それじゃあ、すべての点を1回だけ通るように繋げてみてください」",
         audioUrl: audio8,
-        image,
+        image: image7,
       },
     ],
     postScenario: [
@@ -123,13 +130,13 @@ const initialScenario = [
         type: "text",
         text: "ゆめり「ばっちりです！ちょっと簡単すぎましたかね？」",
         audioUrl: audio9,
-        image,
+        image: image4,
       },
       {
         type: "text",
         text:
           "ゆめり「これからはもっと難しいのが出てくるのでがんばってくださいね。{playerName}さん！」",
-        image,
+        image: image7,
       },
     ],
   },

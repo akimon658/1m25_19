@@ -11,10 +11,11 @@ type UseNodeSelectionParams = {
   initialEdges: SelectableEdge[]
   initialNodes: SelectableNode[]
   onClear: (result: ClearResult) => void
+  onStuck?: () => void
 }
 
 export const useNodeSelection = (
-  { initialEdges, initialNodes, onClear }: UseNodeSelectionParams,
+  { initialEdges, initialNodes, onClear, onStuck }: UseNodeSelectionParams,
 ) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
@@ -159,6 +160,29 @@ export const useNodeSelection = (
         }))
       )
       setSelectedNodeIds((prev) => [...prev, node.id])
+
+      // 行き詰まりチェック: 新しい選択後に次に進めるノードがあるかを確認
+      const newSelectedNodeIds = [...selectedNodeIds, node.id]
+      if (newSelectedNodeIds.length < initialNodes.length && onStuck) {
+        const nextClickableNodeIds = new Set<string>()
+
+        for (const edge of edges) {
+          if (
+            (edge.source === node.id &&
+              !newSelectedNodeIds.includes(edge.target)) ||
+            (edge.target === node.id &&
+              !newSelectedNodeIds.includes(edge.source))
+          ) {
+            nextClickableNodeIds.add(edge.source)
+            nextClickableNodeIds.add(edge.target)
+          }
+        }
+
+        // 次に選択可能なノードが存在しない場合は行き詰まり
+        if (nextClickableNodeIds.size === 0) {
+          onStuck()
+        }
+      }
     }
   }
 
