@@ -13,11 +13,13 @@ tauri-build = { workspace = true }
 [dependencies]
 anyhow = { workspace = true }
 graph = { path = "../graph" }
+log.workspace = true
 model = { path = "../model" }
 rand = { workspace = true, features = ["small_rng"] }
 repository = { path = "../repository" }
 specta = { workspace = true, features = ["function"] }
 specta-typescript = { workspace = true }
 tauri = { workspace = true }
+tauri-plugin-log.workspace = true
 tauri-specta = { workspace = true, features = ["typescript"] }
 voice = { path = "../voice" }

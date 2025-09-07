@@ -1,6 +1,7 @@
 mod commands;
 
 use crate::commands::{generate_graph, get_graph, get_graphs, submit_answer, synth};
+use std::fs;
 use tauri::Manager;
 
 struct AppState {
@@ -38,12 +39,19 @@ pub fn run() -> anyhow::Result<()> {
             }
 
             tauri::async_runtime::block_on(async || -> anyhow::Result<()> {
-                let sqlite_file_path = if cfg!(debug_assertions) {
+                log::info!("Setting up the application...");
+
+                let data_dir = if cfg!(debug_assertions) {
                     std::env::current_dir()?.join("../../data")
                 } else {
                     app.path().data_dir()?.join("pathfinder")
-                }
-                .join("db.sqlite");
+                };
+
+                log::info!("Data directory: {:?}", data_dir);
+                // データディレクトリが存在しない場合は作成する
+                fs::create_dir_all(&data_dir)?;
+
+                let sqlite_file_path = data_dir.join("db.sqlite");
 
                 let repository = repository::Repository::new(&sqlite_file_path).await?;
                 let graph_service = graph::GraphService {
@@ -52,6 +60,7 @@ pub fn run() -> anyhow::Result<()> {
                 };
 
                 app.manage(AppState { graph_service });
+                log::info!("Application setup complete.");
 
                 Ok(())
             }())?;
@@ -65,6 +74,7 @@ pub fn run() -> anyhow::Result<()> {
             submit_answer,
             synth,
         ])
+        .plugin(tauri_plugin_log::Builder::new().build())
         .run(tauri::generate_context!())?;
 
     Ok(())
