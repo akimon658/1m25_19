@@ -23,7 +23,11 @@
   },
   "bundle": {
     "active": true,
-    "resources": ["voicevox_core/**/*"],
+    "resources": [
+      "voicevox_core/dict/**/*",
+      "voicevox_core/models/vvms/13.vvm",
+      "voicevox_core/onnxruntime/**/*"
+    ],
     "targets": "all",
     "icon": ["icons/**/*"]
   }

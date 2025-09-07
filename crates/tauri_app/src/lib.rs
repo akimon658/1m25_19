@@ -1,6 +1,7 @@
 mod commands;
 
 use crate::commands::{generate_graph, get_graph, get_graphs, submit_answer, synth};
+use anyhow::Context;
 use std::fs;
 use tauri::Manager;
 
@@ -50,11 +51,20 @@ pub fn run() -> anyhow::Result<()> {
 
                 log::info!("Data directory: {:?}", data_dir);
                 // データディレクトリが存在しない場合は作成する
-                fs::create_dir_all(&data_dir)?;
+                fs::create_dir_all(&data_dir).with_context(|| {
+                    log::error!("Failed to create data directory: {:?}", data_dir);
+                    format!("Failed to create data directory: {:?}", data_dir)
+                })?;
 
                 let sqlite_file_path = data_dir.join("db.sqlite");
 
-                let repository = repository::Repository::new(&sqlite_file_path).await?;
+                let repository = match repository::Repository::new(&sqlite_file_path).await {
+                    Ok(repo) => repo,
+                    Err(e) => {
+                        log::error!("Failed to initialize repository: {:?}", e);
+                        return Err(anyhow::anyhow!("Failed to initialize repository: {:?}", e));
+                    }
+                };
                 let graph_service = graph::GraphService {
                     graph_repository: repository.graph,
                     user_repository: repository.user,
