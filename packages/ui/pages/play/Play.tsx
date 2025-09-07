@@ -77,9 +77,21 @@ export const Play = (
               return
             }
 
-            const dialog = result.isCycle
-              ? clearDialogs.perfect
-              : clearDialogs.normal
+            const getRandomDialog = (dialogs: Dialog[]) => {
+              return dialogs[Math.floor(Math.random() * dialogs.length)]
+            }
+
+            let dialog: Dialog
+            if (result.isCycle) {
+              dialog = getRandomDialog(clearDialogs.perfect)
+            } else {
+              const expectedTimeMs = graph.nodes.length * 5 * 1000 // ノード数 * 5秒
+              if (result.time_ms <= expectedTimeMs) {
+                dialog = getRandomDialog(clearDialogs.normal.fast)
+              } else {
+                dialog = getRandomDialog(clearDialogs.normal.slow)
+              }
+            }
             setClearDialogData(dialog)
 
             setClearResult({
